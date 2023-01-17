@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: rec-bus.com
+      http:
+        paths:
+          - path: /api/bus-routes/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: bus-routes-srv
+                port:
+                  number: 3000
+          - path: /api/gps-tracking/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: gps-tracking-srv
+                port:
+                  number: 3000

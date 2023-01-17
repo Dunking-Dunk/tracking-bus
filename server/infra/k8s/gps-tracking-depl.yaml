@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gps-tracking-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gps-tracking
+  template:
+    metadata:
+      labels:
+        app: gps-tracking
+    spec:
+      containers:
+        - name: gps-tracking
+          image: hursun/bus-tracking-gps
+          env:
+            - name: MONGO_URI
+              value: "mongodb://gps-tracking-mongo-srv:27017/gps-tracking"
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: bus-tracking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gps-tracking-srv
+spec:
+  selector:
+    app: gps-tracking
+  ports:
+    - name: gps-tracking
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

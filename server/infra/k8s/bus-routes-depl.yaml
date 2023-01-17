@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bus-routes-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bus-routes
+  template:
+    metadata:
+      labels:
+        app: bus-routes
+    spec:
+      containers:
+        - name: bus-routes
+          image: hursun/bus-tracking-route
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: bus-tracking
+            - name: MONGO_URI
+              value: "mongodb://bus-routes-mongo-srv:27017/bus-routes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bus-routes-srv
+spec:
+  selector:
+    app: bus-routes
+  ports:
+    - name: bus-routes
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
