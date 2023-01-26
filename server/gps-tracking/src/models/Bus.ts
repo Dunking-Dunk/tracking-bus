@@ -4,7 +4,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface stopAttrs {
     lat: number,
         lng: number,
-        address: string,
         name: string
 }
 
@@ -12,17 +11,24 @@ interface BusAttrs {
     id: string,
     busNumber: number,
     busSet: string,
-    description?: string,
-    origin?: string,
-    stops:any
-}
-export interface BusDoc extends mongoose.Document {
-    busNumber: number,
-    busSet: string,
+    busName: string,
     description?: string,
     origin?: string,
     stops: stopAttrs[],
-    version: number
+    morningToCollege: boolean,
+    returnAfter315: boolean,
+}
+
+export interface BusDoc extends mongoose.Document {
+    busNumber: number,
+    busSet: string,
+    busName: string,
+    description?: string,
+    origin?: string,
+    stops: stopAttrs[],
+    version: number,
+    morningToCollege: boolean,
+    returnAfter315: boolean,
 }
 
 interface BusModel extends mongoose.Model<BusDoc> {
@@ -69,15 +75,25 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String
+    busName: {
+        type: String,
+        required: true,
     },
     origin: {
         type: String,
     },
+    description: {
+        type: String
+    },
     stops: {
         type: [stopSchema],
         require: true
+    },
+    morningToCollege: {
+        type: Boolean,
+    },
+    returnAfter315: {
+        type: Boolean,
     }
 }, {
     toJSON: {
@@ -95,10 +111,13 @@ Schema.statics.build = (attrs:BusAttrs) => {
     return new Bus({
         _id: attrs.id,
         busNumber: attrs.busNumber,
+        busName: attrs.busName,
         busSet: attrs.busSet,
         description: attrs.description,
         origin: attrs.origin,
-        stops: attrs.stops
+        stops: attrs.stops,
+        returnAfter315: attrs.returnAfter315,
+        morningToCollege: attrs.morningToCollege
     })
 }
 

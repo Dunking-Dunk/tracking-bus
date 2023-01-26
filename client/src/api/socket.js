@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 class Socket {
   constructor() {
-    this.url = "http://10.0.2.2:3000/";
+    this.url = "https://little-poems-pick-49-204-117-163.loca.lt/";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,

@@ -6,6 +6,7 @@ import { Server } from 'socket.io'
 import cors from 'cors'
 
 import { GetAllGpsTracker } from "./routes";
+import { UpdateGpsTracker } from "./routes/update";
 import {ErrorHandler} from '@hursunss/bus-tracking-common'
 import { NotFoundError } from "@hursunss/bus-tracking-common";
 
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.use(GetAllGpsTracker)
+app.use(UpdateGpsTracker)
 
 app.use('*', async() => { 
     throw new NotFoundError()

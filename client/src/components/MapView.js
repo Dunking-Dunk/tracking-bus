@@ -27,7 +27,7 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const Map = ({ stops, mapStyle }) => {
+const Map = ({ stops, mapStyle, allStops }) => {
   const mapRef = useRef();
   const markerRef = useRef();
 
@@ -132,6 +132,23 @@ const Map = ({ stops, mapStyle }) => {
           userInterfaceStyle="dark"
           ref={mapRef}
         >
+          {allStops &&
+            allStops.map((stop) => {
+              return (
+                <Marker
+                  key={stop.id}
+                  coordinate={stop.coords}
+                  title={stop.name}
+                  description={stop.timing}
+                >
+                  <MaterialCommunityIcons
+                    name="bus-marker"
+                    size={24}
+                    color="black"
+                  />
+                </Marker>
+              );
+            })}
           {stops && (
             <>
               <MapViewDirections
@@ -173,7 +190,7 @@ const Map = ({ stops, mapStyle }) => {
           )}
           {state.userCoords && (
             <>
-              <Circle radius={500} center={state.userCoords} />
+              <Circle radius={3000} center={state.userCoords} />
               <Marker.Animated ref={markerRef} coordinate={state.coordinate}>
                 <FontAwesome name="circle-o" size={18} color={Color.blue} />
               </Marker.Animated>
@@ -196,8 +213,10 @@ const Map = ({ stops, mapStyle }) => {
   }
 };
 
-export const MemorizedMap = memo(Map);
+export { Map };
 
 const styles = StyleSheet.create({
-  map: {},
+  map: {
+    marginBottom: Dimensions.get("screen").height / 5.5,
+  },
 });

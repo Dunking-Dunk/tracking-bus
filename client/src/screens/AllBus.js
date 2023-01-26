@@ -7,6 +7,7 @@ import CustomButton from "../components/CustomButton";
 import { getBuses } from "../store/action";
 import { clientSocket } from "../api/socket";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const AllBusRoute = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -29,10 +30,23 @@ const AllBusRoute = ({ navigation }) => {
     return (
       <View key={bus.id} style={styles.busContainer}>
         <View style={styles.busDetailContainer}>
-          <Text style={{ color: Color.white }}>
-            {bus.busNumber} {bus.busSet}
-          </Text>
-          <Text style={{ color: Color.white }}>{bus.origin}</Text>
+          <View style={styles.detailSubContainer}>
+            <FontAwesome5
+              name="bus"
+              size={24}
+              color={Color.semiBold}
+              style={{
+                backgroundColor: Color.light,
+                padding: 5,
+                borderRadius: 20,
+              }}
+            />
+            <View style={styles.routeContainer}>
+              <Text style={{ color: Color.white }}>
+                {bus.busNumber} {bus.busSet}
+              </Text>
+            </View>
+          </View>
         </View>
 
         <CustomButton
@@ -41,17 +55,17 @@ const AllBusRoute = ({ navigation }) => {
           }
           style={{
             backgroundColor: Color.semiBold,
-            width: 80,
-            height: 40,
+            width: 100,
+            height: 50,
           }}
         >
-          <Text style={{ color: Color.white }}>Detail</Text>
+          <Text style={styles.detailBtnText}>Detail</Text>
         </CustomButton>
       </View>
     );
   };
   return (
-    <View style>
+    <View style={{ flex: 1 }}>
       <Header navigation={navigation} search={search} setSearch={setSearch} />
       <FlatList
         data={buses}
@@ -72,6 +86,7 @@ const styles = StyleSheet.create({
   busContainer: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 8,
     backgroundColor: Color.regular,
@@ -82,7 +97,28 @@ const styles = StyleSheet.create({
   busDetailContainer: {
     display: "flex",
     flexDirection: "column",
+    backgroundColor: Color.medium,
+    padding: 10,
+    borderRadius: 25,
+  },
+  detailSubContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: 140,
+    justifyContent: "space-between",
+  },
+
+  routeContainer: {
+    backgroundColor: Color.semiBold,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 20,
     color: Color.white,
+  },
+  detailBtnText: {
+    color: Color.white,
+    fontSize: 17,
   },
 });
 

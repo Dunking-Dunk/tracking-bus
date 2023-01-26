@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 
-import { Bus } from '../models/Bus'
+import { Bus } from '../../models/Bus'
 
 const router = express.Router()
 

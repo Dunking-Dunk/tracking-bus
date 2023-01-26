@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { useState } from "react";
-import { MemorizedMap } from "../components/MapView";
+import { Map } from "../components/MapView";
 import { AntDesign } from "@expo/vector-icons";
 
 import DragUpView from "../components/DragUpView";
@@ -19,7 +19,7 @@ const BusDetail = ({ navigation, route }) => {
         <AntDesign name="arrowleft" size={24} color={Color.bold} />
       </TouchableHighlight>
 
-      <MemorizedMap
+      <Map
         busPin={{
           latitude: 13,
           longitude: 80,
@@ -33,7 +33,7 @@ const BusDetail = ({ navigation, route }) => {
             <Text style={styles.busNumber}>
               {bus.busNumber} {bus.busSet}
             </Text>
-            <Text style={styles.busFrom}>{bus.origin}</Text>
+            <Text style={styles.busFrom}>{bus.busName}</Text>
           </View>
           <Text style={styles.busFrom}>{bus.description}</Text>
           <StepProgressBar stops={bus.stops} />
@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    width: "100%",
-    height: "80%",
+    flex: 1,
   },
   headerMenuContainer: {
     zIndex: 1,

@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 
 import Color from "./src/utils/Color";
@@ -10,6 +10,7 @@ import "./src/utils/getUserLocation";
 import CustomDrawerContent from "./src/components/CustomDrawerContent";
 import HomeScreen from "./src/screens/Home";
 import BusRoute from "./src/screens/BusRoute";
+import Contact from "./src/screens/Contact";
 import { configureStore } from "./src/store/reducer";
 import FlashMessage from "react-native-flash-message";
 
@@ -39,9 +40,16 @@ const DrawerNavigation = () => {
       />
       <Drawer.Screen
         component={BusRoute}
-        name="Bus Route"
+        name="Bus Routes"
         options={{
           drawerIcon: () => <FontAwesome5 name="bus" size={24} color="black" />,
+        }}
+      />
+      <Drawer.Screen
+        component={Contact}
+        name="Contact"
+        options={{
+          drawerIcon: () => <Ionicons name="call" size={24} color="black" />,
         }}
       />
     </Drawer.Navigator>

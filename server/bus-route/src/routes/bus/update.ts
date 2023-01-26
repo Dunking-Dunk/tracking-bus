@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 
-import { Bus } from '../models/Bus'
+import { Bus } from '../../models/Bus'
 import { NotFoundError } from '@hursunss/bus-tracking-common'
 
 const router = express.Router()
@@ -17,7 +17,7 @@ router.put('/api/bus-routes/:id', async(req: Request, res: Response) => {
     bus.set(req.body)
     await bus.save()
 
-    res.status(204)
+    res.status(204).send(bus)
 })
 
 export {router as UpdateBusRoute}

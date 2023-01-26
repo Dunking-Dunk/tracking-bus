@@ -42,10 +42,11 @@ const start = async () => {
             const interval = setInterval(async() => {
                 const tracker = await Tracker.find({})
                 io.emit('getLocation', tracker)
-            }, 5000)
+            }, 15000)
 
        
             socket.on('disconnect', () => {
+                clearInterval(interval)
                 console.log(`${socket.id} disconnected`)
             })
         })

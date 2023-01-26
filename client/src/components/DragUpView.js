@@ -5,11 +5,13 @@ import Animated, {
   useAnimatedGestureHandler,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
-import { StyleSheet, View, TouchableHighlight } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import Color from "../utils/Color";
 import { memo } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
 const DragUpView = ({ children }) => {
+  const dimension = Dimensions.get("window");
   const open = useSharedValue(false);
   const y = useSharedValue(200);
 
@@ -27,9 +29,9 @@ const DragUpView = ({ children }) => {
     },
     onActive: (event, ctx) => {
       if (event.translationY < ctx.startY) {
-        y.value = 700;
+        y.value = dimension.height / 1.2;
       } else {
-        y.value = 200;
+        y.value = dimension.height / 4;
       }
     },
   });
@@ -50,9 +52,9 @@ export default memo(DragUpView);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Color.semiBold,
     height: "25%",
     position: "absolute",
+    backgroundColor: Color.semiBold,
     width: "100%",
     bottom: 0,
     borderTopRightRadius: 40,
