@@ -1,10 +1,18 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { memo } from "react";
+import { useState, memo } from "react";
+import { useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
+import { getBuses } from "../store/action";
 import Color from "../utils/Color";
 
-const Header = ({ navigation, setSearch, search }) => {
-  console.log("child render");
+const Header = ({ navigation, searchRequired }) => {
+  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(getBuses(search));
+  };
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerMenuContainer}>
@@ -16,13 +24,16 @@ const Header = ({ navigation, setSearch, search }) => {
           style={styles.headerMenu}
         />
       </View>
-      <TextInput
-        style={styles.input}
-        value={search}
-        onChangeText={setSearch}
-        placeholder="Enter Your Bus Number"
-        placeholderTextColor={Color.bold}
-      />
+      {searchRequired && (
+        <TextInput
+          style={styles.input}
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Enter Your Bus Number or Location"
+          placeholderTextColor={Color.bold}
+          onSubmitEditing={onSubmit}
+        />
+      )}
     </View>
   );
 };

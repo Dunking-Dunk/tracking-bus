@@ -8,7 +8,7 @@ const CustomButton = ({ children, style, onPress }) => {
         {
           ...style,
           ...styles.Button,
-          backgroundColor: pressed ? Color.medium : Color.semiBold,
+          opacity: pressed ? 0.5 : 1,
         },
       ]}
       onPress={onPress}
@@ -21,9 +21,6 @@ const CustomButton = ({ children, style, onPress }) => {
 const styles = StyleSheet.create({
   Button: {
     borderRadius: 30,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
 

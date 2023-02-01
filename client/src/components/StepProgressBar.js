@@ -12,31 +12,30 @@ export default class ProgressBar extends Component {
       currentStepIndicatorSize: 40,
       separatorStrokeWidth: 2,
       currentStepStrokeWidth: 3,
-      stepStrokeCurrentColor: "#fe7013",
+      stepStrokeCurrentColor: Color.semiBold,
       stepStrokeWidth: 3,
       separatorStrokeFinishedWidth: 4,
-      stepStrokeFinishedColor: "#fe7013",
-      stepStrokeUnFinishedColor: "#aaaaaa",
-      separatorFinishedColor: "#fe7013",
-      separatorUnFinishedColor: "#aaaaaa",
-      stepIndicatorFinishedColor: "#fe7013",
+      stepStrokeFinishedColor: Color.semiBold,
+      stepStrokeUnFinishedColor: Color.regular,
+      separatorFinishedColor: Color.semiBold,
+      separatorUnFinishedColor: Color.regular,
+      stepIndicatorFinishedColor: Color.semiBold,
       stepIndicatorUnFinishedColor: "#ffffff",
       stepIndicatorCurrentColor: "#ffffff",
       stepIndicatorLabelFontSize: 13,
       currentStepIndicatorLabelFontSize: 13,
-      stepIndicatorLabelCurrentColor: "#fe7013",
+      stepIndicatorLabelCurrentColor: Color.semiBold,
       stepIndicatorLabelFinishedColor: "#ffffff",
-      stepIndicatorLabelUnFinishedColor: "#aaaaaa",
+      stepIndicatorLabelUnFinishedColor: Color.regular,
       labelColor: "#999999",
       labelSize: 13,
-      currentStepLabelColor: "#fe7013",
+      currentStepLabelColor: Color.semiBold,
     };
     this.dimension = Dimensions.get("window");
     this.currentPosition = 2;
   }
 
   render() {
-    console.log("lol");
     return (
       <View
         style={{
@@ -50,6 +49,7 @@ export default class ProgressBar extends Component {
           direction="vertical"
           currentPosition={this.currentPosition}
           labels={this.stops}
+          stepCount={this.stops.length}
           renderLabel={({ position, label, currentPosition }) => {
             return (
               <View style={styles.stepContainer}>
@@ -67,16 +67,15 @@ export default class ProgressBar extends Component {
 const styles = StyleSheet.create({
   container: {
     elevation: 10,
-    marginTop: 50,
   },
   stepContainer: {
-    marginTop: 25,
+    marginTop: 10,
     paddingLeft: 10,
     width: 300,
   },
   stepTitle: {
-    fontSize: 20,
-    color: Color.white,
+    fontSize: 18,
+    textTransform: "capitalize",
   },
   stepTiming: {
     fontSize: 16,

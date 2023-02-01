@@ -1,46 +1,74 @@
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { Map } from "../components/MapView";
 import { AntDesign } from "@expo/vector-icons";
 
+import Loader from "../components/LoadingAnimation";
 import DragUpView from "../components/DragUpView";
 import Color from "../utils/Color";
 import StepProgressBar from "../components/StepProgressBar";
 
+import CustomButton from "../components/CustomButton";
+import { useSelector } from "react-redux";
+
 const BusDetail = ({ navigation, route }) => {
-  const { bus } = route.params;
+  const routeData = route.params;
+  const bus = routeData.bus
+    ? routeData.bus
+    : useSelector((state) => state.buses.bus);
 
-  return (
-    <View style={styles.container}>
-      <TouchableHighlight
-        onPress={() => navigation.pop()}
-        style={styles.headerMenuContainer}
-      >
-        <AntDesign name="arrowleft" size={24} color={Color.bold} />
-      </TouchableHighlight>
+  const [routeInfo, setRouteInfo] = useState({
+    distance: 0,
+    elapsedTime: 0,
+  });
 
-      <Map
-        busPin={{
-          latitude: 13,
-          longitude: 80,
-        }}
-        stops={bus.stops}
-        mapStyle={styles.map}
-      />
-      <DragUpView>
-        <View style={styles.busContainer}>
-          <View style={styles.row}>
-            <Text style={styles.busNumber}>
-              {bus.busNumber} {bus.busSet}
+  if (bus) {
+    return (
+      <View style={styles.container}>
+        <CustomButton
+          onPress={() => navigation.pop()}
+          style={styles.headerMenuContainer}
+        >
+          <AntDesign name="arrowleft" size={24} color={Color.bold} />
+        </CustomButton>
+        {routeInfo ? (
+          <Map
+            stops={bus.stops}
+            mapStyle={styles.map}
+            setRouteInfo={setRouteInfo}
+          />
+        ) : (
+          <Loader size="large" />
+        )}
+
+        <DragUpView>
+          <View style={styles.busContainer}>
+            <View style={styles.routeInfoContainer}>
+              <Text style={styles.routeInfoText}>
+                {parseInt(routeInfo.distance)} KM
+              </Text>
+              <Text style={styles.routeInfoText}>
+                {parseInt(routeInfo.elapsedTime)} min
+              </Text>
+            </View>
+
+            <View style={styles.detailContainer}>
+              <Text style={styles.busNumber}>
+                {bus.busNumber}
+                {bus.busSet}
+              </Text>
+              <Text style={styles.busText}>{bus.busName}</Text>
+            </View>
+            <Text style={styles.busText}>
+              Status: <Text>offline</Text>
             </Text>
-            <Text style={styles.busFrom}>{bus.busName}</Text>
+            <Text style={styles.busText}>{bus.description}</Text>
+            <StepProgressBar stops={bus.stops} />
           </View>
-          <Text style={styles.busFrom}>{bus.description}</Text>
-          <StepProgressBar stops={bus.stops} />
-        </View>
-      </DragUpView>
-    </View>
-  );
+        </DragUpView>
+      </View>
+    );
+  } else return <Loader size="large" />;
 };
 
 const styles = StyleSheet.create({
@@ -64,21 +92,35 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
   },
+  routeInfoContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingBottom: 10,
+  },
+  routeInfoText: {
+    backgroundColor: Color.bold,
+    padding: 10,
+    borderRadius: 5,
+    color: Color.white,
+  },
+
+  detailContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   busNumber: {
     fontSize: 24,
     textTransform: "uppercase",
-    color: Color.white,
+    color: Color.black,
   },
-  busFrom: {
-    color: Color.white,
-    fontSize: 18,
+  busText: {
+    marginBottom: 5,
+    color: Color.black,
+    fontSize: 16,
     textTransform: "capitalize",
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
   },
 });
 export default BusDetail;

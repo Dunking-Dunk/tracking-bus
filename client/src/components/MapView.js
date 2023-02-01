@@ -1,37 +1,36 @@
-import { memo, useRef, useState, useEffect } from "react";
+import { memo, useRef, useState, useEffect, useCallback } from "react";
 import {
   Text,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   Platform,
+  View,
+  Image,
 } from "react-native";
-import MapView, {
-  Callout,
-  Marker,
-  Circle,
-  AnimatedRegion,
-} from "react-native-maps";
+import MapView, { Marker, Circle, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
-import {
-  MaterialCommunityIcons,
-  FontAwesome,
-  Entypo,
-} from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { GOOGLE_MAPS_API_KEY } from "@env";
 import { userLocation } from "../utils/getUserLocation";
 import Color from "../utils/Color";
+import Loader from "./LoadingAnimation";
+import StopMarker from "./StopMarker";
+import { useTheme } from "@react-navigation/native";
+import { darkMap, standardMap } from "../utils/mapStyle";
+import { EventRegister } from "react-native-event-listeners";
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const Map = ({ stops, mapStyle, allStops }) => {
+const Map = ({ stops, mapStyle, allStops, setRouteInfo }) => {
+  const { dark } = useTheme();
+  //ref/////////////////////////////
   const mapRef = useRef();
   const markerRef = useRef();
-
-  //states
+  //states////////////////////
   const [state, setState] = useState({
     userCoords: null,
     coordinate: null,
@@ -46,16 +45,33 @@ const Map = ({ stops, mapStyle, allStops }) => {
       longitude: 0,
     },
     wayPoints: [{ latitude: 0, longitude: 0 }],
-    time: 0,
+    elapsedTime: 0,
     distance: 0,
   });
   const updateState = (data) => setState((state) => ({ ...state, ...data }));
   const updateDirection = (data) =>
     setDirection((state) => ({ ...state, ...data }));
 
-  //useEffect
+  //useEffect//////////////////////////////
   useEffect(() => {
     getUserLocation();
+  }, []);
+
+  useEffect(() => {
+    const listener = EventRegister.addEventListener(
+      "ChangeStopCoords",
+      ({ stopCoords }) => {
+        mapRef.current.animateToRegion({
+          latitude: stopCoords.latitude,
+          longitude: stopCoords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        });
+      }
+    );
+    return () => {
+      EventRegister.removeEventListener(listener);
+    };
   }, []);
 
   useEffect(() => {
@@ -114,7 +130,10 @@ const Map = ({ stops, mapStyle, allStops }) => {
   };
 
   const updatedDandT = (d, t) => {
-    updateDirection({ d, t });
+    updateDirection({ distance: d, elapsedTime: t });
+    if (setRouteInfo) {
+      setRouteInfo((state) => ({ ...state, elapsedTime: t, distance: d }));
+    }
   };
 
   if (state.userCoords) {
@@ -131,24 +150,13 @@ const Map = ({ stops, mapStyle, allStops }) => {
           provider="google"
           userInterfaceStyle="dark"
           ref={mapRef}
+          customMapStyle={dark ? darkMap : standardMap}
         >
           {allStops &&
             allStops.map((stop) => {
-              return (
-                <Marker
-                  key={stop.id}
-                  coordinate={stop.coords}
-                  title={stop.name}
-                  description={stop.timing}
-                >
-                  <MaterialCommunityIcons
-                    name="bus-marker"
-                    size={24}
-                    color="black"
-                  />
-                </Marker>
-              );
+              return <StopMarker stop={stop} key={stop.id} showBus={true} />;
             })}
+
           {stops && (
             <>
               <MapViewDirections
@@ -156,7 +164,7 @@ const Map = ({ stops, mapStyle, allStops }) => {
                 waypoints={direction.wayPoints}
                 destination={direction.destination}
                 strokeWidth={3}
-                strokeColor="red"
+                strokeColor={Color.regular}
                 apikey={GOOGLE_MAPS_API_KEY}
                 lineCap="round"
                 lineJoin="round"
@@ -171,32 +179,37 @@ const Map = ({ stops, mapStyle, allStops }) => {
                 }}
               />
               {stops.map((stop) => {
-                return (
-                  <Marker
-                    key={stop.id}
-                    coordinate={stop.coords}
-                    title={stop.name}
-                    description={stop.timing}
-                  >
-                    <MaterialCommunityIcons
-                      name="bus-marker"
-                      size={24}
-                      color="black"
-                    />
-                  </Marker>
-                );
+                return <StopMarker key={stop.id} stop={stop} showBus={false} />;
               })}
             </>
           )}
           {state.userCoords && (
             <>
-              <Circle radius={3000} center={state.userCoords} />
+              <Circle
+                radius={2000}
+                center={state.userCoords}
+                strokeColor={Color.regular}
+              />
               <Marker.Animated ref={markerRef} coordinate={state.coordinate}>
                 <FontAwesome name="circle-o" size={18} color={Color.blue} />
               </Marker.Animated>
             </>
           )}
+
+          <Marker
+            coordinate={{ latitude: 13.009577, longitude: 80.00433 }}
+            anchor={{ x: 0, y: 1.45 }}
+          >
+            <Image source={require("../../assets/RECFlagFlagMain.gif")} />
+          </Marker>
+          <Marker
+            coordinate={{ latitude: 13.009577, longitude: 80.00433 }}
+            anchor={{ x: 1, y: 1 }}
+          >
+            <Image source={require("../../assets/pole1.png")} />
+          </Marker>
         </MapView>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -206,10 +219,12 @@ const Map = ({ stops, mapStyle, allStops }) => {
           }}
           onPress={onCenter}
         >
-          <Entypo name="location" size={34} color="black" />
+          <MaterialIcons name="gps-fixed" size={34} color={Color.light} />
         </TouchableOpacity>
       </>
     );
+  } else {
+    return <Loader size="large" color={Color.regular} />;
   }
 };
 
