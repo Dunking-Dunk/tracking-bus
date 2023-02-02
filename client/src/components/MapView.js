@@ -25,7 +25,14 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const Map = ({ stops, mapStyle, allStops, setRouteInfo }) => {
+const Map = ({
+  stops,
+  mapStyle,
+  allStops,
+  setRouteInfo,
+  busesLiveLocation,
+}) => {
+  console.log("render");
   const { dark } = useTheme();
   //ref/////////////////////////////
   const mapRef = useRef();
@@ -157,6 +164,19 @@ const Map = ({ stops, mapStyle, allStops, setRouteInfo }) => {
               return <StopMarker stop={stop} key={stop.id} showBus={true} />;
             })}
 
+          {busesLiveLocation &&
+            busesLiveLocation.map((bus) => {
+              return (
+                <Marker.Animated coordinate={bus.coords} key={bus.id}>
+                  <View>
+                    <View style={styles.busTracker}>
+                      <Text style={{ color: Color.white }}>9B</Text>
+                    </View>
+                  </View>
+                </Marker.Animated>
+              );
+            })}
+
           {stops && (
             <>
               <MapViewDirections
@@ -233,5 +253,14 @@ export { Map };
 const styles = StyleSheet.create({
   map: {
     marginBottom: Dimensions.get("screen").height / 5.5,
+  },
+  busTracker: {
+    width: 30,
+    height: 30,
+    backgroundColor: Color.bold,
+    borderRadius: 50,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

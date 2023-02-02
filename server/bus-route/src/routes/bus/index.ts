@@ -7,7 +7,7 @@ router.get('/api/bus-routes', async (req: Request, res: Response) => {
     const { search } = req.query
     let buses;
     if (search) {
-        buses = await Bus.find( {busNumber: search}).populate('stops')
+        buses = await Bus.find({ busNumber: search }).populate('stops')
     } else {
         buses = await Bus.find({}).populate('stops')
     }
@@ -15,4 +15,4 @@ router.get('/api/bus-routes', async (req: Request, res: Response) => {
     res.status(200).json(buses)
 })
 
-export {router as GetAllBusRoute}
+export {router as GetAllBusRoute}   

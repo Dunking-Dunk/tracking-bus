@@ -4,6 +4,7 @@ import { body } from 'express-validator'
 import { natsWrapper } from '../../nats-wrapper'
 import { BusCreatedPublisher } from '../../events/publisher/bus-created-publisher'
 import { Bus } from '../../models/Bus'
+import { Stop } from '../../models/Stop'
 import {ValidateRequest} from '@hursunss/bus-tracking-common'
 
 const router = express.Router()
@@ -18,9 +19,16 @@ router.post('/api/bus-routes',
     ValidateRequest,
     async (req: Request, res: Response) => { 
 
-    let bus = Bus.build(req.body)
-         await bus.save()
-   await bus.populate('stops')
+        let bus = Bus.build(req.body)
+        await bus.save()
+
+        await bus.stops.map(async (stop) => {
+            let doc = await Stop.findById(stop)
+            doc?.busId?.push(bus._id)
+            await doc?.save()
+        })
+
+        await bus.populate('stops')
   
         new BusCreatedPublisher(natsWrapper.client).publish({
             id: bus.id,

@@ -12,7 +12,7 @@ interface StopAttrs {
     address?: string,
     name: string,
     timing: string, 
-    busId?: BusDoc
+    busId?: BusDoc[]
 }
 
 export interface StopDoc extends mongoose.Document {
@@ -20,7 +20,7 @@ export interface StopDoc extends mongoose.Document {
     address?: string,
     name: string,
     timing: string,   
-    busId?: BusDoc
+    busId?: BusDoc[]
 }
 
 interface StopModel extends mongoose.Model<StopDoc> {
@@ -50,10 +50,10 @@ const stopSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    busId: {
+    busId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Bus'
-    }
+    }]
 },
 {
     toJSON: {

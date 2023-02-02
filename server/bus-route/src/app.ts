@@ -10,9 +10,11 @@ import { GetAllBusRoute } from "./routes/bus/index";
 import { NewBusRoute } from "./routes/bus/new";
 import { DeleteBusRoute } from "./routes/bus/delete";
 import { UpdateBusRoute } from "./routes/bus/update";
+import { GetBusQuickStats } from "./routes/bus/quickStats";
 
 import { NewStopRoute } from "./routes/stop/new";
 import { GetAllStops } from "./routes/stop";
+import { GetStop } from "./routes/stop/get";
 import { DeleteStop } from "./routes/stop/delete";
 
 const app = express();
@@ -27,8 +29,10 @@ app.use(GetAllBusRoute)
 
 app.use(NewStopRoute)
 app.use(GetAllStops)
+app.use(GetStop)
 app.use(DeleteStop)
 
+app.use(GetBusQuickStats)
 app.use(GetBusRoute)
 app.use(DeleteBusRoute)
 app.use(UpdateBusRoute)

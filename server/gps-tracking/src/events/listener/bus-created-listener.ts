@@ -9,7 +9,7 @@ export class BusCreatedListener extends Listener<BusCreatedEvent> {
     queueGroupName = queueGroupName
     async onMessage(data: BusCreatedEvent['data'] ,msg: Message ) {
         if (data) {
-            console.log(data)
+           
             const bus = Bus.build({ 
                 id: data.id,
                 busNumber: data.busNumber,
@@ -26,8 +26,11 @@ export class BusCreatedListener extends Listener<BusCreatedEvent> {
 
             const tracker = Tracker.build({
                 bus: bus.id,
-                lat: 0,
-                lng: 0
+                coords: {
+                    latitude: 0,
+                    longitude: 0
+                },
+                speed: 0
             })
             await tracker.save()
        } 

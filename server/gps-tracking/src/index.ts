@@ -1,8 +1,8 @@
-import { app, httpServer, io } from "./app"
+import { app, httpServer } from "./app"
 import mongoose from "mongoose"
 import { natsWrapper } from "./nats-wrapper"
 import { BusCreatedListener } from "./events/listener/bus-created-listener"
-import { Tracker } from "./models/Tracking"
+import { connection } from './socket'
 
 const start = async () => {
     if (!process.env.NATS_CLUSTER_ID) {
@@ -32,24 +32,7 @@ const start = async () => {
         new BusCreatedListener(natsWrapper.client).listen()
         await mongoose.connect(process.env.MONGO_URI)
     
-        io.on("connection", (socket) => {
-            console.log(`${socket.id} a user connected`)
-            socket.on('stop-getLocation', (data) => {
-                console.log(data)
-                clearInterval(interval)
-            })
-
-            const interval = setInterval(async() => {
-                const tracker = await Tracker.find({})
-                io.emit('getLocation', tracker)
-            }, 15000)
-
-       
-            socket.on('disconnect', () => {
-                clearInterval(interval)
-                console.log(`${socket.id} disconnected`)
-            })
-        })
+       connection()
     }
     catch (err) {
         console.error(err)

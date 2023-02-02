@@ -71,6 +71,8 @@ const BusDetail = ({ navigation, route }) => {
   } else return <Loader size="large" />;
 };
 
+export default BusDetail;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -123,4 +125,3 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
 });
-export default BusDetail;

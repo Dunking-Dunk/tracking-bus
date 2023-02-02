@@ -2,15 +2,21 @@ import mongoose from 'mongoose';
 import { BusDoc } from './Bus';
 
 interface TrackerAttrs {
-    bus:  BusDoc,
-    lat: number,
-    lng: number
+    bus: BusDoc,
+    coords: {
+        latitude: number,
+        longitude: number
+    },
+    speed: number,
 }
 
 interface TrackerDoc extends mongoose.Document {
     bus: BusDoc,
-    lat: number,
-    lng: number
+    coords: {
+        latitude: number,
+        longitude: number
+    },
+    speed: number,
 }
 
 interface TrackerModel extends mongoose.Model<TrackerDoc> {
@@ -18,11 +24,17 @@ interface TrackerModel extends mongoose.Model<TrackerDoc> {
 }
 
 const trackingSchema = new mongoose.Schema({
-    lat: {
-        type: Number,
-        default: 0
+    coords: {
+        latitude: {
+            type: Number,
+            default: 0
+        },
+        longitude: {
+            type: Number,
+            default: 0
+        },
     },
-    lng: {
+    speed: {
         type: Number,
         default: 0
     },

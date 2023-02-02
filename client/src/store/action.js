@@ -12,8 +12,8 @@ export const getBuses = (query) => async (dispatch) => {
   try {
     const { data } = await axios.get(
       query
-        ? `https://9aa6-49-205-80-77.in.ngrok.io/api/bus-routes?search=${query}`
-        : "https://9aa6-49-205-80-77.in.ngrok.io/api/bus-routes"
+        ? `https://9d20-49-205-80-77.in.ngrok.io/api/bus-routes?search=${query}`
+        : "https://9d20-49-205-80-77.in.ngrok.io/api/bus-routes"
     );
     dispatch({
       type: GET_ALL_BUSES,
@@ -27,7 +27,7 @@ export const getBuses = (query) => async (dispatch) => {
 export const getBus = (busId) => async (dispatch) => {
   try {
     const { data } = await axios.get(
-      `https://9aa6-49-205-80-77.in.ngrok.io/api/bus-routes/${busId}`
+      `https://9d20-49-205-80-77.in.ngrok.io/api/bus-routes/${busId}`
     );
     dispatch({
       type: GET_BUS,
@@ -41,7 +41,7 @@ export const getBus = (busId) => async (dispatch) => {
 export const getAllStop = () => async (dispatch) => {
   try {
     const { data } = await axios.get(
-      "https://9aa6-49-205-80-77.in.ngrok.io/api/bus-routes/stop/"
+      "https://9d20-49-205-80-77.in.ngrok.io/api/bus-routes/stop/"
     );
     dispatch({
       type: GET_ALL_STOPS,
@@ -55,7 +55,7 @@ export const getAllStop = () => async (dispatch) => {
 export const getQuickStats = () => async (dispatch) => {
   try {
     const { data } = await axios.get(
-      "https://9aa6-49-205-80-77.in.ngrok.io/api/bus-routes/quick-stats"
+      "https://9d20-49-205-80-77.in.ngrok.io/api/bus-routes/quick-stats"
     );
     dispatch({
       type: GET_QUICK_STATS,

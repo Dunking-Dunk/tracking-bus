@@ -25,7 +25,6 @@ import Animated, {
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
-
   const stops = useSelector((state) => state.stops.stops);
   const userCoords = useSelector((state) => state.user.user);
   const stats = useSelector((state) => state.buses.quickStats);
@@ -51,17 +50,19 @@ export default Home = ({ navigation }) => {
       clientSocket.getBusLocations(getBusesLocations);
     }
   }, [isFocused]);
-  console.log(busesLocation);
 
   const stopPressHandler = (stopCoords) => {
     EventRegister.emit("ChangeStopCoords", { stopCoords });
   };
 
-  const getBusHandler = (bus) => {
-    dispatch(getBus(bus)).then(() => {
-      navigation.navigate("BusDetail", { busId: bus });
-    });
-  };
+  const getBusHandler = useCallback(
+    (bus) => {
+      dispatch(getBus(bus)).then(() => {
+        navigation.navigate("BusDetail", { busId: bus });
+      });
+    },
+    [getBusHandler]
+  );
 
   const animatedQuickStats = useAnimatedStyle(() => {
     return {
@@ -137,7 +138,11 @@ export default Home = ({ navigation }) => {
         <Text>{stats.returnAfter315} buses in all routes</Text>
       </Animated.View>
       {stops ? (
-        <Map mapStyle={styles.map} allStops={stops} />
+        <Map
+          mapStyle={styles.map}
+          allStops={stops}
+          busesLiveLocation={busesLocation}
+        />
       ) : (
         <Loader color={Color.regular} size="large" />
       )}
