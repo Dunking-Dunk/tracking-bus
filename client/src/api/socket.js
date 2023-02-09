@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 class Socket {
   constructor() {
-    this.url = "https://b557-49-205-80-77.in.ngrok.io";
+    this.url = "https://974e-49-205-86-123.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
@@ -22,15 +22,26 @@ class Socket {
     this.errorConnection();
   }
 
-  getBusLocations(getBusesLocations) {
-    this.socket.on("getLocation", (data) => {
+  getAllBusLocations(getBusesLocations) {
+    this.socket.on("getAllBusLocation", (data) => {
       getBusesLocations(data);
     });
   }
 
-  stopBusLocations() {
-    this.socket.removeListener("getLocation");
-    this.socket.emit("stop-getLocation", "stopped");
+  getBusLocation(room, getBusLocation) {
+    this.socket.emit("join-room", room);
+    this.socket.on("getBusLocation", (data) => {
+      console.log(data);
+    });
+  }
+
+  stopAllBusLocation() {
+    this.socket.removeListener("getAllBusLocation");
+  }
+
+  stopBusLocation(room) {
+    this.socket.emit("leave-room", room);
+    this.socket.removeListener("getBusLocation");
   }
 
   errorConnection() {

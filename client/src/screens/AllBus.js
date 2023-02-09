@@ -18,11 +18,8 @@ const AllBusRoute = ({ navigation }) => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    if (isFocused) {
-      clientSocket.stopBusLocations();
-      dispatch(getBuses());
-    }
-  }, [isFocused]);
+    dispatch(getBuses());
+  }, [dispatch]);
 
   const renderBuses = ({ item: bus }) => {
     return (

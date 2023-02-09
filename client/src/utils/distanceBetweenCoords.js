@@ -22,6 +22,25 @@ export class CalcDistance {
     }
   }
 
+  nearByBuses(buses) {
+    if (buses && this.userCoords) {
+      const nearBy = buses.map((bus) => {
+        const busCoord = bus.coords;
+        const distance = this.haversineformula(
+          busCoord.latitude,
+          this.userCoords.latitude,
+          busCoord.longitude,
+          this.userCoords.longitude
+        );
+
+        if (distance < 5) {
+          return bus;
+        }
+      });
+      return nearBy.filter((stop) => stop != null);
+    }
+  }
+
   haversineformula(lat1, lat2, lon1, lon2) {
     lon1 = (lon1 * Math.PI) / 180;
     lon2 = (lon2 * Math.PI) / 180;

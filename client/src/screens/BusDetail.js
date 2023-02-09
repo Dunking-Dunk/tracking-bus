@@ -7,13 +7,15 @@ import Loader from "../components/LoadingAnimation";
 import DragUpView from "../components/DragUpView";
 import Color from "../utils/Color";
 import StepProgressBar from "../components/StepProgressBar";
+import { clientSocket } from "../api/socket";
 
 import CustomButton from "../components/CustomButton";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const BusDetail = ({ navigation, route }) => {
   const routeData = route.params;
-  const bus = routeData.bus
+  let bus = routeData.bus
     ? routeData.bus
     : useSelector((state) => state.buses.bus);
 
@@ -21,6 +23,13 @@ const BusDetail = ({ navigation, route }) => {
     distance: 0,
     elapsedTime: 0,
   });
+
+  useEffect(() => {
+    clientSocket.getBusLocation(bus.tracker);
+    return () => {
+      clientSocket.stopBusLocation(bus.tracker);
+    };
+  }, []);
 
   if (bus) {
     return (

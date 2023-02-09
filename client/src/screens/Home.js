@@ -1,14 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Map } from "../components/MapView";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import {
-  getAllStop,
-  getBus,
-  getQuickStats,
-  getUserLocation,
-} from "../store/action";
+import { getAllStop, getBus, getQuickStats } from "../store/action";
 import Header from "../components/Header";
 import { clientSocket } from "../api/socket";
 import { useIsFocused } from "@react-navigation/native";
@@ -22,6 +17,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { userLocation } from "../utils/getUserLocation";
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -29,6 +25,7 @@ export default Home = ({ navigation }) => {
   const userCoords = useSelector((state) => state.user.user);
   const stats = useSelector((state) => state.buses.quickStats);
   const [nearByStops, setNearByStops] = useState(null);
+  const [nearByBuses, setNearByBuses] = useState(null);
   const [busesLocation, getBusesLocations] = useState(null);
 
   const isFocused = useIsFocused();
@@ -37,8 +34,8 @@ export default Home = ({ navigation }) => {
   useEffect(() => {
     dispatch(getAllStop());
     dispatch(getQuickStats());
-    dispatch(getUserLocation());
-  }, []);
+    userLocation.getUserLocationBackground(dispatch);
+  }, [dispatch]);
 
   useEffect(() => {
     const nearByStops = new CalcDistance(userCoords).nearByStops(stops);
@@ -46,13 +43,21 @@ export default Home = ({ navigation }) => {
   }, [userCoords, stops]);
 
   useEffect(() => {
+    const nearByBuses = new CalcDistance(userCoords).nearByBuses(busesLocation);
+    setNearByBuses(nearByBuses);
+  }, [userCoords, busesLocation]);
+
+  useEffect(() => {
     if (isFocused) {
-      clientSocket.getBusLocations(getBusesLocations);
+      clientSocket.getAllBusLocations(getBusesLocations);
     }
+    return () => {
+      clientSocket.stopAllBusLocation();
+    };
   }, [isFocused]);
 
-  const stopPressHandler = (stopCoords) => {
-    EventRegister.emit("ChangeStopCoords", { stopCoords });
+  const coordsPressHandler = (coords) => {
+    EventRegister.emit("ChangeStopCoords", { stopCoords: coords });
   };
 
   const getBusHandler = useCallback(
@@ -76,7 +81,7 @@ export default Home = ({ navigation }) => {
         <Container
           key={stop.id}
           style={styles.nearByStopContainer}
-          onPress={() => stopPressHandler(stop.coords)}
+          onPress={() => coordsPressHandler(stop.coords)}
         >
           {stop.busId.map((bus) => {
             return (
@@ -118,6 +123,25 @@ export default Home = ({ navigation }) => {
     });
   }, [nearByStops]);
 
+  const renderNearByBuses = useCallback(() => {
+    return nearByBuses.map((bus) => {
+      return (
+        <Container
+          key={bus.id}
+          style={styles.nearByStopContainer}
+          onPress={() => coordsPressHandler(bus.coords)}
+        >
+          <View>
+            <Text style={styles.nearByStopText}>
+              9 b{/* {bus.busNumber}-{bus.busSet} */}
+            </Text>
+            <Text style={styles.nearByStopText}>Mogappair</Text>
+          </View>
+        </Container>
+      );
+    });
+  }, [nearByBuses]);
+
   return (
     <View style={styles.container}>
       <Header searchRequired={false} navigation={navigation} />
@@ -148,7 +172,15 @@ export default Home = ({ navigation }) => {
       )}
 
       <DragUpView>
-        <View style={styles.dragContainer}>
+        <ScrollView style={styles.dragContainer}>
+          <Container
+            style={styles.announcementContainer}
+            onPress={() => {
+              navigation.navigate("Announcements");
+            }}
+          >
+            <Text style={styles.announcementTitle}>Announcements</Text>
+          </Container>
           <Text style={styles.title}>STOPS NEARBY</Text>
           {nearByStops ? (
             renderNearByStops()
@@ -157,7 +189,9 @@ export default Home = ({ navigation }) => {
           )}
 
           <Text style={{ ...styles.title, marginTop: 20 }}>BUS NEARBY</Text>
-        </View>
+
+          {nearByBuses ? renderNearByBuses() : <Text>No Bus near by</Text>}
+        </ScrollView>
       </DragUpView>
     </View>
   );
@@ -238,5 +272,21 @@ const styles = StyleSheet.create({
   routeText: {
     textTransform: "uppercase",
     color: Color.white,
+  },
+  announcementContainer: {
+    width: "100%",
+    height: 60,
+    backgroundColor: Color.semiBold,
+    borderRadius: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 15,
+  },
+  announcementTitle: {
+    fontSize: 20,
+    color: Color.white,
+    fontWeight: "600",
+    textTransform: "uppercase",
   },
 });

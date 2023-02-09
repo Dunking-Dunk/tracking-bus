@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Marker, Callout } from "react-native-maps";
+import { memo } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Color from "../utils/Color";
 
@@ -9,6 +10,7 @@ const StopMarker = ({ stop, showBus }) => {
       coordinate={stop.coords}
       title={stop.name}
       description={stop.timing}
+      tracksViewChanges={false}
     >
       <MaterialCommunityIcons name="bus-marker" size={24} color={Color.bold} />
       <Callout tooltip>
@@ -78,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StopMarker;
+export default memo(StopMarker);
