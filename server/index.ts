@@ -15,7 +15,7 @@ const start = async () => {
         console.error(err)
     }
  
-    httpServer.listen(3000, () => {
+    httpServer.listen(4000, () => {
         console.log('listening on port 3000')
     })
 }

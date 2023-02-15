@@ -8,6 +8,9 @@ interface TrackerAttrs {
         longitude: number
     },
     speed: number,
+    gpsId: string,
+    busId?: string,
+    onBusRoute?: string,
 }
 
 interface TrackerDoc extends mongoose.Document {
@@ -17,6 +20,9 @@ interface TrackerDoc extends mongoose.Document {
         longitude: number
     },
     speed: number,
+    gpsId: string,
+    busId?: string,
+    onBusRoute?: string,
 }
 
 interface TrackerModel extends mongoose.Model<TrackerDoc> {
@@ -41,6 +47,9 @@ const trackingSchema = new mongoose.Schema({
     bus: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Bus'
+    },
+    onBusRoute: {
+        type: String,
     },
     gpsId: {
         type: String,

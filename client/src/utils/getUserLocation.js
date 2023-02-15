@@ -23,13 +23,16 @@ class GetUserLocation {
     }
   }
 
-  async getUserLocation() {
+  async getUserLocation(dispatch) {
     this.location = await Location.getCurrentPositionAsync();
     this.coords = {
       latitude: this.location.coords.latitude,
       longitude: this.location.coords.longitude,
     };
-    return this.coords;
+    dispatch(getUserLocation(this.location));
+    if (this.backgroundPermission.granted) {
+      this.getUserLocationBackground(dispatch);
+    }
   }
 
   getUserLocationBackground(dispatch) {

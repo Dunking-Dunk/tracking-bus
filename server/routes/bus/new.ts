@@ -27,8 +27,11 @@ router.post('/api/bus',
             await doc?.save()
         })
 
-  
-    res.status(201).send(bus)
+        const tracker = await Tracker.findById(bus.tracker)
+        tracker?.set({ bus: bus._id })
+        await tracker?.save()
+
+    res.status(201).json(bus)
 })
 
 export {router as NewBusRoute} 

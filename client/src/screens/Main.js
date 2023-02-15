@@ -3,7 +3,7 @@ import Home from "./Home";
 import BusDetail from "./BusDetail";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getUserLocation } from "../store/action";
+import { userLocation } from "../utils/getUserLocation";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,8 +11,8 @@ export default BusRoute = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getUserLocation());
-  });
+    userLocation.getUserLocation(dispatch);
+  }, [dispatch]);
 
   return (
     <Stack.Navigator

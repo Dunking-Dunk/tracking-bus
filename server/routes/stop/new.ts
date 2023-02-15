@@ -14,7 +14,7 @@ router.post('/api/stop',
     const stop = Stop.build(req.body)
     await stop.save()
 
-    res.send(stop).status(201)
+    res.json(stop).status(201)
 })
 
 export { router as NewStopRoute}

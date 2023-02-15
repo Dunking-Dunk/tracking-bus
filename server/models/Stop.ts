@@ -68,6 +68,11 @@ stopSchema.statics.build = (attrs: StopAttrs) => {
     return new Stop(attrs)
 }
 
+// stopSchema.pre('remove', function(next) {
+//     // Remove all the assignment docs that reference the removed person.
+
+// });
+
 const Stop = mongoose.model<StopDoc, StopModel>('Stop', stopSchema)
 
 export {Stop}

@@ -24,6 +24,16 @@ const StopMarker = ({ stop, showBus }) => {
               <Text style={{ fontWeight: "bold" }}>Timing: </Text>
               <Text style={styles.text}>{stop.timing} AM</Text>
             </View>
+            {stop.address && (
+              <>
+                <Text style={{ fontWeight: "bold" }}>Address: </Text>
+                <View style={styles.row}>
+                  <Text style={styles.text}>{stop.address}</Text>
+                </View>
+              </>
+            )}
+
+            <Text style={{ fontWeight: "bold" }}>Bus: </Text>
             {showBus && (
               <View style={styles.row}>
                 <Text style={styles.text}>
@@ -53,7 +63,6 @@ const styles = StyleSheet.create({
     borderColor: Color.medium,
     alignSelf: "flex-start",
     padding: 5,
-    height: 70,
   },
   arrow: {
     backgroundColor: "transparent",

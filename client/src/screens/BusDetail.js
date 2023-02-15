@@ -64,13 +64,14 @@ const BusDetail = ({ navigation, route }) => {
             <View style={styles.detailContainer}>
               <Text style={styles.busNumber}>
                 {bus.busNumber}
-                {bus.busSet}
+                {bus.busSet && bus.busSet}
               </Text>
               <Text style={styles.busText}>{bus.busName}</Text>
             </View>
             <Text style={styles.busText}>
               Status: <Text>offline</Text>
             </Text>
+            <Text style={styles.busText}>Total seats: {bus.seats}</Text>
             <Text style={styles.busText}>{bus.description}</Text>
             <StepProgressBar stops={bus.stops} />
           </View>
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginVertical: 5,
   },
   busNumber: {
     fontSize: 24,

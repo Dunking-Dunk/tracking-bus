@@ -176,6 +176,8 @@ const map = ({
           {stops && (
             <>
               <MapViewDirections
+                timePrecision="now"
+                mode="DRIVING"
                 origin={direction.origin}
                 waypoints={direction.wayPoints}
                 destination={direction.destination}

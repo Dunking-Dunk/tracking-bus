@@ -11,6 +11,7 @@ interface BusAttrs {
     stops: StopDoc[],
     morningToCollege: boolean,
     returnAfter315: boolean,
+    tracker: string,
 }
 export interface BusDoc extends mongoose.Document {
     busNumber: number,
@@ -22,20 +23,20 @@ export interface BusDoc extends mongoose.Document {
     version: number,
     morningToCollege: boolean,
     returnAfter315: boolean,
+    tracker: string,
 }
 
 interface BusModel extends mongoose.Model<BusDoc> {
     build(attrs: BusAttrs): BusDoc
 }
 
-const Schema = new mongoose.Schema({
+export const Schema = new mongoose.Schema({
     busNumber: {
         type: Number,
         required: true,
     },
     busSet: {
         type: String,
-        required: true,
     },
     busName: {
         type: String,

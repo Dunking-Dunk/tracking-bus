@@ -1,17 +1,15 @@
 import "./bus.scss"
-import Sidebar from "../../components/sidebar/Sidebar"
-import Navbar from "../../components/navbar/Navbar"
 import Datatable from "../../components/datatable/Datatable"
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
-import { getAllBuses } from "../../store/action";
+import { deleteBus, getAllBuses } from "../../store/action";
 import { Link } from "react-router-dom"
 
 const List = () => {
     const dispatch = useDispatch()
     const buses = useSelector((state) => state.buses.buses)
-    const handleDelete = (id) => {console.log(id)
-        // setData(data.filter((item) => item.id !== id));
+  const handleDelete = (id) => {
+        dispatch(deleteBus(id))
       };
     
     const busColumns = [
@@ -38,7 +36,25 @@ const List = () => {
               </div>
             );
           },
+      },
+      {
+        field: "action",
+        headerName: "Action",
+        width: 200,
+        renderCell: (params) => {
+          return (
+            <div className="cellAction">
+        
+              <div
+                className="deleteButton"
+                onClick={() => handleDelete(params.row.id)}
+              >
+                Delete
+              </div>
+            </div>
+          );
         },
+      },
       ];
       
     
@@ -59,23 +75,18 @@ const List = () => {
   }, [dispatch])
 
   return (
-    <div className="list">
-          <Sidebar />
-          <div className="listContainer">
-          <Navbar />
+
       <div style={{padding: '10px 20px 10px 20px'}} >
            
               <div className="datatableTitle">
-        Add New Stop
-        <Link to="/stop/new" className="link">
+        Add New Bus
+        <Link to="/bus/new" className="link">
           Add New
         </Link>
       </div>
               <Datatable row={busRow()} column={busColumns} />
           </div>
       
-      </div>
-    </div>
   )
 }
 

@@ -17,7 +17,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { userLocation } from "../utils/getUserLocation";
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -34,7 +33,6 @@ export default Home = ({ navigation }) => {
   useEffect(() => {
     dispatch(getAllStop());
     dispatch(getQuickStats());
-    userLocation.getUserLocationBackground(dispatch);
   }, [dispatch]);
 
   useEffect(() => {
@@ -104,7 +102,7 @@ export default Home = ({ navigation }) => {
 
                   <View style={styles.routeContainer}>
                     <Text style={styles.routeText}>
-                      {bus.busNumber} {bus.busSet}
+                      {bus.busNumber} {bus.busSet && bus.busSet}
                     </Text>
                   </View>
                 </View>
@@ -117,7 +115,7 @@ export default Home = ({ navigation }) => {
               Morning Time: {stop.timing}
             </Text>
           </View>
-          {stop.address && <Text>{stop.address}</Text>}
+          {/* {stop.address && <Text>{stop.address}</Text>} */}
         </Container>
       );
     });

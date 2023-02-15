@@ -1,31 +1,27 @@
 import "./stop.scss"
-import Sidebar from "../../components/sidebar/Sidebar"
-import Navbar from "../../components/navbar/Navbar"
 import Datatable from "../../components/datatable/Datatable"
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react";
-import { getAllStop } from "../../store/action";
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteStop } from "../../store/action";
 import { Link } from "react-router-dom"
 
 const List = () => {
     const dispatch = useDispatch()
     const stops = useSelector((state) => state.stops.stops)
 
-    const handleDelete = (id) => {console.log(id)
-        // setData(data.filter((item) => item.id !== id));
+  const handleDelete = (id) => {
+      // console.log(id)
+          dispatch(deleteStop(id))
       };
     
     
-    
-
-    const stopColumns = [
+   const stopColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
         { field: "id", headerName: "ID", width: 200 },
         ,
         {
           field: "stop",
           headerName: "Stop",
-          width: 300,
+          width: 200,
         },
         {
           field: "stopTiming",
@@ -35,18 +31,36 @@ const List = () => {
         {
           field: "lat",
           headerName: "Latitude",
-          width: 200,
+          width: 150,
         },
         {
           field: "lng",
           headerName: "Longitude",
-          width: 200,
+          width: 150,
         },
         {
           field: "address",
           headerName: "Address",
-          width: 200,
-        },
+          width: 500,
+     },
+     {
+      field: "action",
+      headerName: "Action",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <div className="cellAction">
+      
+            <div
+              className="deleteButton"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </div>
+          </div>
+        );
+      },
+    },
       ];
 
     const stopRow = () => {
@@ -63,16 +77,8 @@ const List = () => {
         })
       }
   
-
-  useEffect(() => {
-    dispatch(getAllStop())
-  }, [dispatch])
-
   return (
-    <div className="list">
-          <Sidebar />
-          <div className="listContainer">
-          <Navbar />
+
       <div style={{padding: '10px 20px 10px 20px'}} >
            
               <div className="datatableTitle">
@@ -83,9 +89,8 @@ const List = () => {
       </div>
               <Datatable row={stopRow()} column={stopColumns} />
           </div>
-      
-      </div>
-    </div>
+  
+ 
   )
 }
 
