@@ -11,7 +11,8 @@ import Bus from "./bus/bus";
 import Stop from "./stop/stop";
 import Single from "./single/Single";
 import Sidebar from "../components/sidebar/Sidebar";
-
+import CreateAnnouncement from "./announcement/CreateAnnouncement";
+import Announcement from './announcement/Announcement'
 
 const Main = () => {
   const dispatch = useDispatch()
@@ -28,7 +29,7 @@ const Main = () => {
             <Route index element={<Home />} />
             <Route path="bus">
               <Route index element={<Bus />} />
-              <Route path=":busId" element={<Single />} />
+              <Route path="edit/:busId" element={<BusNew update={true} />} />
               <Route path="new" element={<BusNew />} />
             </Route>
             <Route path="stop">
@@ -36,7 +37,11 @@ const Main = () => {
               <Route path=":stopId" element={<Single />} />
               <Route path="new" element={<StopNew />} />
             </Route>
-    
+            <Route path="announcement">
+              <Route index element={<Announcement/>} />
+              <Route path="new" element={<CreateAnnouncement/>} />
+            </Route>
+         
         </Routes>
             </div>
   

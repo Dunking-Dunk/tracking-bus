@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, Button, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import CustomButton from "../components/CustomButton";
 import { getBuses } from "../store/action";
-import { clientSocket } from "../api/socket";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import Loader from "../components/LoadingAnimation";
+import SortButton from "../components/SortButton";
 
 const AllBusRoute = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -65,7 +65,13 @@ const AllBusRoute = ({ navigation }) => {
         <View style={styles.busDetailContainer}>
           <Text style={styles.detailContainerText}>{bus.busName}</Text>
           <Text style={styles.detailContainerText}>
-            depature: {bus.stops[0].timing}AM
+            <Text style={styles.detailBoldText}>Arrival:</Text>{" "}
+            {bus.stops[0].timing} AM
+          </Text>
+          <Text style={styles.detailContainerText}>
+            <Text style={styles.detailBoldText}>Depature:</Text>{" "}
+            {bus.returnAfter315 ? "3:15" : bus?.returnAfter1 ? "1:00" : "5:00"}{" "}
+            PM
           </Text>
         </View>
       </View>
@@ -74,25 +80,33 @@ const AllBusRoute = ({ navigation }) => {
 
   if (buses) {
     return (
-      <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <SafeAreaView
+        style={{
+          backgroundColor: colors.background,
+        }}
+      >
         <Header navigation={navigation} searchRequired={true} />
-        <FlatList
-          data={buses}
-          style={styles.container}
-          renderItem={renderBuses}
-        />
-      </View>
+        <View style={{ marginTop: 120 }}>
+          <SortButton />
+          <FlatList
+            data={buses}
+            style={styles.container}
+            renderItem={renderBuses}
+          />
+        </View>
+      </SafeAreaView>
     );
   } else return <Loader size="large" />;
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 140,
     display: "flex",
     flexDirection: "column",
     paddingHorizontal: 20,
+    marginBottom: 100,
   },
+
   busContainer: {
     backgroundColor: Color.regular,
     paddingVertical: 10,
@@ -140,6 +154,11 @@ const styles = StyleSheet.create({
   detailContainerText: {
     color: Color.white,
     fontSize: 16,
+    textTransform: "capitalize",
+  },
+  detailBoldText: {
+    fontWeight: "bold",
+    textTransform: "capitalize",
   },
   detailBtnText: {
     color: Color.white,

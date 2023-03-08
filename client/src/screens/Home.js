@@ -109,7 +109,7 @@ export default Home = ({ navigation }) => {
               </Container>
             );
           })}
-          <View>
+          <View style={{ marginTop11: 5 }}>
             <Text style={styles.nearByStopText}>{stop.name}</Text>
             <Text style={styles.nearByStopText}>
               Morning Time: {stop.timing}
@@ -156,8 +156,12 @@ export default Home = ({ navigation }) => {
         <Text>Total Stop: {stats.totalStops}</Text>
         <Text style={styles.quickStatsHeaderText}>Morning to college</Text>
         <Text>{stats.morningToCollege} buses in all routes</Text>
+        <Text style={styles.quickStatsHeaderText}>Return after 1 PM: </Text>
+        <Text>{stats.returnAfter1} buses in all routes</Text>
         <Text style={styles.quickStatsHeaderText}>Return after 3:15 PM: </Text>
         <Text>{stats.returnAfter315} buses in all routes</Text>
+        <Text style={styles.quickStatsHeaderText}>Return after 5 PM: </Text>
+        <Text>{stats.returnAfter5} buses in all routes</Text>
       </Animated.View>
       {stops ? (
         <Map
@@ -188,7 +192,11 @@ export default Home = ({ navigation }) => {
 
           <Text style={{ ...styles.title, marginTop: 20 }}>BUS NEARBY</Text>
 
-          {nearByBuses ? renderNearByBuses() : <Text>No Bus near by</Text>}
+          {nearByBuses ? (
+            renderNearByBuses()
+          ) : (
+            <Text style={styles.title}>No Bus near by</Text>
+          )}
         </ScrollView>
       </DragUpView>
     </View>
@@ -213,7 +221,6 @@ const styles = StyleSheet.create({
   },
   quickStatsBtn: {
     position: "absolute",
-
     top: 60,
     right: 30,
     zIndex: 1,
@@ -238,9 +245,11 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
+    color: Color.bold,
   },
   nearByStopContainer: {
     display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Color.regular,
@@ -267,6 +276,7 @@ const styles = StyleSheet.create({
     width: 80,
     justifyContent: "space-between",
   },
+
   routeText: {
     textTransform: "uppercase",
     color: Color.white,

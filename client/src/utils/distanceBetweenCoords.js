@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export class CalcDistance {
   constructor(userCoords) {
     this.userCoords = userCoords;
@@ -38,6 +40,34 @@ export class CalcDistance {
         }
       });
       return nearBy.filter((stop) => stop != null);
+    }
+  }
+
+  TimeElapsedBetweenStops(stops, totalDistance, totalTime) {
+    let startTime = moment().format();
+    stops[0].elapsedTime = moment(startTime).format("LT");
+    if (stops && totalTime && totalDistance) {
+      const kmToM = totalDistance * 1000;
+      const speed = kmToM / totalTime;
+      for (let i = 0; i < stops.length - 1; i++) {
+        const stop1 = stops[i].coords;
+        const stop2 = stops[i + 1].coords;
+        const distance = this.haversineformula(
+          stop1.latitude,
+          stop2.latitude,
+          stop1.longitude,
+          stop2.longitude
+        );
+        const kmToM = distance * 1000;
+        const elapsedTime = moment(startTime).add(
+          (kmToM / speed).toFixed(0),
+          "m"
+        );
+        stops[i + 1].elapsedTime = moment(elapsedTime).format("LT");
+        stops[i + 1].distance = kmToM;
+        startTime = elapsedTime;
+      }
+      return stops;
     }
   }
 

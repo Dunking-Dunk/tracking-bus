@@ -3,6 +3,8 @@ import {
   DELETE_BUS,
   GET_ALL_BUSES,
   GET_ALL_GPS_TRACKER,
+  GET_BUS,
+  UPDATE_BUS,
 } from "./actionType";
 
 const initialState = {
@@ -17,12 +19,20 @@ const busReducer = (state = initialState, action) => {
       return { ...state, buses: action.payload };
     case CREATE_BUS:
       return { ...state, buses: [...state.buses, action.payload] };
+    case GET_BUS:
+      return { ...state, bus: action.payload };
     case GET_ALL_GPS_TRACKER:
       return { ...state, trackers: action.payload };
     case DELETE_BUS:
       return {
         ...state,
         buses: state.buses.filter((data) => data.id !== action.payload),
+      };
+    case UPDATE_BUS:
+      const buses = state.buses.filter((data) => data.id !== action.payload.id);
+      return {
+        ...state,
+        buses: [...buses, action.payload.data],
       };
     default:
       return state;

@@ -52,12 +52,6 @@ export const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Stop'
     }],
-    morningToCollege: {
-        type: Boolean,
-    },
-    returnAfter315: {
-        type: Boolean,
-    },
     tracker: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tracker'
@@ -69,6 +63,21 @@ export const Schema = new mongoose.Schema({
     ac: {
         type: Boolean,
         default: true
+    },
+    // morningDepatureTime: {
+    //     type: String,
+    // },
+    morningToCollege: {
+        type: Boolean,
+    },
+    returnAfter315: {
+        type: Boolean,
+    },
+    returnAfter1: {
+        type: Boolean,
+    },
+    returnAfter5: {
+        type: Boolean,
     }
 }, {
     toJSON: {

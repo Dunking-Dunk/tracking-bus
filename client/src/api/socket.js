@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 class Socket {
   constructor() {
-    this.url = "https://d803-49-205-86-123.in.ngrok.io";
+    this.url = "https://f977-49-205-86-254.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
@@ -28,10 +28,10 @@ class Socket {
     });
   }
 
-  getBusLocation(room, getBusLocation) {
+  getBusLocation(room, setBusLiveLocation) {
     this.socket.emit("join-room", room);
     this.socket.on("getBusLocation", (data) => {
-      console.log(data);
+      setBusLiveLocation(data);
     });
   }
 

@@ -7,7 +7,6 @@ import { useColorScheme } from "react-native";
 import { DarkTheme, LightTheme } from "./src/utils/Color";
 
 import Color from "./src/utils/Color";
-import "./src/utils/getUserLocation";
 import CustomDrawerContent from "./src/components/CustomDrawerContent";
 import MainScreen from "./src/screens/Main";
 import BusRoute from "./src/screens/BusRoute";

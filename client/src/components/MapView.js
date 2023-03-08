@@ -32,6 +32,7 @@ const map = ({
   allStops,
   setRouteInfo,
   busesLiveLocation,
+  busLiveLocation,
 }) => {
   const userCoords = useSelector((state) => state.user.user);
   const { dark } = useTheme();
@@ -172,6 +173,18 @@ const map = ({
                 </Marker.Animated>
               );
             })}
+          {busLiveLocation && (
+            <Marker.Animated
+              coordinate={busLiveLocation.coords}
+              tracksViewChanges={false}
+            >
+              <View>
+                <View style={styles.busTracker}>
+                  <Text style={{ color: Color.white }}>9B</Text>
+                </View>
+              </View>
+            </Marker.Animated>
+          )}
 
           {stops && (
             <>

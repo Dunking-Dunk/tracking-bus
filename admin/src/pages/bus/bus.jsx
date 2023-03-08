@@ -2,15 +2,25 @@ import "./bus.scss"
 import Datatable from "../../components/datatable/Datatable"
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
-import { deleteBus, getAllBuses } from "../../store/action";
+import { deleteBus, getAllBuses, getBus } from "../../store/action";
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const List = () => {
     const dispatch = useDispatch()
-    const buses = useSelector((state) => state.buses.buses)
+  const buses = useSelector((state) => state.buses.buses)
+  const navigate = useNavigate()
+  
   const handleDelete = (id) => {
         dispatch(deleteBus(id))
-      };
+  };
+  
+  const handleUpdate = (id) => {
+    dispatch(getBus(id)).then(() => {
+      navigate(`/bus/edit/${id}`)
+    })
+    
+  };
     
     const busColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
@@ -23,8 +33,13 @@ const List = () => {
         {
           field: "busName",
           headerName: "Bus Name",
-          width: 200,
-        },
+          width: 150,
+      },  {
+        field: "depature",
+        headerName: "Depature",
+        width: 100,
+    },
+      
         {
           field: "status",
           headerName: "Status",
@@ -44,7 +59,12 @@ const List = () => {
         renderCell: (params) => {
           return (
             <div className="cellAction">
-        
+               <div
+                className="updateButton"
+                onClick={() => handleUpdate(params.row.id)}
+              >
+                update
+              </div>
               <div
                 className="deleteButton"
                 onClick={() => handleDelete(params.row.id)}
@@ -65,6 +85,7 @@ const List = () => {
             id: bus.id,
             bus: `${bus.busNumber}-${bus.busSet}`,
             busName: bus.busName,
+            depature: bus.returnAfter315 ? '3:15 pm' : bus.returnAfter1 ? '1:00 pm':'5:00 pm',
             status: 'active'
           }
         })

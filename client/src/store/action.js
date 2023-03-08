@@ -4,13 +4,28 @@ import {
   GET_USER_COORDS,
   GET_QUICK_STATS,
   GET_BUS,
+  GET_ALL_ANNOUNCEMENT,
 } from "./actionType";
 import api from "../api/api";
 
-export const getBuses = (query) => async (dispatch) => {
+export const getBuses = (search) => async (dispatch) => {
   try {
     const { data } = await api.get(
-      query ? `/bus?search=${query}` : "/bus?populate=true"
+      search ? `/bus?search=${search}` : "/bus?populate=true"
+    );
+    dispatch({
+      type: GET_ALL_BUSES,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSortBuses = (query) => async (dispatch) => {
+  try {
+    const { data } = await api.get(
+      query === "all" ? "/bus?populate=true" : `/bus?timing=${query}`
     );
     dispatch({
       type: GET_ALL_BUSES,
@@ -59,9 +74,22 @@ export const getQuickStats = () => async (dispatch) => {
 
 export const getUserLocation = (location) => async (dispatch) => {
   try {
+    console.log(location);
     dispatch({
       type: GET_USER_COORDS,
       payload: location.coords,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllAnnouncements = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/announcement`);
+    dispatch({
+      type: GET_ALL_ANNOUNCEMENT,
+      payload: data,
     });
   } catch (err) {
     console.log(err);

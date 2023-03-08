@@ -1,0 +1,23 @@
+.announcement__container {
+    padding: 15px;
+    .announcement__title {
+        margin-bottom: 10px;
+    }
+
+    .announcement__create__container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .announcement__create__container-btn {
+            text-decoration: none;
+            color: green;
+            font-size: 16px;
+            font-weight: 400;
+            border: 1px solid green;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+    }
+    }

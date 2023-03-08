@@ -1,5 +1,9 @@
 .newStop {
     padding: 15px;
+    .title {
+        text-transform: uppercase;
+    }
+    
     .newStop__container {
         display: flex;
         flex-direction: column;

@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { Map } from "../components/MapView";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Loader from "../components/LoadingAnimation";
 import DragUpView from "../components/DragUpView";
@@ -12,6 +12,8 @@ import { clientSocket } from "../api/socket";
 import CustomButton from "../components/CustomButton";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+
+import { CalcDistance } from "../utils/distanceBetweenCoords";
 
 const BusDetail = ({ navigation, route }) => {
   const routeData = route.params;
@@ -24,12 +26,25 @@ const BusDetail = ({ navigation, route }) => {
     elapsedTime: 0,
   });
 
+  const [busLiveLocation, setBusLiveLocation] = useState(null);
+
+  const [elapsedTimeBetweenStops, setElapsedTimeBetweenStops] = useState([]);
+
   useEffect(() => {
-    clientSocket.getBusLocation(bus.tracker);
+    clientSocket.getBusLocation(bus.tracker, setBusLiveLocation);
     return () => {
       clientSocket.stopBusLocation(bus.tracker);
     };
   }, []);
+
+  useEffect(() => {
+    const data = new CalcDistance().TimeElapsedBetweenStops(
+      bus.stops,
+      routeInfo.distance,
+      routeInfo.elapsedTime
+    );
+    setElapsedTimeBetweenStops(data);
+  }, [routeInfo]);
 
   if (bus) {
     return (
@@ -45,6 +60,7 @@ const BusDetail = ({ navigation, route }) => {
             stops={bus.stops}
             mapStyle={styles.map}
             setRouteInfo={setRouteInfo}
+            busLiveLocation={busLiveLocation}
           />
         ) : (
           <Loader size="large" />
@@ -68,12 +84,26 @@ const BusDetail = ({ navigation, route }) => {
               </Text>
               <Text style={styles.busText}>{bus.busName}</Text>
             </View>
-            <Text style={styles.busText}>
-              Status: <Text>offline</Text>
-            </Text>
-            <Text style={styles.busText}>Total seats: {bus.seats}</Text>
+            <View style={styles.detailContainer}>
+              <Text style={styles.busText}>
+                <Text style={styles.textBold}>Total Seats: </Text> {bus.seats}{" "}
+                <MaterialCommunityIcons
+                  name="seat"
+                  size={24}
+                  color={Color.bold}
+                />
+              </Text>
+              <Text style={styles.textBold}>{bus.ac ? "AC" : "NON-AC"}</Text>
+            </View>
             <Text style={styles.busText}>{bus.description}</Text>
-            <StepProgressBar stops={bus.stops} />
+            <Text style={styles.busText}>
+              <Text style={styles.textBold}>Status: </Text>
+              <Text>offline</Text>
+            </Text>
+
+            {elapsedTimeBetweenStops && (
+              <StepProgressBar stops={elapsedTimeBetweenStops} />
+            )}
           </View>
         </DragUpView>
       </View>
@@ -122,7 +152,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 5,
   },
   busNumber: {
     fontSize: 24,
@@ -130,9 +159,12 @@ const styles = StyleSheet.create({
     color: Color.black,
   },
   busText: {
-    marginBottom: 5,
+    marginBottom: 3,
     color: Color.black,
     fontSize: 16,
     textTransform: "capitalize",
+  },
+  textBold: {
+    fontWeight: "bold",
   },
 });

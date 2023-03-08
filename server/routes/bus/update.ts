@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.put('/api/bus/:id', async(req: Request, res: Response) => { 
     const { id } = req.params
-    
+
     const bus = await Bus.findById(id)
 
     if (!bus) {
@@ -15,8 +15,9 @@ router.put('/api/bus/:id', async(req: Request, res: Response) => {
 
     bus.set(req.body)
     await bus.save()
-
-    res.status(204).send(bus)
+    await bus.populate('stops')
+    
+    res.json(bus).status(204)
 })
 
 export {router as UpdateBusRoute}

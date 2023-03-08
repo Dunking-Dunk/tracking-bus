@@ -32,7 +32,7 @@ export default class ProgressBar extends Component {
       currentStepLabelColor: Color.semiBold,
     };
     this.dimension = Dimensions.get("window");
-    this.currentPosition = 2;
+    this.currentPosition = 0;
   }
 
   render() {
@@ -54,7 +54,8 @@ export default class ProgressBar extends Component {
             return (
               <View style={styles.stepContainer}>
                 <Text style={styles.stepTitle}>{label.name}</Text>
-                <Text style={styles.stepTiming}>{label.timing}</Text>
+
+                <Text style={styles.stepTiming}>{label.elapsedTime}</Text>
               </View>
             );
           }}

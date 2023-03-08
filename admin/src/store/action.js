@@ -7,6 +7,10 @@ import {
   GET_ALL_GPS_TRACKER,
   DELETE_STOP,
   DELETE_BUS,
+  GET_BUS,
+  UPDATE_BUS,
+  CREATE_ANNOUNCEMENT,
+  GET_ALL_ANNOUNCEMENT,
 } from "./actionType";
 
 export const getAllBuses = () => async (dispatch) => {
@@ -14,6 +18,18 @@ export const getAllBuses = () => async (dispatch) => {
     const { data } = await api.get("/bus");
     dispatch({
       type: GET_ALL_BUSES,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getBus = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/bus/${id}`);
+    dispatch({
+      type: GET_BUS,
       payload: data,
     });
   } catch (err) {
@@ -87,6 +103,44 @@ export const deleteBus = (id) => async (dispatch) => {
     dispatch({
       type: DELETE_BUS,
       payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateBus = (id, bus) => async (dispatch) => {
+  try {
+    bus.stops = bus.stops.map((data) => data.id);
+    const { data } = await api.put(`/bus/${id}`, bus);
+
+    dispatch({
+      type: UPDATE_BUS,
+      payload: { data, id },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const createAnnouncement = (content) => async (dispatch) => {
+  try {
+    const { data } = await api.post("/announcement", { content });
+    dispatch({
+      type: CREATE_ANNOUNCEMENT,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllAnnouncement = () => async (dispatch) => {
+  try {
+    const { data } = await api.get("/announcement");
+    dispatch({
+      type: GET_ALL_ANNOUNCEMENT,
+      payload: data,
     });
   } catch (err) {
     console.log(err);

@@ -15,7 +15,7 @@ export const connection = () => {
             tracker.forEach(track => {
                 io.to(track.id).emit('getBusLocation', track)
             })
-        }, 10000)
+        }, 5000)
 
         socket.on('join-room', (room) => { 
             socket.join(room)

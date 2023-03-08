@@ -25,6 +25,9 @@ import { NewGpsTracker } from './routes/tracking/new';
 import { GetAllGpsTracker } from './routes/tracking';
 import { UpdateGpsTracker } from './routes/tracking/update';
 
+import { NewAnnouncement } from './routes/announcement/new';
+import { GetAllAnnouncement } from './routes/announcement/index';
+
 const app = express();
 
 app.use(cors())
@@ -51,6 +54,9 @@ app.use(UpdateBusRoute)
 app.use(UpdateGpsTracker)
 app.use(NewGpsTracker)
 app.use(GetAllGpsTracker)
+
+app.use(NewAnnouncement)
+app.use(GetAllAnnouncement)
 
 
 app.use('*', async(req, res) => { 
