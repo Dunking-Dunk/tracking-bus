@@ -27,7 +27,11 @@ import { UpdateGpsTracker } from './routes/tracking/update';
 
 import { NewAnnouncement } from './routes/announcement/new';
 import { GetAllAnnouncement } from './routes/announcement/index';
-import { DeleteAnnouncement } from './routes/announcement/delete';
+import { DeleteAnnouncement } from './routes/announcement/delete'
+    
+import { NewFeedback } from './routes/feedback/new';
+import { GetAllFeedback } from './routes/feedback/index';
+import { DeleteFeedback } from './routes/feedback/delete';;
 
 const app = express();
 
@@ -56,9 +60,14 @@ app.use(UpdateGpsTracker)
 app.use(NewGpsTracker)
 app.use(GetAllGpsTracker)
 
+app.use(NewFeedback)
+app.use(GetAllFeedback)
+app.use(DeleteFeedback)
+
 app.use(NewAnnouncement)
 app.use(GetAllAnnouncement)
 app.use(DeleteAnnouncement)
+
 
 
 app.use('*', async(req, res) => { 

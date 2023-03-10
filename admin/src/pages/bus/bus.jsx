@@ -86,7 +86,7 @@ const List = () => {
             bus: `${bus.busNumber}-${bus.busSet}`,
             busName: bus.busName,
             depature: bus.returnAfter315 ? '3:15 pm' : bus.returnAfter1 ? '1:00 pm':'5:00 pm',
-            status: 'active'
+            status: bus.status ? "active" : "passive",
           }
         })
       }

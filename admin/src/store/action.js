@@ -12,6 +12,7 @@ import {
   CREATE_ANNOUNCEMENT,
   GET_ALL_ANNOUNCEMENT,
   DELETE_ANNOUNCEMENT,
+  GET_ALL_FEEDBACK,
 } from "./actionType";
 
 export const getAllBuses = () => async (dispatch) => {
@@ -153,6 +154,19 @@ export const getAllAnnouncement = () => async (dispatch) => {
     const { data } = await api.get("/announcement");
     dispatch({
       type: GET_ALL_ANNOUNCEMENT,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllFeedback = () => async (dispatch) => {
+  try {
+    const { data } = await api.get("/feedback");
+    console.log(data);
+    dispatch({
+      type: GET_ALL_FEEDBACK,
       payload: data,
     });
   } catch (err) {

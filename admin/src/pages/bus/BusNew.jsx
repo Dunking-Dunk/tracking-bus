@@ -29,6 +29,7 @@ const BusNew = ({update}) => {
             returnAfter1: false,
             returnAfter5: false,
             seats: 0,
+            status: true,
             ac: true,
             tracker: '',
         })
@@ -164,6 +165,16 @@ const BusNew = ({update}) => {
                             updateState({ seats: e.target.value })
                            
                         }} placeholder='bus total seats'  value={state.seats}/>
+                    </div>
+                    <div className='formInput'>
+                        <h5>Status:</h5>
+                        <Switch
+                            checked={state.status}
+                            onClick={() => {          
+                                setState((data) => ({...data,status: !state.status}))
+                            }}
+      inputProps={{ 'aria-label': 'controlled' }}
+    />
                     </div>
                     <div className='formInput'>
                         <h5>Bus Morning to college:</h5>

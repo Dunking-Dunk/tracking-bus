@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 class Socket {
   constructor() {
-    this.url = "https://5118-49-205-86-254.in.ngrok.io";
+    this.url = "https://a1ba-49-204-113-4.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,

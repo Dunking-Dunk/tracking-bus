@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Color from "../utils/Color";
 import CustomButton from "../components/CustomButton";
 import { getBuses, refreshBuses } from "../store/action";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import Loader from "../components/LoadingAnimation";
 import SortButton from "../components/SortButton";
@@ -62,9 +62,13 @@ const AllBusRoute = ({ navigation }) => {
         </View>
 
         <View style={styles.busDetailContainer}>
-          <View>
+          <View style={styles.busDetailSubContainer}>
             <Text style={styles.detailContainerText}>{bus.busName}</Text>
-            <Text>active</Text>
+            {bus.status ? (
+              <AntDesign name="checkcircle" size={20} color="green" />
+            ) : (
+              <AntDesign name="minuscircle" size={20} color="red" />
+            )}
           </View>
 
           <Text style={styles.detailContainerText}>
@@ -173,6 +177,12 @@ const styles = StyleSheet.create({
   detailBtnText: {
     color: Color.white,
     fontSize: 17,
+  },
+
+  busDetailSubContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

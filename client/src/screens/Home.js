@@ -16,6 +16,8 @@ import { EventRegister } from "react-native-event-listeners";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
+  Easing,
 } from "react-native-reanimated";
 
 export default Home = ({ navigation }) => {
@@ -29,6 +31,7 @@ export default Home = ({ navigation }) => {
 
   const isFocused = useIsFocused();
   const open = useSharedValue(false);
+  const offsetTop = useSharedValue(0);
 
   useEffect(() => {
     dispatch(getAllStop());
@@ -70,6 +73,10 @@ export default Home = ({ navigation }) => {
   const animatedQuickStats = useAnimatedStyle(() => {
     return {
       display: open.value ? "flex" : "none",
+      top: withTiming(offsetTop.value, {
+        duration: 2000,
+        easing: Easing.out(Easing.exp),
+      }),
     };
   });
 
@@ -160,6 +167,11 @@ export default Home = ({ navigation }) => {
         style={styles.quickStatsBtn}
         onPress={() => {
           open.value = !open.value;
+          if (open.value) {
+            offsetTop.value = 0;
+          } else {
+            offsetTop.value = 70;
+          }
         }}
       >
         <MaterialIcons name="preview" size={24} color={Color.bold} />
@@ -224,8 +236,7 @@ const styles = StyleSheet.create({
   quickStatsContainer: {
     position: "absolute",
     padding: 10,
-    top: 70,
-    right: 120,
+    right: 110,
     zIndex: 1,
     borderRadius: 20,
     backgroundColor: Color.light,
@@ -297,7 +308,7 @@ const styles = StyleSheet.create({
   announcementContainer: {
     width: "100%",
     height: 60,
-    backgroundColor: Color.semiBold,
+    backgroundColor: Color.bold,
     borderRadius: 20,
     display: "flex",
     alignItems: "center",

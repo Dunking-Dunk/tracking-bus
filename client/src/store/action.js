@@ -119,3 +119,14 @@ export const refreshBuses = (data) => async (dispatch) => {
     console.log(err);
   }
 };
+
+export const createFeedback = (data) => async (dispatch) => {
+  try {
+    await api.post(`/feedback`, data);
+    // dispatch({
+    //   type: CREATE_FEEDBACK,
+    // });
+  } catch (err) {
+    console.log(err);
+  }
+};

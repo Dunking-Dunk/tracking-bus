@@ -13,6 +13,7 @@ import Single from "./single/Single";
 import Sidebar from "../components/sidebar/Sidebar";
 import CreateAnnouncement from "./announcement/CreateAnnouncement";
 import Announcement from './announcement/Announcement'
+import Feedback from './feedback/Feedback'
 
 const Main = () => {
   const dispatch = useDispatch()
@@ -41,6 +42,7 @@ const Main = () => {
               <Route index element={<Announcement/>} />
               <Route path="new" element={<CreateAnnouncement/>} />
             </Route>
+            <Route path="feedback" element={<Feedback/>} />
          
         </Routes>
             </div>

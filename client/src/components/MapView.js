@@ -33,6 +33,7 @@ const map = ({
   setRouteInfo,
   busesLiveLocation,
   busLiveLocation,
+  detail,
 }) => {
   const userCoords = useSelector((state) => state.user.user);
   const { dark } = useTheme();
@@ -216,11 +217,14 @@ const map = ({
             </>
           )}
           <RecFlagMarker />
-          <Circle
-            radius={2000}
-            center={state.userCoords}
-            strokeColor={Color.regular}
-          />
+          {!detail && (
+            <Circle
+              radius={2000}
+              center={state.userCoords}
+              strokeColor={Color.regular}
+            />
+          )}
+
           <Marker.Animated
             ref={markerRef}
             coordinate={state.coordinate}

@@ -61,6 +61,7 @@ const BusDetail = ({ navigation, route }) => {
             mapStyle={styles.map}
             setRouteInfo={setRouteInfo}
             busLiveLocation={busLiveLocation}
+            detail={true}
           />
         ) : (
           <Loader size="large" />
@@ -98,7 +99,11 @@ const BusDetail = ({ navigation, route }) => {
             <Text style={styles.busText}>{bus.description}</Text>
             <Text style={styles.busText}>
               <Text style={styles.textBold}>Status: </Text>
-              <Text>offline</Text>
+              {bus.status ? (
+                <AntDesign name="checkcircle" size={20} color="green" />
+              ) : (
+                <AntDesign name="minuscircle" size={20} color="red" />
+              )}
             </Text>
 
             {elapsedTimeBetweenStops && (

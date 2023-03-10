@@ -54,7 +54,12 @@ const Sidebar = () => {
             <span>Announcements</span>
           </li>
           </Link>
-     
+          <Link to="/feedback" style={{ textDecoration: "none" }}>
+          <li>
+            <InsertChartIcon className="icon" />
+            <span>Feedback</span>
+          </li>
+          </Link>
           <li>
             <NotificationsNoneIcon className="icon" />
             <span>Notifications</span>

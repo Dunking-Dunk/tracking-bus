@@ -12,6 +12,7 @@ import Color from "../utils/Color";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllAnnouncements, refreshAnnouncement } from "../store/action";
 import RenderHtml from "react-native-render-html";
+import moment from "moment";
 
 const AnnouncementScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -40,11 +41,17 @@ const AnnouncementScreen = ({ navigation }) => {
             }}
             refreshing={refreshing}
             renderItem={({ item: announcement }) => {
+              console.log(announcement);
               return (
                 <View style={styles.announcement} key={announcement.id}>
+                  <Text style={styles.announcementTime}>
+                    {moment(announcement.createdAt).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )}
+                  </Text>
                   <RenderHtml
                     source={{ html: announcement.content }}
-                    contentWidth={100}
+                    contentWidth={500}
                   />
                 </View>
               );
@@ -86,6 +93,9 @@ const styles = StyleSheet.create({
   announcementContent: {
     height: 20,
     width: "70%",
+  },
+  announcementTime: {
+    color: Color.white,
   },
 });
 

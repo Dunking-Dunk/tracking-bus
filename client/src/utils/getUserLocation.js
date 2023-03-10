@@ -46,6 +46,7 @@ class GetUserLocation {
 
   async getUserLocation() {
     const location = await Location.getCurrentPositionAsync();
+    console.log(this.location);
     this.dispatch(getUserLocation(location));
     setInterval(async () => {
       const location = await Location.getCurrentPositionAsync();

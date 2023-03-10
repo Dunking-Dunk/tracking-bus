@@ -1,22 +1,58 @@
-import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Button,
+} from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import { DataTable } from "react-native-paper";
-import Button from "../components/CustomButton";
-import { useState } from "react";
+import CustomButton from "../components/CustomButton";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { createFeedback } from "../store/action";
 
 const Contact = ({ navigation }) => {
   const [state, setState] = useState({
-    email: "",
+    link: "",
     feedback: "",
   });
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(true);
+  const dispatch = useDispatch();
 
   const updateState = (data) => {
     setState((state) => ({ ...state, ...data }));
   };
 
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getBarCodeScannerPermissions();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    updateState({ link: data });
+  };
+
   const onSubmit = () => {
-    updateState();
+    if (
+      state.link.includes("https://www.rajalakshmi.org") &&
+      state.feedback.length > 5
+    ) {
+      dispatch(createFeedback(state));
+      setState({
+        link: "",
+        feedback: "",
+      });
+    }
   };
 
   return (
@@ -46,19 +82,35 @@ const Contact = ({ navigation }) => {
             <DataTable.Cell>944 500 7183</DataTable.Cell>
           </DataTable.Row>
         </DataTable>
-        <Text style={{ ...styles.title, marginTop: 20 }}>Feedback</Text>
+        <Text style={styles.title}>Feedback</Text>
+        <Text style={{ color: Color.white }}>
+          <Text style={{ fontWeight: "bold" }}>Note: </Text> only rec student
+          can submit feedback
+        </Text>
         <View style={styles.contactContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="College Id"
-            autoComplete="email"
-            inputMode="email"
-            value={state.email}
-            onChangeText={(text) => {
-              updateState({ email: text });
-            }}
-            placeholderTextColor={Color.bold}
-          />
+          {hasPermission === null && (
+            <Text>Requesting for camera permission</Text>
+          )}
+          {hasPermission === false && <Text>No access to camera</Text>}
+          {!state.link ? (
+            <>
+              <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={styles.absoluteFillObject}
+                type="back"
+              />
+              {!state.link && (
+                <Button
+                  title={"Tap to Scan"}
+                  onPress={() => setScanned(false)}
+                  style={{ marginBottom: 10 }}
+                />
+              )}
+            </>
+          ) : (
+            <Text style={{ marginBottom: 10 }}>{state.link}</Text>
+          )}
+
           <TextInput
             style={styles.input}
             placeholder="Feedback"
@@ -70,9 +122,9 @@ const Contact = ({ navigation }) => {
               updateState({ feedback: text });
             }}
           />
-          <Button style={styles.button} onPress={onSubmit}>
+          <CustomButton style={styles.button} onPress={onSubmit}>
             <Text style={{ color: Color.white }}>Submit</Text>
-          </Button>
+          </CustomButton>
         </View>
       </View>
     </ScrollView>
@@ -93,7 +145,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textTransform: "uppercase",
-    marginBottom: 30,
+    marginBottom: 10,
+    marginTop: 20,
   },
   contactContainer: {
     borderRadius: 20,
@@ -114,6 +167,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  absoluteFillObject: {
+    height: 150,
+    marginBottom: 10,
   },
 });
 
