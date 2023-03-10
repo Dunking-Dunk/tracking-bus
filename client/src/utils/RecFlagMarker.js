@@ -5,12 +5,12 @@ import { Image } from "react-native";
 const RecFlagMarker = () => {
   return (
     <>
-      {/* <Marker.Animated
+      {/* <Marker
         coordinate={{ latitude: 13.009577, longitude: 80.00433 }}
-        anchor={{ x: 0, y: 1.45 }}
+        anchor={{ x: 0, y: 9.45 }}
       >
-        <Image source={require("../../assets/recFlag.webp")} />
-      </Marker.Animated> */}
+        <Image source={require("../../assets/recFlag2.webp")} />
+      </Marker> */}
       <Marker
         coordinate={{ latitude: 13.009577, longitude: 80.00433 }}
         anchor={{ x: 1, y: 1 }}

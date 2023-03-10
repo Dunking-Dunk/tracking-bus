@@ -129,6 +129,19 @@ export default Home = ({ navigation }) => {
           style={styles.nearByStopContainer}
           onPress={() => coordsPressHandler(bus.coords)}
         >
+          <View style={{ marginRight: 10 }}>
+            <FontAwesome5
+              name="bus"
+              size={24}
+              color={Color.semiBold}
+              style={{
+                backgroundColor: Color.light,
+                padding: 5,
+                borderRadius: 20,
+              }}
+            />
+          </View>
+
           <View>
             <Text style={styles.nearByStopText}>
               9 b{/* {bus.busNumber}-{bus.busSet} */}

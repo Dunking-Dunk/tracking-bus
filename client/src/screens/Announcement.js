@@ -1,13 +1,21 @@
-import { useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllAnnouncements } from "../store/action";
-import HtmlText from "react-native-html-to-text";
+import { getAllAnnouncements, refreshAnnouncement } from "../store/action";
+import RenderHtml from "react-native-render-html";
 
 const AnnouncementScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const refreshing = useSelector((state) => state.announcements.refreshing);
   const announcements = useSelector(
     (state) => state.announcements.announcements
   );
@@ -21,19 +29,29 @@ const AnnouncementScreen = ({ navigation }) => {
       <Header searchRequired={false} navigation={navigation} />
       <View style={styles.container}>
         <Text style={styles.title}>Announcements</Text>
-        <ScrollView style={styles.announcementContainer}>
-          {announcements &&
-            announcements.map((announcement) => {
+        <SafeAreaView style={styles.announcementContainer}>
+          <FlatList
+            data={announcements}
+            onRefresh={() => {
+              dispatch(refreshAnnouncement(true));
+              dispatch(getAllAnnouncements()).then(() => {
+                dispatch(refreshAnnouncement(false));
+              });
+            }}
+            refreshing={refreshing}
+            renderItem={({ item: announcement }) => {
               return (
-                <View style={styles.announcement} key={announcement._id}>
-                  <HtmlText
-                    html={announcement.content}
-                    style={styles.announcementContent}
-                  ></HtmlText>
+                <View style={styles.announcement} key={announcement.id}>
+                  <RenderHtml
+                    source={{ html: announcement.content }}
+                    contentWidth={100}
+                  />
                 </View>
               );
-            })}
-        </ScrollView>
+            }}
+            keyExtractor={(item) => item.id}
+          />
+        </SafeAreaView>
       </View>
     </>
   );
@@ -42,10 +60,9 @@ const AnnouncementScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 70,
+    marginVertical: 70,
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 20,
   },
   title: {
     color: Color.bold,
@@ -64,6 +81,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     margin: 10,
+    overflow: "hidden",
   },
   announcementContent: {
     height: 20,

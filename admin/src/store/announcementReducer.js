@@ -20,6 +20,13 @@ const announcementReducer = (state = initialState, action) => {
         ...state,
         announcements: action.payload,
       };
+    case DELETE_ANNOUNCEMENT:
+      return {
+        ...state,
+        announcements: state.announcements.filter(
+          (data) => data.id !== action.payload
+        ),
+      };
     default:
       return state;
   }

@@ -29,7 +29,7 @@ const Header = ({ navigation, searchRequired }) => {
           style={styles.input}
           value={search}
           onChangeText={setSearch}
-          placeholder="Enter Your Bus Number or Location"
+          placeholder="Enter Your Bus No or Location"
           placeholderTextColor={Color.bold}
           onSubmitEditing={onSubmit}
         />

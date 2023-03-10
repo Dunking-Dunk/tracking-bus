@@ -64,6 +64,9 @@ export const Schema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    status: {
+        type:Boolean
+    },
     // morningDepatureTime: {
     //     type: String,
     // },

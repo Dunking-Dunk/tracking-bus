@@ -11,6 +11,7 @@ import {
   UPDATE_BUS,
   CREATE_ANNOUNCEMENT,
   GET_ALL_ANNOUNCEMENT,
+  DELETE_ANNOUNCEMENT,
 } from "./actionType";
 
 export const getAllBuses = () => async (dispatch) => {
@@ -129,6 +130,18 @@ export const createAnnouncement = (content) => async (dispatch) => {
     dispatch({
       type: CREATE_ANNOUNCEMENT,
       payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteAnnouncement = (id) => async (dispatch) => {
+  try {
+    await api.delete(`/announcement/${id}`);
+    dispatch({
+      type: DELETE_ANNOUNCEMENT,
+      payload: id,
     });
   } catch (err) {
     console.log(err);

@@ -2,15 +2,21 @@ import './announcement.scss'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { getAllAnnouncement } from '../../store/action'
+import { getAllAnnouncement, deleteAnnouncement } from '../../store/action'
+import moment from 'moment'
 
 const Announcement = () => {
     const announcements = useSelector((state)=> state.announcements.announcements)
     const dispatch = useDispatch()
-
+    
     useEffect(() => {
        dispatch(getAllAnnouncement())
     }, [])
+
+    const handleDelete = (id) => {
+    
+        dispatch(deleteAnnouncement(id))
+    }
 
     return (
  
@@ -21,7 +27,19 @@ const Announcement = () => {
                 <Link className='announcement__create__container-btn' to='/announcement/new'>Add announcement</Link>
             </div>
             <div className='announcement__content__container'>
-                
+                {announcements && announcements.map((announcement, index) => {
+                    return (
+                        <div className='announcement__content__announcement' key={index}>
+                            <div dangerouslySetInnerHTML={{ __html: announcement.content }} /> 
+                            <div>
+                                <h3 >{moment(announcement.createdAt).fromNow()}</h3>
+                                <button className='deleteButton' onClick={() => handleDelete(announcement.id)}>Delete</button>
+                            </div>
+                           
+                        </div>
+
+                    )
+                })}
             </div>
         </div>
     )

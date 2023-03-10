@@ -4,8 +4,7 @@ import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import CustomButton from "../components/CustomButton";
-import { getBuses } from "../store/action";
-import { useIsFocused } from "@react-navigation/native";
+import { getBuses, refreshBuses } from "../store/action";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import Loader from "../components/LoadingAnimation";
@@ -13,8 +12,8 @@ import SortButton from "../components/SortButton";
 
 const AllBusRoute = ({ navigation }) => {
   const dispatch = useDispatch();
+  const refreshing = useSelector((state) => state.buses.refreshing);
   const buses = useSelector((state) => state.buses.buses);
-  const isFocused = useIsFocused();
   const { colors } = useTheme();
 
   useEffect(() => {
@@ -63,7 +62,11 @@ const AllBusRoute = ({ navigation }) => {
         </View>
 
         <View style={styles.busDetailContainer}>
-          <Text style={styles.detailContainerText}>{bus.busName}</Text>
+          <View>
+            <Text style={styles.detailContainerText}>{bus.busName}</Text>
+            <Text>active</Text>
+          </View>
+
           <Text style={styles.detailContainerText}>
             <Text style={styles.detailBoldText}>Arrival:</Text>{" "}
             {bus.stops[0].timing} AM
@@ -92,6 +95,13 @@ const AllBusRoute = ({ navigation }) => {
             data={buses}
             style={styles.container}
             renderItem={renderBuses}
+            refreshing={refreshing}
+            onRefresh={() => {
+              dispatch(refreshBuses(true));
+              dispatch(getBuses()).then(() => {
+                dispatch(refreshBuses(false));
+              });
+            }}
           />
         </View>
       </SafeAreaView>

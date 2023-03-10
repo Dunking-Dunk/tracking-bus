@@ -1,9 +1,15 @@
-import { GET_ALL_BUSES, GET_QUICK_STATS, GET_BUS } from "./actionType";
+import {
+  GET_ALL_BUSES,
+  GET_QUICK_STATS,
+  GET_BUS,
+  REFRESH_BUSES,
+} from "./actionType";
 
 const initialState = {
   buses: [],
   bus: {},
   quickStats: {},
+  refreshing: false,
 };
 
 const busReducer = (state = initialState, action) => {
@@ -14,6 +20,8 @@ const busReducer = (state = initialState, action) => {
       return { ...state, bus: action.payload };
     case GET_QUICK_STATS:
       return { ...state, quickStats: action.payload };
+    case REFRESH_BUSES:
+      return { ...state, refreshing: action.payload };
     default:
       return state;
   }

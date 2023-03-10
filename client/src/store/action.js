@@ -5,6 +5,8 @@ import {
   GET_QUICK_STATS,
   GET_BUS,
   GET_ALL_ANNOUNCEMENT,
+  REFRESH_ANNOUNCEMENT,
+  REFRESH_BUSES,
 } from "./actionType";
 import api from "../api/api";
 
@@ -89,6 +91,28 @@ export const getAllAnnouncements = () => async (dispatch) => {
     const { data } = await api.get(`/announcement`);
     dispatch({
       type: GET_ALL_ANNOUNCEMENT,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const refreshAnnouncement = (data) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REFRESH_ANNOUNCEMENT,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const refreshBuses = (data) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REFRESH_BUSES,
       payload: data,
     });
   } catch (err) {
