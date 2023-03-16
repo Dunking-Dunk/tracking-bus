@@ -7,7 +7,15 @@ const router = express.Router()
 
 router.get('/api/bus/:id', async (req: Request, res: Response) => { 
     const { id } = req.params
-    const bus = await Bus.findById(id).populate('stops')
+    const { populate } = req.query
+
+    let bus;
+    if (populate === 'true') {
+        bus = await Bus.findById(id).populate('stops')
+    } else {
+        bus = await Bus.findById(id)
+    }
+    
 
     if (!bus) {
         throw new NotFoundError()

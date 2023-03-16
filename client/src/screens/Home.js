@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Map } from "../components/MapView";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
@@ -25,9 +25,9 @@ export default Home = ({ navigation }) => {
   const stops = useSelector((state) => state.stops.stops);
   const userCoords = useSelector((state) => state.user.user);
   const stats = useSelector((state) => state.buses.quickStats);
-  const [nearByStops, setNearByStops] = useState(null);
-  const [nearByBuses, setNearByBuses] = useState(null);
-  const [busesLocation, getBusesLocations] = useState(null);
+  const [nearByStops, setNearByStops] = useState([]);
+  const [nearByBuses, setNearByBuses] = useState([]);
+  const [busesLocation, getBusesLocations] = useState([]);
 
   const isFocused = useIsFocused();
   const open = useSharedValue(false);
@@ -81,52 +81,56 @@ export default Home = ({ navigation }) => {
   });
 
   const renderNearByStops = useCallback(() => {
-    return nearByStops.map((stop) => {
-      return (
-        <Container
-          key={stop.id}
-          style={styles.nearByStopContainer}
-          onPress={() => coordsPressHandler(stop.coords)}
-        >
-          {stop.busId.map((bus) => {
-            return (
-              <Container
-                style={styles.busImageContainer}
-                key={bus.id}
-                onPress={() => getBusHandler(bus.id)}
-              >
-                <View style={styles.ImageSubContainer}>
-                  <FontAwesome5
-                    name="bus"
-                    size={24}
-                    color={Color.semiBold}
-                    style={{
-                      backgroundColor: Color.light,
-                      padding: 5,
-                      borderRadius: 20,
-                    }}
-                  />
+    if (nearByStops) {
+      return nearByStops.map((stop) => {
+        return (
+          <Container
+            key={stop.id}
+            style={styles.nearByStopContainer}
+            onPress={() => coordsPressHandler(stop.coords)}
+          >
+            {stop.busId.map((bus) => {
+              return (
+                <Container
+                  style={styles.busImageContainer}
+                  key={bus.id}
+                  onPress={() => getBusHandler(bus.id)}
+                >
+                  <View style={styles.ImageSubContainer}>
+                    <FontAwesome5
+                      name="bus"
+                      size={24}
+                      color={Color.semiBold}
+                      style={{
+                        backgroundColor: Color.light,
+                        padding: 5,
+                        borderRadius: 20,
+                      }}
+                    />
 
-                  <View style={styles.routeContainer}>
-                    <Text style={styles.routeText}>
-                      {bus.busNumber} {bus.busSet && bus.busSet}
-                    </Text>
+                    <View style={styles.routeContainer}>
+                      <Text style={styles.routeText}>
+                        {bus.busNumber} {bus.busSet && bus.busSet}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </Container>
-            );
-          })}
-          <View style={{ marginTop11: 5 }}>
-            <Text style={styles.nearByStopText}>{stop.name}</Text>
-            <Text style={styles.nearByStopText}>
-              Morning Time: {stop.timing}
-            </Text>
-          </View>
-          {/* {stop.address && <Text>{stop.address}</Text>} */}
-        </Container>
-      );
-    });
-  }, [nearByStops]);
+                </Container>
+              );
+            })}
+            <View style={{ marginTop11: 5 }}>
+              <Text style={styles.nearByStopText}>{stop.name}</Text>
+              <Text style={styles.nearByStopText}>
+                Morning Time: {stop.timing}
+              </Text>
+            </View>
+            {/* {stop.address && <Text>{stop.address}</Text>} */}
+          </Container>
+        );
+      });
+    } else {
+      return <Text style={styles.title}>No Stops near by</Text>;
+    }
+  });
 
   const renderNearByBuses = useCallback(() => {
     return nearByBuses.map((bus) => {
@@ -161,7 +165,13 @@ export default Home = ({ navigation }) => {
   }, [nearByBuses]);
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        open.value = false;
+        offsetTop.value = 0;
+      }}
+    >
       <Header searchRequired={false} navigation={navigation} />
       <Container
         style={styles.quickStatsBtn}
@@ -209,12 +219,7 @@ export default Home = ({ navigation }) => {
             <Text style={styles.announcementTitle}>Announcements</Text>
           </Container>
           <Text style={styles.title}>STOPS NEARBY</Text>
-          {nearByStops ? (
-            renderNearByStops()
-          ) : (
-            <Text style={styles.title}>No Stops near by</Text>
-          )}
-
+          {renderNearByStops()}
           <Text style={{ ...styles.title, marginTop: 20 }}>BUS NEARBY</Text>
 
           {nearByBuses ? (
@@ -224,7 +229,7 @@ export default Home = ({ navigation }) => {
           )}
         </ScrollView>
       </DragUpView>
-    </View>
+    </Pressable>
   );
 };
 

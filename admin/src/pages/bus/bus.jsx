@@ -2,7 +2,7 @@ import "./bus.scss"
 import Datatable from "../../components/datatable/Datatable"
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
-import { deleteBus, getAllBuses, getBus } from "../../store/action";
+import { deleteBus, getBus } from "../../store/action";
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 
@@ -10,17 +10,22 @@ const List = () => {
     const dispatch = useDispatch()
   const buses = useSelector((state) => state.buses.buses)
   const navigate = useNavigate()
-  
+
+
   const handleDelete = (id) => {
         dispatch(deleteBus(id))
   };
   
   const handleUpdate = (id) => {
-    dispatch(getBus(id)).then(() => {
+    dispatch(getBus(id, true)).then(() => {
       navigate(`/bus/edit/${id}`)
     })
     
   };
+
+  const handleView = (id) => {
+    navigate(`/bus/${id}`)
+  }
     
     const busColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
@@ -55,10 +60,16 @@ const List = () => {
       {
         field: "action",
         headerName: "Action",
-        width: 200,
+        width: 250,
         renderCell: (params) => {
           return (
             <div className="cellAction">
+              <div
+                className="link"
+                onClick={() => handleView(params.row.id)}
+              >
+                View
+              </div>
                <div
                 className="updateButton"
                 onClick={() => handleUpdate(params.row.id)}
@@ -90,10 +101,6 @@ const List = () => {
           }
         })
       }
-
-  useEffect(() => {
-    dispatch(getAllBuses())
-  }, [dispatch])
 
   return (
 

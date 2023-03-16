@@ -1,6 +1,7 @@
+import "./feedback.scss";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllFeedback } from "../../store/action";
+import { getAllFeedback, deleteFeedback } from "../../store/action";
 
 const Feedback = () => {
   const dispatch = useDispatch();
@@ -10,15 +11,27 @@ const Feedback = () => {
     dispatch(getAllFeedback());
   }, []);
 
+  const handleDelete = (id) => {
+    dispatch(deleteFeedback(id));
+  };
+
   return (
-    <div>
-      <h1>Feedbacks</h1>
+    <div className="feedback__container">
+      <h1 className="feedback__title">Feedbacks</h1>
       {feedbacks &&
         feedbacks.map((feedback) => {
           return (
-            <div>
-              <h3>{feedback.feedback}</h3>
-              <a href={feedback.link}>link</a>
+            <div className="feedback__card" key={feedback.id}>
+              <div>
+                <h3>{feedback.feedback}</h3>
+                <a href={feedback.link}>link</a>
+              </div>
+              <button
+                className="deleteButton"
+                onClick={() => handleDelete(feedback.id)}
+              >
+                Delete
+              </button>
             </div>
           );
         })}

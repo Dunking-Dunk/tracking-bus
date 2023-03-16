@@ -84,8 +84,10 @@ const Contact = ({ navigation }) => {
         </DataTable>
         <Text style={styles.title}>Feedback</Text>
         <Text style={{ color: Color.white }}>
-          <Text style={{ fontWeight: "bold" }}>Note: </Text> only rec student
-          can submit feedback
+          <Text style={{ fontWeight: "bold", color: Color.regular }}>
+            Note:{" "}
+          </Text>{" "}
+          only rec student can submit feedback
         </Text>
         <View style={styles.contactContainer}>
           {hasPermission === null && (
@@ -138,20 +140,20 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     paddingHorizontal: 20,
-    marginTop: 70,
+    marginTop: 50,
   },
   title: {
     color: Color.bold,
     fontSize: 22,
     fontWeight: "bold",
     textTransform: "uppercase",
-    marginBottom: 10,
+    marginBottom: 30,
     marginTop: 20,
   },
   contactContainer: {
     borderRadius: 20,
     width: "100%",
-    backgroundColor: Color.regular,
+    backgroundColor: Color.medium,
     padding: 20,
   },
   input: {

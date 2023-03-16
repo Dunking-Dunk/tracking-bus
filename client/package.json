@@ -44,7 +44,9 @@
     "redux-thunk": "^2.4.2",
     "socket.io-client": "^4.5.4",
     "expo-barcode-scanner": "~12.1.0",
-    "expo-camera": "~13.1.0"
+    "expo-camera": "~13.1.0",
+    "expo-notifications": "~0.17.0",
+    "expo-device": "~5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

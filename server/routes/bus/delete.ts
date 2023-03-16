@@ -13,7 +13,7 @@ router.delete('/api/bus/:id', async (req: Request, res: Response) => {
         await Stop.updateOne({id: stopId}, { $pull : {busId: id} })
     })
     await Tracker.updateOne({id: bus?.tracker }, {bus: null})
-    await Bus.deleteOne({id})
+    await Bus.findByIdAndDelete(id)
     res.status(200).send("successfully deleted")
 })
 

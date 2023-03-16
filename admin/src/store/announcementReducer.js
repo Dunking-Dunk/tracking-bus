@@ -1,6 +1,7 @@
 import {
   CREATE_ANNOUNCEMENT,
   DELETE_ANNOUNCEMENT,
+  DELETE_FEEDBACK,
   GET_ALL_ANNOUNCEMENT,
   GET_ALL_FEEDBACK,
 } from "./actionType";
@@ -28,6 +29,11 @@ const announcementReducer = (state = initialState, action) => {
         announcements: state.announcements.filter(
           (data) => data.id !== action.payload
         ),
+      };
+    case DELETE_FEEDBACK:
+      return {
+        ...state,
+        feedbacks: state.feedbacks.filter((data) => data.id !== action.payload),
       };
     case GET_ALL_FEEDBACK:
       return {

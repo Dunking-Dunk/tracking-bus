@@ -67,7 +67,7 @@ const AnnouncementScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 70,
+    marginVertical: 75,
     alignItems: "center",
     paddingHorizontal: 20,
   },
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   announcementContainer: {
-    backgroundColor: Color.light,
+    backgroundColor: Color.regular,
     width: "100%",
     borderRadius: 20,
   },
   announcement: {
-    backgroundColor: Color.regular,
+    backgroundColor: Color.bold,
     padding: 5,
     borderRadius: 10,
     margin: 10,

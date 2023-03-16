@@ -3,11 +3,10 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {useNavigate, useParams} from 'react-router-dom'
 import Switch from '@mui/material/Switch'
-import GoogleMapReact from 'google-map-react';
-import StopMarker from '../../components/marker/Marker'
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import { createBus, updateBus } from '../../store/action'
+import MapView from '../../components/map/MapView'
 
 const BusNew = ({update}) => {
     const allStops = useSelector((state) => state.stops.stops)
@@ -17,7 +16,10 @@ const BusNew = ({update}) => {
     const params = useParams()
     const editBus = useSelector((state) => state.buses.bus)
 
-        const [state, setState] = useState(update ? editBus :{
+    const [state, setState] = useState(update && editBus ? {
+        ...editBus,
+        stops: editBus?.stops?.map((stop) => stop.id)
+        } :{
             busNumber: 0,
             busSet: '',
             busName: '',
@@ -34,13 +36,14 @@ const BusNew = ({update}) => {
             tracker: '',
         })
     const [selectedStops, setSelectedStops] = useState(update ? editBus.stops : [])
-
+        
     function updateState(data) {
-        setState((state) => ({...state,...data} ))
+        setState((state) => ({ ...state, ...data }))
     }
 
     function handleSubmit() {
         if (state.busNumber && state.busSet.length === 1 && state.busName.length > 3 && state.description.length > 5 && state.origin.length > 3 && state.stops.length >= 1) {
+            console.log(state)
             if (update) {
                 dispatch(updateBus(params.busId, state))
             } else {
@@ -50,9 +53,8 @@ const BusNew = ({update}) => {
         }
      
     } 
-    
     function addStops(stop) {
-        if (state.stops.indexOf(stop.id) === -1) {
+        if(state.stops.indexOf(stop.id) === -1) {
             updateState({ stops: [...state.stops, stop.id] })
             setSelectedStops([...selectedStops, stop])
         }
@@ -97,22 +99,10 @@ const BusNew = ({update}) => {
                         <textarea type='text' value={state.description} onChange={(e) => {
                             updateState({description: e.target.value})
                         }} />
+                           </div>
                                      <div className='formInput'>
                         <h5>Stops:</h5>
-                        <div style={{ height: '500px', width: '100%', marginBottom: '20px' }}>
-                            <GoogleMapReact
-                                  bootstrapURLKeys={{ key:'AIzaSyCSzANgbfNQqcu_1jcNtSz21EBCTgB0U1U' }}
-                                defaultCenter={{
-                                lat: 13.078339,
-                                lng: 80.180592
-                                }} zoom={11} >
-                                {allStops && allStops.map((stop) => {
-                                    return (
-                                        <StopMarker key={stop.id} stop={stop} lat={stop.coords.latitude} lng={stop.coords.longitude} onClick={addStops} />
-                                    )
-                                })}
-                            </GoogleMapReact>
-                        </div>
+                            <MapView allStops={allStops} addStops={addStops} />
                         <Paper
                         sx={{
                             display: 'flex',
@@ -138,7 +128,7 @@ const BusNew = ({update}) => {
                         })} 
                             </Paper>
                     </div>
-                    </div>
+                 
                     <div className='formInput'>
                         <h5>GPS TRACKER</h5>
                         {state.tracker && <h5>Tracker Selected: <strong>{state.tracker}</strong></h5>}

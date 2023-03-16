@@ -33,16 +33,18 @@ const StopMarker = ({ stop, showBus }) => {
               </>
             )}
 
-            <Text style={{ fontWeight: "bold" }}>Bus: </Text>
             {showBus && (
-              <View style={styles.row}>
-                <Text style={styles.text}>
-                  {stop.busId[0]?.busNumber}
-                  {stop.busId[0]?.busSet}
-                  {"  "}
-                </Text>
-                <Text style={styles.text}>{stop.busId[0]?.busName}</Text>
-              </View>
+              <>
+                <Text style={{ fontWeight: "bold" }}>Bus: </Text>
+                <View style={styles.row}>
+                  <Text style={styles.text}>
+                    {stop.busId[0]?.busNumber}
+                    {stop.busId[0]?.busSet}
+                    {"  "}
+                  </Text>
+                  <Text style={styles.text}>{stop.busId[0]?.busName}</Text>
+                </View>
+              </>
             )}
           </View>
           <View style={styles.arrowBorder} />

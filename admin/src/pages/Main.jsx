@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import './Main.scss'
 import { useEffect } from "react";
-import { getAllGpsTracker, getAllStop } from "../store/action";
+import { getAllGpsTracker, getAllStop, getAllBuses } from "../store/action";
 import { useDispatch } from "react-redux";
 
 import StopNew from "./stop/StopNew";
@@ -14,11 +14,15 @@ import Sidebar from "../components/sidebar/Sidebar";
 import CreateAnnouncement from "./announcement/CreateAnnouncement";
 import Announcement from './announcement/Announcement'
 import Feedback from './feedback/Feedback'
+import BusView from "./bus/BusView";
 
 const Main = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAllStop())
+    
+      dispatch(getAllBuses())
+
     dispatch(getAllGpsTracker())
   })
 
@@ -30,6 +34,7 @@ const Main = () => {
             <Route index element={<Home />} />
             <Route path="bus">
               <Route index element={<Bus />} />
+              <Route path=":id" element={<BusView />} />
               <Route path="edit/:busId" element={<BusNew update={true} />} />
               <Route path="new" element={<BusNew />} />
             </Route>

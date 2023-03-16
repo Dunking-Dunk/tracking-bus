@@ -15,6 +15,7 @@ import AnnouncementScreen from "./src/screens/Announcement";
 import { configureStore } from "./src/store/reducer";
 import FlashMessage from "react-native-flash-message";
 import { useState } from "react";
+import { useNotification } from "./src/hooks/use-notification";
 
 const Drawer = createDrawerNavigator();
 
@@ -88,6 +89,7 @@ export default function App() {
   const store = configureStore();
   const scheme = useColorScheme();
   const [darkMode, setDarkMode] = useState(true);
+  const notification = useNotification();
 
   return (
     <Provider store={store}>

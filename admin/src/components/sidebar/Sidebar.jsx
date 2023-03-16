@@ -5,18 +5,24 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
+import MergeTypeIcon from '@mui/icons-material/MergeType';
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const navigate = useNavigate()
   return (
     <div className="sidebar">
       <div className="top">
@@ -37,7 +43,7 @@ const Sidebar = () => {
           <p className="title">LISTS</p>
           <Link to="/bus" style={{ textDecoration: "none" }}>
             <li>
-              <PersonOutlineIcon className="icon" />
+              <DirectionsBusIcon className="icon" />
               <span>Buses</span>
             </li>
           </Link>
@@ -50,13 +56,13 @@ const Sidebar = () => {
           <p className="title">Information</p>
           <Link to="/announcement" style={{ textDecoration: "none" }}>
           <li>
-            <InsertChartIcon className="icon" />
+            <AnnouncementIcon className="icon" />
             <span>Announcements</span>
           </li>
           </Link>
           <Link to="/feedback" style={{ textDecoration: "none" }}>
           <li>
-            <InsertChartIcon className="icon" />
+            <FeedbackIcon className="icon" />
             <span>Feedback</span>
           </li>
           </Link>
@@ -66,8 +72,8 @@ const Sidebar = () => {
           </li>
           <p className="title">SERVICE</p>
           <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
+            <MergeTypeIcon className="icon" />
+            <span>Combine buses</span>
           </li>
           <li>
             <PsychologyOutlinedIcon className="icon" />
@@ -82,7 +88,9 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          <li onClick={() => {
+            navigate('/login')
+          }}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>

@@ -8,7 +8,7 @@ router.get('/api/stop', async (req: Request, res: Response) => {
     
     let stops;
 
-    if (populate) stops = await Stop.find({}).populate('busId')
+    if (populate === 'true') stops = await Stop.find({}).populate('busId')
     else stops = await Stop.find({})
 
     res.status(200).json(stops)

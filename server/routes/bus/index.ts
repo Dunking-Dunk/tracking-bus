@@ -14,7 +14,7 @@ router.get('/api/bus', async (req: Request, res: Response) => {
         else if (timing === '5:00') buses = await Bus.find({ returnAfter5: true }).populate('stops')
         else buses = await Bus.find({ returnAfter315: true }).populate('stops')
     } else {
-        if (populate)  buses = await Bus.find({}).populate('stops')
+        if (populate === 'true')  buses = await Bus.find({status: true}).populate('stops')
         else buses = await Bus.find({})
     }
 

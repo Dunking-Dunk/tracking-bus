@@ -13,6 +13,7 @@ import {
   GET_ALL_ANNOUNCEMENT,
   DELETE_ANNOUNCEMENT,
   GET_ALL_FEEDBACK,
+  DELETE_FEEDBACK,
 } from "./actionType";
 
 export const getAllBuses = () => async (dispatch) => {
@@ -27,9 +28,9 @@ export const getAllBuses = () => async (dispatch) => {
   }
 };
 
-export const getBus = (id) => async (dispatch) => {
+export const getBus = (id, populate) => async (dispatch) => {
   try {
-    const { data } = await api.get(`/bus/${id}`);
+    const { data } = await api.get(`/bus/${id}?populate=${populate}`);
     dispatch({
       type: GET_BUS,
       payload: data,
@@ -164,10 +165,21 @@ export const getAllAnnouncement = () => async (dispatch) => {
 export const getAllFeedback = () => async (dispatch) => {
   try {
     const { data } = await api.get("/feedback");
-    console.log(data);
     dispatch({
       type: GET_ALL_FEEDBACK,
       payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteFeedback = (id) => async (dispatch) => {
+  try {
+    await api.delete(`/feedback/${id}`);
+    dispatch({
+      type: DELETE_FEEDBACK,
+      payload: id,
     });
   } catch (err) {
     console.log(err);

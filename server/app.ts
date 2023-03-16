@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
+import cookieSession from 'cookie-session'
 
 import { NotFoundError } from './errors/not-found-error'
 import {ErrorHandler} from './middleware/error-handler'
@@ -39,6 +40,10 @@ app.use(cors())
 app.set('trust proxy', true)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieSession({
+    signed: false,
+    secure: process.env.NODE_ENV !== 'test'
+}))
 
 const httpServer = createServer(app)
 const io = new Server(httpServer)
