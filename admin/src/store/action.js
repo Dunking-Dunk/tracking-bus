@@ -14,6 +14,8 @@ import {
   DELETE_ANNOUNCEMENT,
   GET_ALL_FEEDBACK,
   DELETE_FEEDBACK,
+  SIGN_IN,
+  SIGN_OUT,
 } from "./actionType";
 
 export const getAllBuses = () => async (dispatch) => {
@@ -183,5 +185,40 @@ export const deleteFeedback = (id) => async (dispatch) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const signIn = (user) => async (dispatch) => {
+  try {
+    const { data } = await api.post(`/users/signin`, user);
+    dispatch({
+      type: SIGN_IN,
+      payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const signOut = () => async (dispatch) => {
+  try {
+    await api.post(`/users/signout`);
+    dispatch({
+      type: SIGN_OUT,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const currentUser = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/users/currentuser`);
+    dispatch({
+      type: SIGN_IN,
+      payload: data.currentUser,
+    });
+  } catch (err) {
+    throw err;
   }
 };

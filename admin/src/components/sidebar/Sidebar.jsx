@@ -19,8 +19,12 @@ import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { signOut } from '../../store/action'
+import {useDispatch, useSelector} from 'react-redux'
 
 const Sidebar = () => {
+  const Dispatch = useDispatch()
+  const user = useSelector((state) => state.users.user)
   const { dispatch } = useContext(DarkModeContext);
   const navigate = useNavigate()
   return (
@@ -84,12 +88,18 @@ const Sidebar = () => {
             <span>Settings</span>
           </li>
           <p className="title">USER</p>
+          {user &&
           <li>
             <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+          <span>{user.name}</span>
+           
           </li>
+            }
           <li onClick={() => {
-            navigate('/login')
+            Dispatch(signOut()).then(() => {
+              navigate('/login')
+            })
+        
           }}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>

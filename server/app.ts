@@ -8,6 +8,8 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import cookieSession from 'cookie-session'
 
+import { currentUser } from './middleware/current-user';
+
 import { NotFoundError } from './errors/not-found-error'
 import {ErrorHandler} from './middleware/error-handler'
 import { GetBusRoute } from "./routes/bus/get";
@@ -34,19 +36,29 @@ import { NewFeedback } from './routes/feedback/new';
 import { GetAllFeedback } from './routes/feedback/index';
 import { DeleteFeedback } from './routes/feedback/delete';;
 
+import { signinRouter } from './routes/admin-auth/signin';
+import { signupRouter } from './routes/admin-auth/signup';
+import { signoutRouter } from './routes/admin-auth/signout';
+import { currentUserRouter } from './routes/admin-auth/current-user';
+
 const app = express();
 
-app.use(cors())
+app.use(cors({ origin: "http://localhost:3000", credentials: true, }))
 app.set('trust proxy', true)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieSession({
-    signed: false,
-    secure: process.env.NODE_ENV !== 'test'
-}))
 
 const httpServer = createServer(app)
 const io = new Server(httpServer)
+
+app.use(cookieSession({
+    signed: false,
+    secure: false,
+    httpOnly: false
+}))
+
+
+app.use(currentUser)
 
 app.use(NewBusRoute)
 app.use(GetAllBusRoute)
@@ -73,6 +85,10 @@ app.use(NewAnnouncement)
 app.use(GetAllAnnouncement)
 app.use(DeleteAnnouncement)
 
+app.use(signinRouter)
+app.use(signupRouter)
+app.use(signoutRouter)
+app.use(currentUserRouter)
 
 
 app.use('*', async(req, res) => { 
