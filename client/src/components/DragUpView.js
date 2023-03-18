@@ -4,9 +4,11 @@ import Animated, {
   withSpring,
   useAnimatedGestureHandler,
 } from "react-native-reanimated";
+import { useEffect } from "react";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import Color from "../utils/Color";
+import { EventRegister } from "react-native-event-listeners";
 
 const DragUpView = ({ children }) => {
   const dimension = Dimensions.get("window");
@@ -20,6 +22,15 @@ const DragUpView = ({ children }) => {
       }),
     };
   });
+
+  useEffect(() => {
+    const listener = EventRegister.addEventListener("CloseDragUp", () => {
+      y.value = dimension.height / 3.5;
+    });
+    return () => {
+      EventRegister.removeEventListener(listener);
+    };
+  }, []);
 
   const eventHandler = useAnimatedGestureHandler({
     onStart: (event, ctx) => {

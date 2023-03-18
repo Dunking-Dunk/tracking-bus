@@ -58,17 +58,15 @@ export default Home = ({ navigation }) => {
   }, [isFocused]);
 
   const coordsPressHandler = (coords) => {
+    EventRegister.emit("CloseDragUp");
     EventRegister.emit("ChangeStopCoords", { stopCoords: coords });
   };
 
-  const getBusHandler = useCallback(
-    (bus) => {
-      dispatch(getBus(bus)).then(() => {
-        navigation.navigate("BusDetail", { busId: bus });
-      });
-    },
-    [getBusHandler]
-  );
+  const getBusHandler = (bus) => {
+    dispatch(getBus(bus)).then(() => {
+      navigation.navigate("BusDetail", { busId: bus });
+    });
+  };
 
   const animatedQuickStats = useAnimatedStyle(() => {
     return {
@@ -130,7 +128,7 @@ export default Home = ({ navigation }) => {
     } else {
       return <Text style={styles.title}>No Stops near by</Text>;
     }
-  });
+  }, [nearByStops]);
 
   const renderNearByBuses = useCallback(() => {
     return nearByBuses.map((bus) => {
@@ -289,6 +287,7 @@ const styles = StyleSheet.create({
   nearByStopText: {
     textTransform: "capitalize",
     color: Color.white,
+    marginLeft: 10,
   },
   busImageContainer: {
     display: "flex",
@@ -296,7 +295,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.semiBold,
     padding: 5,
     borderRadius: 25,
-    marginRight: 10,
+    marginRight: 5,
+    marginBottom: 2,
   },
   ImageSubContainer: {
     display: "flex",

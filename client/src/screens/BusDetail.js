@@ -10,13 +10,15 @@ import StepProgressBar from "../components/StepProgressBar";
 import { clientSocket } from "../api/socket";
 
 import CustomButton from "../components/CustomButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getBus } from "../store/action";
 
 import { CalcDistance } from "../utils/distanceBetweenCoords";
 
 const BusDetail = ({ navigation, route }) => {
   const routeData = route.params;
+
   let bus = routeData.bus
     ? routeData.bus
     : useSelector((state) => state.buses.bus);
@@ -25,26 +27,30 @@ const BusDetail = ({ navigation, route }) => {
     distance: 0,
     elapsedTime: 0,
   });
-
+  console.log(bus);
   const [busLiveLocation, setBusLiveLocation] = useState(null);
 
   const [elapsedTimeBetweenStops, setElapsedTimeBetweenStops] = useState([]);
 
   useEffect(() => {
-    clientSocket.getBusLocation(bus.tracker, setBusLiveLocation);
-    return () => {
-      clientSocket.stopBusLocation(bus.tracker);
-    };
-  }, []);
+    if (bus) {
+      clientSocket.getBusLocation(bus.tracker, setBusLiveLocation);
+      return () => {
+        clientSocket.stopBusLocation(bus.tracker);
+      };
+    }
+  }, [bus]);
 
   useEffect(() => {
-    const data = new CalcDistance().TimeElapsedBetweenStops(
-      bus.stops,
-      routeInfo.distance,
-      routeInfo.elapsedTime
-    );
-    setElapsedTimeBetweenStops(data);
-  }, [routeInfo]);
+    if (bus) {
+      const data = new CalcDistance().TimeElapsedBetweenStops(
+        bus.stops,
+        routeInfo.distance,
+        routeInfo.elapsedTime
+      );
+      setElapsedTimeBetweenStops(data);
+    }
+  }, [routeInfo, bus]);
 
   if (bus) {
     return (
@@ -55,9 +61,10 @@ const BusDetail = ({ navigation, route }) => {
         >
           <AntDesign name="arrowleft" size={24} color={Color.bold} />
         </CustomButton>
+
         {routeInfo ? (
           <Map
-            stops={bus.stops}
+            stops={bus?.stops}
             mapStyle={styles.map}
             setRouteInfo={setRouteInfo}
             busLiveLocation={busLiveLocation}
@@ -113,7 +120,9 @@ const BusDetail = ({ navigation, route }) => {
         </DragUpView>
       </View>
     );
-  } else return <Loader size="large" />;
+  } else {
+    return <Loader size="large" />;
+  }
 };
 
 export default BusDetail;

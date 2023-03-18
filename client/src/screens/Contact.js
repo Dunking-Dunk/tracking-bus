@@ -22,6 +22,7 @@ const Contact = ({ navigation }) => {
   });
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(true);
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
   const updateState = (data) => {
@@ -47,7 +48,12 @@ const Contact = ({ navigation }) => {
       state.link.includes("https://www.rajalakshmi.org") &&
       state.feedback.length > 5
     ) {
-      dispatch(createFeedback(state));
+      dispatch(createFeedback(state)).then(() => {
+        setMessage("SUCCESSFULLY SUBMITTED");
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      });
       setState({
         link: "",
         feedback: "",
@@ -90,43 +96,51 @@ const Contact = ({ navigation }) => {
           only rec student can submit feedback
         </Text>
         <View style={styles.contactContainer}>
-          {hasPermission === null && (
-            <Text>Requesting for camera permission</Text>
-          )}
-          {hasPermission === false && <Text>No access to camera</Text>}
-          {!state.link ? (
-            <>
-              <BarCodeScanner
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={styles.absoluteFillObject}
-                type="back"
-              />
-              {!state.link && (
-                <Button
-                  title={"Tap to Scan"}
-                  onPress={() => setScanned(false)}
-                  style={{ marginBottom: 10 }}
-                />
-              )}
-            </>
+          {message ? (
+            <Text>{message}</Text>
           ) : (
-            <Text style={{ marginBottom: 10 }}>{state.link}</Text>
-          )}
+            <>
+              {hasPermission === null && (
+                <Text>Requesting for camera permission</Text>
+              )}
+              {hasPermission === false && <Text>No access to camera</Text>}
+              {!state.link ? (
+                <>
+                  <BarCodeScanner
+                    onBarCodeScanned={
+                      scanned ? undefined : handleBarCodeScanned
+                    }
+                    style={styles.absoluteFillObject}
+                    type="back"
+                  />
+                  {!state.link && (
+                    <Button
+                      title={"Tap to Scan"}
+                      onPress={() => setScanned(false)}
+                      style={{ marginBottom: 10 }}
+                    />
+                  )}
+                </>
+              ) : (
+                <Text style={{ marginBottom: 10 }}>{state.link}</Text>
+              )}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Feedback"
-            placeholderTextColor={Color.bold}
-            multiline={true}
-            numberOfLines={5}
-            value={state.feedback}
-            onChangeText={(text) => {
-              updateState({ feedback: text });
-            }}
-          />
-          <CustomButton style={styles.button} onPress={onSubmit}>
-            <Text style={{ color: Color.white }}>Submit</Text>
-          </CustomButton>
+              <TextInput
+                style={styles.input}
+                placeholder="Feedback"
+                placeholderTextColor={Color.bold}
+                multiline={true}
+                numberOfLines={5}
+                value={state.feedback}
+                onChangeText={(text) => {
+                  updateState({ feedback: text });
+                }}
+              />
+              <CustomButton style={styles.button} onPress={onSubmit}>
+                <Text style={{ color: Color.white }}>Submit</Text>
+              </CustomButton>
+            </>
+          )}
         </View>
       </View>
     </ScrollView>

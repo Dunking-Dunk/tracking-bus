@@ -40,7 +40,8 @@ export const getSortBuses = (query) => async (dispatch) => {
 
 export const getBus = (busId) => async (dispatch) => {
   try {
-    const { data } = await api.get(`/bus/${busId}`);
+    const { data } = await api.get(`/bus/${busId}?populate=true`);
+    console.log(busId, data);
     dispatch({
       type: GET_BUS,
       payload: data,
@@ -76,7 +77,6 @@ export const getQuickStats = () => async (dispatch) => {
 
 export const getUserLocation = (location) => async (dispatch) => {
   try {
-    console.log(location);
     dispatch({
       type: GET_USER_COORDS,
       payload: location.coords,

@@ -14,12 +14,8 @@ class GetUserLocation {
   async getPermissions() {
     let foregroundPermission =
       await Location.requestForegroundPermissionsAsync();
-    if (foregroundPermission.granted) {
-      this.backgroundPermission =
-        await Location.requestBackgroundPermissionsAsync();
-    }
 
-    if (!this.backgroundPermission.granted || !foregroundPermission.granted) {
+    if (!foregroundPermission.granted) {
       this.error = "Permission to access location was denied";
       showError("Permission to access location was denied");
     }

@@ -41,7 +41,6 @@ const AnnouncementScreen = ({ navigation }) => {
             }}
             refreshing={refreshing}
             renderItem={({ item: announcement }) => {
-              console.log(announcement);
               return (
                 <View style={styles.announcement} key={announcement.id}>
                   <Text style={styles.announcementTime}>
