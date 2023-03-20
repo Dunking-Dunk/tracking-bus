@@ -8,7 +8,10 @@ router.get('/api/bus', async (req: Request, res: Response) => {
 
     let buses;
     if (search) {
-        buses = await Bus.find({ busNumber: search }).populate('stops')
+        console.log(search)
+        buses = await Bus.find({
+            $or: [{ busNumber: search}, { busName: { $regex: search, $options: 'i' } }]
+}).populate('stops')
     } else if (timing) {
         if (timing === '1:00') buses = await Bus.find({ returnAfter1: true }).populate('stops')
         else if (timing === '5:00') buses = await Bus.find({ returnAfter5: true }).populate('stops')

@@ -32,7 +32,7 @@ interface BusModel extends mongoose.Model<BusDoc> {
 
 export const Schema = new mongoose.Schema({
     busNumber: {
-        type: Number,
+        type: String,
         required: true,
     },
     busSet: {

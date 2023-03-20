@@ -4,11 +4,13 @@ import { body } from 'express-validator'
 import { Bus } from '../../models/Bus'
 import { Stop } from '../../models/Stop'
 import { Tracker } from '../../models/Tracking'
-import {ValidateRequest} from '../../middleware/validate-request'
+import { ValidateRequest } from '../../middleware/validate-request'
+import { requireAuth } from '../../middleware/require-auth'
+import { io } from '../../app'
 
 const router = express.Router()
 
-router.post('/api/bus',
+router.post('/api/bus',requireAuth,
     [
         body('busNumber').isFloat({gt: 0}).withMessage('Bus Number should be greater than 0').notEmpty().withMessage('Bus Number is Required'),
         body('busSet').not().isEmpty().withMessage('Bus Set is required'),
@@ -30,7 +32,12 @@ router.post('/api/bus',
         const tracker = await Tracker.findById(bus.tracker)
         tracker?.set({ bus: bus._id })
         await tracker?.save()
+        
+        bus = await bus.populate('stops')
 
+      
+            io.emit('newBusAdded', bus)
+        
     res.status(201).json(bus)
 })
 

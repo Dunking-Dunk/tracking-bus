@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express'
+import { Announcement } from '../../models/Announcement'
 import { Bus } from '../../models/Bus'
+import { Feedback } from '../../models/Feedback'
 import { Stop } from '../../models/Stop'
 
 const router = express.Router()
@@ -11,9 +13,11 @@ router.get('/api/bus/quick-stats', async (req: Request, res: Response) => {
     const returnAfter5 = await Bus.countDocuments({ returnAfter5: true })
     const totalStops = await Stop.countDocuments({})
     const totalBus = await Bus.countDocuments({})
+    const totalFeedbacks = await Feedback.countDocuments({})
+    const totalAnnouncements = await Announcement.countDocuments({})
 
     res.status(200).send({
-        morningToCollege, returnAfter315, totalStops,  totalBus, returnAfter5, returnAfter1
+        morningToCollege, returnAfter315, totalStops,  totalBus, returnAfter5, returnAfter1, totalFeedbacks, totalAnnouncements
     })
 })
 

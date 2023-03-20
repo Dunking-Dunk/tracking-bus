@@ -5,7 +5,6 @@ export const connection = () => {
     io.on("connection", (socket) => {
         console.log(`${socket.id} a user connected`)
         socket.on('stop-getLocation', (data) => {
-            console.log(data)
             clearInterval(interval)
         })
 

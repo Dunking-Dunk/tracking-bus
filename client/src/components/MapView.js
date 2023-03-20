@@ -162,7 +162,10 @@ const map = ({
             busesLiveLocation.map((bus) => {
               return (
                 <Marker.Animated
-                  coordinate={bus.coords}
+                  coordinate={{
+                    latitude: bus.coords[0].latitude,
+                    longitude: bus.coords[0].longitude,
+                  }}
                   key={bus.id}
                   tracksViewChanges={false}
                 >
@@ -176,7 +179,7 @@ const map = ({
             })}
           {busLiveLocation && (
             <Marker.Animated
-              coordinate={busLiveLocation.coords}
+              coordinate={busLiveLocation.coords[0]}
               tracksViewChanges={false}
             >
               <View>

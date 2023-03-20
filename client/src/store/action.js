@@ -7,6 +7,10 @@ import {
   GET_ALL_ANNOUNCEMENT,
   REFRESH_ANNOUNCEMENT,
   REFRESH_BUSES,
+  ADD_BUS,
+  ADD_STOP,
+  DELETE_BUS,
+  DELETE_STOP,
 } from "./actionType";
 import api from "../api/api";
 
@@ -41,7 +45,6 @@ export const getSortBuses = (query) => async (dispatch) => {
 export const getBus = (busId) => async (dispatch) => {
   try {
     const { data } = await api.get(`/bus/${busId}?populate=true`);
-    console.log(busId, data);
     dispatch({
       type: GET_BUS,
       payload: data,
@@ -126,6 +129,50 @@ export const createFeedback = (data) => async (dispatch) => {
     // dispatch({
     //   type: CREATE_FEEDBACK,
     // });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addBus = (bus) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_BUS,
+      payload: bus,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addStop = (stop) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_STOP,
+      payload: stop,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteStop = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_STOP,
+      payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteBus = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_BUS,
+      payload: id,
+    });
   } catch (err) {
     console.log(err);
   }

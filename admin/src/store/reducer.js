@@ -4,12 +4,18 @@ import stopsReducer from "./stopReducer";
 import busReducer from "./busReducer";
 import announcementReducer from "./announcementReducer";
 import userReducer from "./userReducer";
+import notificationsReducer from "./notificationReducer";
+import feedbackReducer from "./feedbackReducer";
+import statsReducer from "./statsReducer";
 
 const rootReducer = combineReducers({
   buses: busReducer,
   stops: stopsReducer,
   announcements: announcementReducer,
   users: userReducer,
+  notifications: notificationsReducer,
+  feedbacks: feedbackReducer,
+  stats: statsReducer,
 });
 
 const configureStore = () => {

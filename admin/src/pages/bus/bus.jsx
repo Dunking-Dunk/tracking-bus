@@ -1,16 +1,29 @@
 import "./bus.scss"
 import Datatable from "../../components/datatable/Datatable"
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react";
-import { deleteBus, getBus } from "../../store/action";
+import { useEffect, useState } from "react";
+import { deleteBus, getAllBuses, getBus, quickEditBus } from "../../store/action";
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
+import Switch from '@mui/material/Switch'
 
 const List = () => {
+  const navigate = useNavigate()
     const dispatch = useDispatch()
   const buses = useSelector((state) => state.buses.buses)
-  const navigate = useNavigate()
+  const [rowSelection, setRowSelection] = useState([])
+  const [state, setState] = useState({
+    active: true,
+    morningToCollege: true,
+    returnAfter315: true,
+    returnAfter1: false,
+    returnAfter5: false,
+  })
 
+
+  function updateState(data) {
+    setState((state) => ({ ...state, ...data }))
+  }
 
   const handleDelete = (id) => {
         dispatch(deleteBus(id))
@@ -25,6 +38,13 @@ const List = () => {
 
   const handleView = (id) => {
     navigate(`/bus/${id}`)
+  }
+
+  const handleQuickEdit = () => {
+    dispatch(quickEditBus(rowSelection, state)).then(() => {
+      dispatch(getAllBuses())
+    })
+    setRowSelection([])
   }
     
     const busColumns = [
@@ -112,7 +132,68 @@ const List = () => {
           Add New
         </Link>
       </div>
-              <Datatable row={busRow()} column={busColumns} />
+      <Datatable row={busRow()} column={busColumns} setRowSelection={setRowSelection} />
+      <div className="quickEdit__container">
+        <h1>QuickEdit</h1>
+        
+      {rowSelection.length > 1 ? (
+          <div>
+                    <div className='formInput'>
+                        <h5>Status:</h5>
+                        <Switch
+                            checked={state.status}
+                            onClick={() => {          
+                                setState((data) => ({...data,status: !state.status}))
+                            }}
+      inputProps={{ 'aria-label': 'controlled' }}
+              />
+            </div>
+            <div className='formInput'>
+                        <h5>Bus Morning to college:</h5>
+                        <Switch
+      checked={state.morningToCollege}
+      onClick={() => {
+        updateState({ morningToCollege: !state.morningToCollege})
+                            }}
+    
+      inputProps={{ 'aria-label': 'controlled' }}
+    />
+                    </div>
+                    <h4 style={{marginBottom: '10px'}}>Only one should be selected</h4>
+                    <div className='formInput'>
+                        <h5>Bus Depature 1 pm:</h5>
+                        <Switch
+                            checked={state.returnAfter1}
+                            onClick={() => {          
+                                setState((data) => ({...data, returnAfter1: !state.returnAfter1, returnAfter5: false, returnAfter315: false, }))
+                            }}
+      inputProps={{ 'aria-label': 'controlled' }}
+    />
+                    </div>
+                    <div className='formInput'>
+                        <h5>Bus Depature 3:15 pm:</h5>
+                        <Switch
+                            checked={state.returnAfter315}
+                            onClick={() => {          
+                                setState((data) => ({...data, returnAfter315: !state.returnAfter315,returnAfter5: false, returnAfter1: false, }))
+                            }}
+      inputProps={{ 'aria-label': 'controlled' }}
+    />
+                    </div>
+                    <div className='formInput'>
+                        <h5>Bus Depature 5 pm:</h5>
+                        <Switch
+                            checked={state.returnAfter5}
+                            onClick={() => {          
+                                setState((data) => ({...data, returnAfter5: !state.returnAfter5, returnAfter315: false, returnAfter1: false, }))
+                            }}
+      inputProps={{ 'aria-label': 'controlled' }}
+              /></div>
+            <button onClick={handleQuickEdit} className="updateButton">Quick edit</button>
+          </div>
+      ): <h3>More than one row should be selected</h3>}
+      </div>
+ 
           </div>
       
   )

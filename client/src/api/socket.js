@@ -1,8 +1,9 @@
 import { io } from "socket.io-client";
+import { addBus, addStop, deleteBus, deleteStop } from "../store/action";
 
 class Socket {
   constructor() {
-    this.url = "https://4917-49-204-143-245.in.ngrok.io";
+    this.url = "https://13ec-49-204-113-82.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
@@ -47,6 +48,21 @@ class Socket {
   errorConnection() {
     this.socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err}`);
+    });
+  }
+
+  getNewBusAndStopAdded(dispatch) {
+    this.socket.on("newBusAdded", (data) => {
+      dispatch(addBus(data));
+    });
+    this.socket.on("newStopAdded", (data) => {
+      dispatch(addStop(data));
+    });
+    this.socket.on("stopDeleted", (data) => {
+      dispatch(deleteStop(data));
+    });
+    this.socket.on("busDeleted", (data) => {
+      dispatch(deleteBus(data));
     });
   }
 }

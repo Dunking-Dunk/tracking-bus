@@ -1,100 +1,89 @@
 import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
+import StoreIcon from '@mui/icons-material/Store';
+import CommentIcon from '@mui/icons-material/Comment';
+import {Link} from 'react-router-dom'
 
-const Widget = ({ type }) => {
-  let data;
-
-  //temporary
-  const amount = 100;
-  const diff = 20;
-
-  switch (type) {
-    case "user":
-      data = {
-        title: "USERS",
-        isMoney: false,
-        link: "See all users",
-        icon: (
-          <PersonOutlinedIcon
-            className="icon"
-            style={{
-              color: "crimson",
-              backgroundColor: "rgba(255, 0, 0, 0.2)",
-            }}
-          />
-        ),
-      };
-      break;
-    case "order":
-      data = {
-        title: "ORDERS",
-        isMoney: false,
-        link: "View all orders",
-        icon: (
-          <ShoppingCartOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(218, 165, 32, 0.2)",
-              color: "goldenrod",
-            }}
-          />
-        ),
-      };
-      break;
-    case "earning":
-      data = {
-        title: "EARNINGS",
-        isMoney: true,
-        link: "View net earnings",
-        icon: (
-          <MonetizationOnOutlinedIcon
-            className="icon"
-            style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
-          />
-        ),
-      };
-      break;
-    case "balance":
-      data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "See details",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(128, 0, 128, 0.2)",
-              color: "purple",
-            }}
-          />
-        ),
-      };
-      break;
-    default:
-      break;
-  }
+const Widget = ({ type, data }) => {
 
   return (
+    <div>
     <div className="widget">
       <div className="left">
-        <span className="title">{data.title}</span>
+        <span className="title">BUSES</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.totalBus}
+          </span>
+          <Link to='/bus' style={{textDecoration: 'none'}}>
+          <span className="link">Manage</span>
+          </Link>
+     
+        </div>
+        <DirectionsBusIcon />
+      <div className="right">
+          <h5 className="title">Return after 1:00 pm  <span className="counter">
+          {data.returnAfter1}
+          </span></h5>
+          <h5 className="title">Return after 3:15 pm  <span className="counter">
+          {data.returnAfter315}
+          </span></h5>
+          <h5 className="title">Return after 5:00 pm  <span className="counter">
+          {data.returnAfter5}
+          </span></h5>
+      </div>
+      
+      </div>
+      <div className="widget">
+      <div className="left">
+        <span className="title">STOPS</span>
+        <span className="counter">
+          {data.totalStops}
         </span>
-        <span className="link">{data.link}</span>
+        <Link to='/stop' style={{textDecoration: 'none'}}>
+          <span className="link">Manage</span>
+          </Link>
+     
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpIcon />
-          {diff} %
-        </div>
-        {data.icon}
+        <StoreIcon/>
       </div>
+      
+      </div>
+      <div className="widget">
+      <div className="left">
+        <span className="title">FEEDBACKS</span>
+        <span className="counter">
+          {data.totalFeedbacks}
+        </span>
+        <Link to='/feedback' style={{textDecoration: 'none'}}>
+          <span className="link">Manage</span>
+          </Link>
+     
+      </div>
+      <div className="right">
+        <CommentIcon/>
+      </div>
+      
+      </div>
+      <div className="widget">
+      <div className="left">
+        <span className="title">ANNOUNCEMENT</span>
+        <span className="counter">
+          {data.totalAnnouncements}
+        </span>
+        <Link to='/announcement' style={{textDecoration: 'none'}}>
+          <span className="link">Manage</span>
+          </Link>
+     
+      </div>
+      <div className="right">
+        <CommentIcon/>
+      </div>
+      
     </div>
+    </div>
+
   );
 };
 

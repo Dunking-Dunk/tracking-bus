@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Pressable,
+} from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import CustomButton from "../components/CustomButton";
 import { getBuses, refreshBuses } from "../store/action";
-import { FontAwesome5, AntDesign } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  AntDesign,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import Loader from "../components/LoadingAnimation";
 import SortButton from "../components/SortButton";
@@ -22,7 +33,11 @@ const AllBusRoute = ({ navigation }) => {
 
   const renderBuses = ({ item: bus }) => {
     return (
-      <View key={bus.id} style={styles.busContainer}>
+      <Pressable
+        key={bus.id}
+        style={styles.busContainer}
+        onPress={() => navigation.navigate("BusDetail", { busId: bus.id, bus })}
+      >
         <View style={styles.busHeroContainer}>
           <View style={styles.busImageContainer}>
             <View style={styles.ImageSubContainer}>
@@ -43,22 +58,24 @@ const AllBusRoute = ({ navigation }) => {
               </View>
             </View>
           </View>
-
-          <CustomButton
-            onPress={() =>
-              navigation.navigate("BusDetail", { busId: bus.id, bus })
-            }
-            style={{
-              backgroundColor: Color.bold,
-              width: 100,
-              height: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={styles.detailBtnText}>Detail</Text>
-          </CustomButton>
+          <View style={{ ...styles.busImageContainer, width: 130 }}>
+            <View style={{ ...styles.ImageSubContainer, width: 70 }}>
+              <View style={styles.routeContainer}>
+                <Text style={styles.routeText}>{bus.stops.length}</Text>
+              </View>
+              <MaterialCommunityIcons
+                name="bus-stop"
+                size={24}
+                color={Color.semiBold}
+                style={{
+                  backgroundColor: Color.light,
+                  padding: 5,
+                  borderRadius: 20,
+                  marginLeft: 5,
+                }}
+              />
+            </View>
+          </View>
         </View>
 
         <View style={styles.busDetailContainer}>
@@ -81,7 +98,7 @@ const AllBusRoute = ({ navigation }) => {
             PM
           </Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -95,18 +112,22 @@ const AllBusRoute = ({ navigation }) => {
         <Header navigation={navigation} searchRequired={true} />
         <View style={{ marginTop: 120 }}>
           <SortButton />
-          <FlatList
-            data={buses}
-            style={styles.container}
-            renderItem={renderBuses}
-            refreshing={refreshing}
-            onRefresh={() => {
-              dispatch(refreshBuses(true));
-              dispatch(getBuses()).then(() => {
-                dispatch(refreshBuses(false));
-              });
-            }}
-          />
+          {buses.length != 0 ? (
+            <FlatList
+              data={buses}
+              style={styles.container}
+              renderItem={renderBuses}
+              refreshing={refreshing}
+              onRefresh={() => {
+                dispatch(refreshBuses(true));
+                dispatch(getBuses()).then(() => {
+                  dispatch(refreshBuses(false));
+                });
+              }}
+            />
+          ) : (
+            <Text style={styles.infoText}>No buses found</Text>
+          )}
         </View>
       </SafeAreaView>
     );
@@ -161,7 +182,7 @@ const styles = StyleSheet.create({
     color: Color.white,
   },
   busDetailContainer: {
-    backgroundColor: Color.semiBold,
+    backgroundColor: Color.bold,
     padding: 10,
     borderRadius: 20,
   },
@@ -183,6 +204,13 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  infoText: {
+    color: Color.semiBold,
+    textAlign: "center",
+    fontSize: 24,
+    textTransform: "uppercase",
+    marginTop: 20,
   },
 });
 

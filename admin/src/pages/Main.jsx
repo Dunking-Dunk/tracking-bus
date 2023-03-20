@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import './Main.scss'
 import { useEffect } from "react";
-import { getAllGpsTracker, getAllStop, getAllBuses, currentUser } from "../store/action";
+import { getAllGpsTracker, getAllStop, getAllBuses, currentUser, getQuickStats } from "../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 
@@ -16,6 +16,7 @@ import CreateAnnouncement from "./announcement/CreateAnnouncement";
 import Announcement from './announcement/Announcement'
 import Feedback from './feedback/Feedback'
 import BusView from "./bus/BusView";
+import Notification from "./notification/Notification"
 
 
 const Main = () => {
@@ -27,6 +28,7 @@ const Main = () => {
     dispatch(getAllStop())
       dispatch(getAllBuses())
     dispatch(getAllGpsTracker())
+    dispatch(getQuickStats())
   }, [])
 
   if (user) {
@@ -52,7 +54,9 @@ const Main = () => {
             <Route path="new" element={<CreateAnnouncement/>} />
           </Route>
           <Route path="feedback" element={<Feedback/>} />
-       
+          <Route path="notification">
+            <Route index element={<Notification/>} />
+          </Route>
       </Routes>
           </div>
 

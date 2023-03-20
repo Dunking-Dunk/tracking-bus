@@ -12,7 +12,7 @@ const StopMarker = ({ stop, showBus }) => {
       description={stop.timing}
       tracksViewChanges={false}
     >
-      <MaterialCommunityIcons name="bus-marker" size={24} color={Color.bold} />
+      <MaterialCommunityIcons name="bus-stop" size={24} color={Color.bold} />
       <Callout tooltip>
         <View>
           <View style={styles.bubble}>

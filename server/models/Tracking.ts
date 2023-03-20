@@ -5,11 +5,11 @@ interface TrackerAttrs {
     bus: BusDoc,
     coords: {
         latitude: number,
-        longitude: number
-    },
+        longitude: number,
+        timestamp: Date
+    }[],
     speed: number,
     gpsId: string,
-    busId?: string,
     onBusRoute?: string,
 }
 
@@ -17,11 +17,11 @@ interface TrackerDoc extends mongoose.Document {
     bus: BusDoc,
     coords: {
         latitude: number,
-        longitude: number
-    },
+        longitude: number,
+        timestamp: Date
+    }[],
     speed: number,
     gpsId: string,
-    busId?: string,
     onBusRoute?: string,
 }
 
@@ -30,7 +30,7 @@ interface TrackerModel extends mongoose.Model<TrackerDoc> {
 }
 
 const trackingSchema = new mongoose.Schema({
-    coords: {
+    coords: [{
         latitude: {
             type: Number,
             default: 0
@@ -39,7 +39,10 @@ const trackingSchema = new mongoose.Schema({
             type: Number,
             default: 0
         },
-    },
+        timestamp: {
+            type: Date,
+        }
+    }],
     speed: {
         type: Number,
         default: 0

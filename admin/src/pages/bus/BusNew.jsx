@@ -16,10 +16,7 @@ const BusNew = ({update}) => {
     const params = useParams()
     const editBus = useSelector((state) => state.buses.bus)
 
-    const [state, setState] = useState(update && editBus ? {
-        ...editBus,
-        stops: editBus?.stops?.map((stop) => stop.id)
-        } :{
+    const [state, setState] = useState({
             busNumber: 0,
             busSet: '',
             busName: '',
@@ -34,25 +31,34 @@ const BusNew = ({update}) => {
             status: true,
             ac: true,
             tracker: '',
-        })
+    })
+
     const [selectedStops, setSelectedStops] = useState(update ? editBus.stops : [])
         
-    function updateState(data) {
-        setState((state) => ({ ...state, ...data }))
-    }
+    useEffect(() => {
+        if (update)setState(editBus)
+        
+    }, [editBus])
 
-    function handleSubmit() {
+    
+    function handleSubmit(e) {
+        e.stopPropagation()
         if (state.busNumber && state.busSet.length === 1 && state.busName.length > 3 && state.description.length > 5 && state.origin.length > 3 && state.stops.length >= 1) {
-            console.log(state)
             if (update) {
-                dispatch(updateBus(params.busId, state))
+                dispatch(updateBus(params.busId, state, state.stops))
             } else {
+                
                 dispatch(createBus(state))
             }
             navigate('/bus')
         }
      
     } 
+
+    
+    function updateState(data) {
+        setState((state) => ({ ...state, ...data }))
+    }
     function addStops(stop) {
         if(state.stops.indexOf(stop.id) === -1) {
             updateState({ stops: [...state.stops, stop.id] })
@@ -100,7 +106,7 @@ const BusNew = ({update}) => {
                             updateState({description: e.target.value})
                         }} />
                            </div>
-                                     <div className='formInput'>
+                                     <div className='formInput' style={{height: '500px', marginBottom: '110px'}}>
                         <h5>Stops:</h5>
                             <MapView allStops={allStops} addStops={addStops} />
                         <Paper

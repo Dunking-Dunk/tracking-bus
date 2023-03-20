@@ -26,10 +26,16 @@
         "backgroundColor": "#FFFFFF"
       },
       "googleServicesFile": "./google-services.json",
-      "package":"com.rec.recBus"
+      "package": "com.rec.recBus"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b248ef96-127b-4a85-b85a-db14e56c7b03"
+      }
+    },
+    "owner": "hursun"
   }
 }

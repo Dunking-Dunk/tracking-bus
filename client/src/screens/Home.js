@@ -51,6 +51,7 @@ export default Home = ({ navigation }) => {
   useEffect(() => {
     if (isFocused) {
       clientSocket.getAllBusLocations(getBusesLocations);
+      clientSocket.getNewBusAndStopAdded(dispatch);
     }
     return () => {
       clientSocket.stopAllBusLocation();

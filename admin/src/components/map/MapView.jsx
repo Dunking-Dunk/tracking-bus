@@ -2,8 +2,19 @@ import React from "react";
 import StopMarker from "../marker/Marker";
 import GoogleMapReact from "google-map-react";
 
+const Marker = () => {
+    return <div style={{position: 'relative', top: -300}}>
+        <img src='RECFlagFlagMain.gif' style={{
+            position: 'absolute'}} />
+        <img src='pole1.png' style={{
+            position: 'absolute'}}/>
+    </div>
+
+
+}
+
 const MapView = ({ allStops, addStops }) => {
-    return (<div style={{ height: '500px', width: '100%', marginBottom: '20px' }}>
+    return (<div style={{ height: '100%', width: '100%', marginBottom: '20px' }}>
     <GoogleMapReact
           bootstrapURLKeys={{ key:'AIzaSyCSzANgbfNQqcu_1jcNtSz21EBCTgB0U1U' }}
         defaultCenter={{
@@ -14,7 +25,8 @@ const MapView = ({ allStops, addStops }) => {
                 return (
                     <StopMarker key={stop.id} stop={stop} lat={stop.coords.latitude} lng={stop.coords.longitude}  onClick={ addStops } />
             )
-        })}
+            })}
+            <Marker lat={ 13.009577} lng={80.00433 }  />
     </GoogleMapReact>
     
 </div>)

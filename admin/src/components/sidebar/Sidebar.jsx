@@ -70,10 +70,13 @@ const Sidebar = () => {
             <span>Feedback</span>
           </li>
           </Link>
-          <li>
+          <Link  to="/notification" style={{ textDecoration: "none" }}>
+            <li>
             <NotificationsNoneIcon className="icon" />
             <span>Notifications</span>
-          </li>
+            </li>
+      
+          </Link>
           <p className="title">SERVICE</p>
           <li>
             <MergeTypeIcon className="icon" />

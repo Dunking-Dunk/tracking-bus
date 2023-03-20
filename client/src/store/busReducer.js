@@ -3,6 +3,8 @@ import {
   GET_QUICK_STATS,
   GET_BUS,
   REFRESH_BUSES,
+  ADD_BUS,
+  DELETE_BUS,
 } from "./actionType";
 
 const initialState = {
@@ -22,6 +24,13 @@ const busReducer = (state = initialState, action) => {
       return { ...state, quickStats: action.payload };
     case REFRESH_BUSES:
       return { ...state, refreshing: action.payload };
+    case ADD_BUS:
+      return { ...state, buses: [...state.buses, action.payload] };
+    case DELETE_BUS:
+      return {
+        ...state,
+        buses: state.buses.filter((data) => data.id !== action.payload),
+      };
     default:
       return state;
   }

@@ -1,11 +1,19 @@
 import './Marker.scss'
+import PlaceRoundedIcon from '@mui/icons-material/PlaceRounded';
 
 const Marker = ({stop, onClick}) => {
     return (
-        <div className='marker' onClick={() => onClick(stop)}>
-            <h5>{stop.name}</h5>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '500px'
+        }} onClick={() => onClick(stop)}>
+            <PlaceRoundedIcon  />
+            <h5 className='marker__title'>{stop.name}</h5>
         </div>
-
+       
+  
+       
     )
 }
 

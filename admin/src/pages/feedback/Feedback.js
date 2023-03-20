@@ -5,7 +5,7 @@ import { getAllFeedback, deleteFeedback } from "../../store/action";
 
 const Feedback = () => {
   const dispatch = useDispatch();
-  const feedbacks = useSelector((state) => state.announcements.feedbacks);
+  const feedbacks = useSelector((state) => state.feedbacks.feedbacks);
 
   useEffect(() => {
     dispatch(getAllFeedback());
