@@ -27,7 +27,7 @@ export class CalcDistance {
   nearByBuses(buses) {
     if (buses && this.userCoords) {
       const nearBy = buses.map((bus) => {
-        const busCoord = bus.coords;
+        const busCoord = bus.coords[0];
         const distance = this.haversineformula(
           busCoord.latitude,
           this.userCoords.latitude,

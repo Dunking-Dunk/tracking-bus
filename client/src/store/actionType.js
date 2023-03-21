@@ -11,3 +11,5 @@ export const ADD_BUS = "ADD_BUS";
 export const ADD_STOP = "ADD_STOP";
 export const DELETE_BUS = "DELETE_BUS";
 export const DELETE_STOP = "DELETE_STOP";
+export const ADD_ANNOUNCEMENT = "ADD_ANNOUNCEMENT";
+export const DELETE_ANNOUNCEMENT = "DELETE_ANNOUNCEMENT";

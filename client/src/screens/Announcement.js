@@ -23,7 +23,7 @@ const AnnouncementScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(getAllAnnouncements());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

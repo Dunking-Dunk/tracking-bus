@@ -171,7 +171,14 @@ const map = ({
                 >
                   <View>
                     <View style={styles.busTracker}>
-                      <Text style={{ color: Color.white }}>9B</Text>
+                      <Text
+                        style={{
+                          color: Color.white,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {bus.onBusRoute}
+                      </Text>
                     </View>
                   </View>
                 </Marker.Animated>
@@ -184,7 +191,9 @@ const map = ({
             >
               <View>
                 <View style={styles.busTracker}>
-                  <Text style={{ color: Color.white }}>9B</Text>
+                  <Text style={{ color: Color.white }}>
+                    {busLiveLocation.onBusRoute}
+                  </Text>
                 </View>
               </View>
             </Marker.Animated>

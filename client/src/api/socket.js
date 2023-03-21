@@ -1,9 +1,16 @@
 import { io } from "socket.io-client";
-import { addBus, addStop, deleteBus, deleteStop } from "../store/action";
+import {
+  addAnnouncement,
+  addBus,
+  addStop,
+  deleteAnnouncement,
+  deleteBus,
+  deleteStop,
+} from "../store/action";
 
 class Socket {
   constructor() {
-    this.url = "https://13ec-49-204-113-82.in.ngrok.io";
+    this.url = "https://faf8-49-204-113-82.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
@@ -63,6 +70,12 @@ class Socket {
     });
     this.socket.on("busDeleted", (data) => {
       dispatch(deleteBus(data));
+    });
+    this.socket.on("newAnnoucement", (data) => {
+      dispatch(addAnnouncement(data));
+    });
+    this.socket.on("deleteAnnouncement", (data) => {
+      dispatch(deleteAnnouncement(data));
     });
   }
 }

@@ -11,6 +11,8 @@ import {
   ADD_STOP,
   DELETE_BUS,
   DELETE_STOP,
+  ADD_ANNOUNCEMENT,
+  DELETE_ANNOUNCEMENT,
 } from "./actionType";
 import api from "../api/api";
 
@@ -171,6 +173,28 @@ export const deleteBus = (id) => async (dispatch) => {
   try {
     dispatch({
       type: DELETE_BUS,
+      payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addAnnouncement = (announcement) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_ANNOUNCEMENT,
+      payload: announcement,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteAnnouncement = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_ANNOUNCEMENT,
       payload: id,
     });
   } catch (err) {
