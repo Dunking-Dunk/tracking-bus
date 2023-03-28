@@ -61,15 +61,15 @@ const StopNew = () => {
                 </div>
                 <div className='formInput'>
                     <h3>Stop Name</h3>
-                    <input placeholder='Stop name' value={state.name} onChange={(e) => {updateState({name: e.target.value})}} type='text'/>
+                    <input placeholder='Stop name' value={state.name} onChange={(e) => {updateState({name: e.target.value})}} type='text' required/>
                 </div>       
                 <div className='formInput'>
                     <h3>Stop Address</h3>
-                    <textarea placeholder='Stop address' value={state.address} onChange={(e) => {updateState({address: e.target.value})}} />
+                    <textarea placeholder='Stop address' value={state.address} onChange={(e) => {updateState({address: e.target.value})}} required/>
                 </div>   
                 <div className='formInput'>
                     <h3>Stop Timing</h3>
-                    <input className='time' placeholder='Stop Timing' value={state.timing} onChange={(e) => {updateState({timing: e.target.value})}} type='time'/>
+                    <input className='time' placeholder='Stop Timing' value={state.timing} onChange={(e) => {updateState({timing: e.target.value})}} type='time' />
                 </div>   
                 <button onClick={handleSubmit}>Submit</button>
             </div>

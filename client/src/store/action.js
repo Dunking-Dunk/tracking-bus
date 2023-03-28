@@ -13,6 +13,7 @@ import {
   DELETE_STOP,
   ADD_ANNOUNCEMENT,
   DELETE_ANNOUNCEMENT,
+  APP_STATUS,
 } from "./actionType";
 import api from "../api/api";
 
@@ -196,6 +197,17 @@ export const deleteAnnouncement = (id) => async (dispatch) => {
     dispatch({
       type: DELETE_ANNOUNCEMENT,
       payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const appStatusState = (status) => async (dispatch) => {
+  try {
+    dispatch({
+      type: APP_STATUS,
+      payload: status,
     });
   } catch (err) {
     console.log(err);

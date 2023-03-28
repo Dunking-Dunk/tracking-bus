@@ -24,6 +24,7 @@ export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const stops = useSelector((state) => state.stops.stops);
   const userCoords = useSelector((state) => state.user.user);
+  const appState = useSelector((state) => state.user.appState);
   const stats = useSelector((state) => state.buses.quickStats);
   const [nearByStops, setNearByStops] = useState([]);
   const [nearByBuses, setNearByBuses] = useState([]);
@@ -39,6 +40,10 @@ export default Home = ({ navigation }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    clientSocket.getNewBusAndStopAdded(dispatch);
+  }, []);
+
+  useEffect(() => {
     const nearByStops = new CalcDistance(userCoords).nearByStops(stops);
     setNearByStops(nearByStops);
   }, [userCoords, stops]);
@@ -49,14 +54,15 @@ export default Home = ({ navigation }) => {
   }, [userCoords, busesLocation]);
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && appState === "active") {
       clientSocket.getAllBusLocations(getBusesLocations);
-      clientSocket.getNewBusAndStopAdded(dispatch);
+    } else {
+      clientSocket.stopAllBusLocation();
     }
     return () => {
       clientSocket.stopAllBusLocation();
     };
-  }, [isFocused]);
+  }, [isFocused, appState]);
 
   const coordsPressHandler = (coords) => {
     EventRegister.emit("CloseDragUp");
@@ -73,7 +79,7 @@ export default Home = ({ navigation }) => {
     return {
       display: open.value ? "flex" : "none",
       top: withTiming(offsetTop.value, {
-        duration: 2000,
+        duration: 1000,
         easing: Easing.out(Easing.exp),
       }),
     };
@@ -176,7 +182,7 @@ export default Home = ({ navigation }) => {
         style={styles.quickStatsBtn}
         onPress={() => {
           open.value = !open.value;
-          if (open.value) {
+          if (offsetTop.value === 70) {
             offsetTop.value = 0;
           } else {
             offsetTop.value = 70;

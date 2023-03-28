@@ -10,14 +10,14 @@ import StepProgressBar from "../components/StepProgressBar";
 import { clientSocket } from "../api/socket";
 
 import CustomButton from "../components/CustomButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getBus } from "../store/action";
 
 import { CalcDistance } from "../utils/distanceBetweenCoords";
 
 const BusDetail = ({ navigation, route }) => {
   const routeData = route.params;
+  const appState = useSelector((state) => state.user.appState);
 
   let bus = routeData.bus
     ? routeData.bus
@@ -27,19 +27,22 @@ const BusDetail = ({ navigation, route }) => {
     distance: 0,
     elapsedTime: 0,
   });
-  console.log(bus);
+
   const [busLiveLocation, setBusLiveLocation] = useState(null);
 
   const [elapsedTimeBetweenStops, setElapsedTimeBetweenStops] = useState([]);
 
   useEffect(() => {
     if (bus) {
-      clientSocket.getBusLocation(bus.tracker, setBusLiveLocation);
+      if (appState === "active")
+        clientSocket.getBusLocation(bus.tracker, setBusLiveLocation);
+      else clientSocket.stopBusLocation(bus.tracker);
+
       return () => {
         clientSocket.stopBusLocation(bus.tracker);
       };
     }
-  }, [bus]);
+  }, [bus, appState]);
 
   useEffect(() => {
     if (bus) {

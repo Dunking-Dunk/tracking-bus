@@ -20,6 +20,7 @@ import {
   PUSH_NOTIFICATION,
   GET_ALL_NOTIFICATIONS,
   QUICK__STATS,
+  GET_ALL_TRACKERS,
 } from "./actionType";
 import moment from "moment";
 
@@ -294,6 +295,20 @@ export const getQuickStats = () => async (dispatch) => {
     const { data } = await api.get(`/bus/quick-stats`);
     dispatch({
       type: QUICK__STATS,
+      payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+/////////////////////getTracker////////////////////////
+
+export const getAllTrackers = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/gps-tracking`);
+    dispatch({
+      type: GET_ALL_TRACKERS,
       payload: data,
     });
   } catch (err) {

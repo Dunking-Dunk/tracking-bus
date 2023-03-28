@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <div className="login__container">
       <img src='adminLogin.jpeg' className="login__image"/>
-      <div className="login__form__container">
+      <form className="login__form__container" onSubmit={handleSubmit}>
         <h1>Login</h1>
         {errors && errors.map((error, index) => {
           return (
@@ -37,8 +37,8 @@ const Login = () => {
         <input type='password' placeholder="password"  onChange={(e) => {
           setPassword(e.target.value)
         }} value={password} />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+        <button >Submit</button>
+      </form>
     </div>
   )
 }

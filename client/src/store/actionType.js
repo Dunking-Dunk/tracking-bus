@@ -7,9 +7,13 @@ export const GET_ALL_ANNOUNCEMENT = "GET_ALL_ANNOUNCEMENT";
 export const REFRESH_ANNOUNCEMENT = "REFRESH_ANNOUNCEMENT";
 export const REFRESH_BUSES = "REFRESH_BUSES";
 export const CREATE_FEEDBACK = "CREATE_FEEDBACK";
+export const APP_STATUS = "APP_STATUS";
+
+////////////////////////////////////////////////Sockets////////////////////////////////
 export const ADD_BUS = "ADD_BUS";
 export const ADD_STOP = "ADD_STOP";
 export const DELETE_BUS = "DELETE_BUS";
 export const DELETE_STOP = "DELETE_STOP";
 export const ADD_ANNOUNCEMENT = "ADD_ANNOUNCEMENT";
 export const DELETE_ANNOUNCEMENT = "DELETE_ANNOUNCEMENT";
+/////////////////////////////////////////////////////////

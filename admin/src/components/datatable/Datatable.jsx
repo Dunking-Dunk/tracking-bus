@@ -1,6 +1,5 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
 
 const Datatable = ({ row, column, setRowSelection }) => {
  
@@ -11,8 +10,8 @@ const Datatable = ({ row, column, setRowSelection }) => {
         className="datagrid"
          rows={row}
         columns={column}
-        pageSize={9}
-        rowsPerPageOptions={[25]}
+        pageSize={20}
+        rowsPerPageOptions={[10]}
         checkboxSelection
         onSelectionModelChange={itm => setRowSelection && setRowSelection(itm)}
       />

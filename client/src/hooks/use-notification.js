@@ -1,5 +1,3 @@
-import * as Device from "expo-device";
-import React, { useState, useEffect, useRef } from "react";
 import * as Notifications from "expo-notifications";
 import registerNNPushToken, { registerIndieID } from "native-notify";
 

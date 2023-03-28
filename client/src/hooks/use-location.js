@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
 import { getUserLocation } from "../store/action";
-import { showError, showSuccess } from "./helperFunction";
+import { showError, showSuccess } from "../utils/helperFunction";
 import * as TaskManager from "expo-task-manager";
 
 class GetUserLocation {
@@ -44,7 +44,7 @@ class GetUserLocation {
     setInterval(async () => {
       const location = await Location.getCurrentPositionAsync();
       this.dispatch(getUserLocation(location));
-    }, 5000);
+    }, 10000);
 
     // this.getUserLocationBackground();
   }

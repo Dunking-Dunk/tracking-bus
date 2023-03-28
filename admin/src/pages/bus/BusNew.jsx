@@ -75,36 +75,36 @@ const BusNew = ({update}) => {
         return (
             <div className='newbus'>
                 <h1 className='title'>{update ? 'UPDATE BUS':  'CREATE NEW BUS'}</h1>
-                <div className='newbus__container'>
+                <form className='newbus__container' onSubmit={handleSubmit} >
                     <div className='formInput'>
                         <h5>Route Name: </h5>
                         <input type='text' value={state.busName} onChange={(e) => {
                             updateState({ busName: e.target.value })
-                        }} />
+                        }} required/>
                     </div>
                     <div className='formInput'>
                         <h5>Route Number: </h5>
                         <input type='number' onChange={(e) => {
                             updateState({busNumber: e.target.value})
-                        }}  min='0' placeholder='only single digit' value={state.busNumber}/>
+                        }}  min='0' placeholder='only single digit' value={state.busNumber} required/>
                     </div>
                     <div className='formInput'>
                         <h5>Route Set: </h5>
                         <input type='text' value={state.busSet} onChange={(e) => {
                             updateState({ busSet: e.target.value })
-                        }} placeholder='only one word'  />
+                        }} placeholder='only one word' required/>
                     </div>
                     <div className='formInput'>
                         <h5>Route Origin:</h5>
                         <input type='text' value={state.origin} onChange={(e) => {
                             updateState({origin: e.target.value})
-                        }} placeholder='location name of origin' />
+                        }} placeholder='location name of origin' required/>
                     </div>
                     <div className='formInput'>
                         <h5>Route Description:</h5>
                         <textarea type='text' value={state.description} onChange={(e) => {
                             updateState({description: e.target.value})
-                        }} />
+                        }} required/>
                            </div>
                                      <div className='formInput' style={{height: '500px', marginBottom: '110px'}}>
                         <h5>Stops:</h5>
@@ -160,7 +160,7 @@ const BusNew = ({update}) => {
                         <input type='number' min='0'  onChange={(e) => {
                             updateState({ seats: e.target.value })
                            
-                        }} placeholder='bus total seats'  value={state.seats}/>
+                        }} placeholder='bus total seats'  value={state.seats} required/>
                     </div>
                     <div className='formInput'>
                         <h5>Status:</h5>
@@ -214,8 +214,8 @@ const BusNew = ({update}) => {
       inputProps={{ 'aria-label': 'controlled' }}
     />
                     </div>
-                    <button onClick={handleSubmit}>Submit</button>
-                </div>
+                    <button >Submit</button>
+                </form>
             </div>
         )
         

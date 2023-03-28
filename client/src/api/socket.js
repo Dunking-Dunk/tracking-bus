@@ -10,7 +10,7 @@ import {
 
 class Socket {
   constructor() {
-    this.url = "https://faf8-49-204-113-82.in.ngrok.io";
+    this.url = "https://c864-49-205-87-221.in.ngrok.io";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
