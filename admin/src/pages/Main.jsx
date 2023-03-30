@@ -17,6 +17,7 @@ import Announcement from './announcement/Announcement'
 import Feedback from './feedback/Feedback'
 import BusView from "./bus/BusView";
 import Notification from "./notification/Notification"
+import Tracker from "./tracker/Tracker";
 
 
 const Main = () => {
@@ -29,6 +30,7 @@ const Main = () => {
       dispatch(getAllBuses())
     dispatch(getAllGpsTracker())
     dispatch(getQuickStats())
+    dispatch(getAllGpsTracker())
   }, [])
 
   if (user) {
@@ -48,6 +50,9 @@ const Main = () => {
             <Route index element={<Stop />} />
             <Route path=":stopId" element={<Single />} />
             <Route path="new" element={<StopNew />} />
+            </Route>
+            <Route path="tracker">
+            <Route index element={<Tracker />} />
           </Route>
           <Route path="announcement">
             <Route index element={<Announcement/>} />

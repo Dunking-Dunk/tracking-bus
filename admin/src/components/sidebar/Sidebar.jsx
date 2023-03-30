@@ -20,7 +20,8 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from '../../store/action'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 const Sidebar = () => {
   const Dispatch = useDispatch()
@@ -55,6 +56,12 @@ const Sidebar = () => {
             <li>
               <StoreIcon className="icon" />
               <span>Stops</span>
+            </li>
+          </Link>
+          <Link to="/tracker" style={{ textDecoration: "none" }}>
+            <li>
+              <GpsFixedIcon className="icon" />
+              <span>Trackers</span>
             </li>
           </Link>
           <p className="title">Information</p>

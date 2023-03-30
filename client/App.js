@@ -1,7 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialIcons,
+  FontAwesome,
+} from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { useColorScheme } from "react-native";
 import { DarkTheme, LightTheme } from "./src/utils/Color";
@@ -10,6 +15,7 @@ import Color from "./src/utils/Color";
 import CustomDrawerContent from "./src/components/CustomDrawerContent";
 import MainScreen from "./src/screens/Main";
 import BusRoute from "./src/screens/BusRoute";
+import Feedback from "./src/screens/Feedback";
 import Contact from "./src/screens/Contact";
 import AnnouncementScreen from "./src/screens/Announcement";
 import { configureStore } from "./src/store/reducer";
@@ -69,6 +75,15 @@ const DrawerNavigation = ({ darkMode, setDarkMode }) => {
               size={24}
               color={colors.secondary}
             />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={Feedback}
+        name="Feedback"
+        options={{
+          drawerIcon: () => (
+            <FontAwesome name="comments" size={24} color={colors.secondary} />
           ),
         }}
       />

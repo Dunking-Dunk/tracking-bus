@@ -40,6 +40,7 @@ import { signinRouter } from './routes/admin-auth/signin';
 import { signupRouter } from './routes/admin-auth/signup';
 import { signoutRouter } from './routes/admin-auth/signout';
 import { currentUserRouter } from './routes/admin-auth/current-user';
+import { DeleteTracker } from './routes/tracking/delete';
 
 const app = express();
 
@@ -76,6 +77,7 @@ app.use(UpdateBusRoute)
 app.use(UpdateGpsTracker)
 app.use(NewGpsTracker)
 app.use(GetAllGpsTracker)
+app.use(DeleteTracker)
 
 app.use(NewFeedback)
 app.use(GetAllFeedback)

@@ -53,7 +53,7 @@ const StopNew = () => {
                         defaultLocation={DefaultLocation}
                 zoom={zoom}
                 mapTypeId="roadmap"
-                style={{height:'500px'}}
+                style={{height:'600px'}}
                 onChangeLocation={handleChangeLocation} 
                 onChangeZoom={handleChangeZoom}
                 apiKey='AIzaSyCSzANgbfNQqcu_1jcNtSz21EBCTgB0U1U'

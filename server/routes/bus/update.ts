@@ -25,17 +25,21 @@ router.put('/api/bus/:id',requireAuth, async(req: Request, res: Response) => {
     }
     else {
         const bus = await Bus.findById(id)
-
         if (!bus) {
             throw new NotFoundError()
         }
+        await bus.stops.map(async (stop) => {
+             await Stop.findByIdAndUpdate(stop, { $pull: { busId: id } })
+        })
     
-        bus.set(req.body)
+        bus.set({
+            ...req.body,
+            stops: req.body.stops.map((stop:any) => stop.id)
+        })
         await bus.save()
-
         await bus.stops.map(async (stop) => {
             let doc = await Stop.findById(stop)
-            doc?.busId?.push(bus._id)
+                doc?.busId?.push(bus._id)
             await doc?.save()
         })
 

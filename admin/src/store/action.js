@@ -21,6 +21,8 @@ import {
   GET_ALL_NOTIFICATIONS,
   QUICK__STATS,
   GET_ALL_TRACKERS,
+  DELETE_TRACKER,
+  CREATE_TRACKER,
 } from "./actionType";
 import moment from "moment";
 
@@ -72,7 +74,7 @@ export const deleteBus = (id) => async (dispatch) => {
   }
 };
 
-export const updateBus = (id, bus, stops) => async (dispatch) => {
+export const updateBus = (id, bus) => async (dispatch) => {
   console.log(bus.stops);
   try {
     const { data } = await api.put(`/bus/${id}`, bus);
@@ -309,6 +311,30 @@ export const getAllTrackers = () => async (dispatch) => {
     const { data } = await api.get(`/gps-tracking`);
     dispatch({
       type: GET_ALL_TRACKERS,
+      payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteTracker = (id) => async (dispatch) => {
+  try {
+    await api.delete(`/gps-tracking/${id}`);
+    dispatch({
+      type: DELETE_TRACKER,
+      payload: id,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createTracker = (tracker) => async (dispatch) => {
+  try {
+    const { data } = await api.post(`/gps-tracking/`, tracker);
+    dispatch({
+      type: CREATE_TRACKER,
       payload: data,
     });
   } catch (err) {

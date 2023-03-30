@@ -143,7 +143,7 @@ export default Home = ({ navigation }) => {
         <Container
           key={bus.id}
           style={styles.nearByStopContainer}
-          onPress={() => coordsPressHandler(bus.coords)}
+          onPress={() => coordsPressHandler(bus.coords[0])}
         >
           <View style={{ marginRight: 10 }}>
             <FontAwesome5

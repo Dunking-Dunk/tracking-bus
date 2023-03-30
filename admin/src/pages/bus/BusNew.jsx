@@ -39,13 +39,12 @@ const BusNew = ({update}) => {
         if (update)setState(editBus)
         
     }, [editBus])
-
     
     function handleSubmit(e) {
-        e.stopPropagation()
+        e.preventDefault()
         if (state.busNumber && state.busSet.length === 1 && state.busName.length > 3 && state.description.length > 5 && state.origin.length > 3 && state.stops.length >= 1) {
             if (update) {
-                dispatch(updateBus(params.busId, state, state.stops))
+                dispatch(updateBus(params.busId, state))
             } else {
                 
                 dispatch(createBus(state))
@@ -60,14 +59,20 @@ const BusNew = ({update}) => {
         setState((state) => ({ ...state, ...data }))
     }
     function addStops(stop) {
-        if(state.stops.indexOf(stop.id) === -1) {
+            if (update)
+                updateState({ stops: [...state.stops, stop] })
+            else
+            if (state.stops.indexOf(stop.id) === -1) {
             updateState({ stops: [...state.stops, stop.id] })
             setSelectedStops([...selectedStops, stop])
         }
     }
 
     function handleDelete(stop) {
-        updateState({ stops:state.stops.filter((data) => data !== stop.id) })
+        if (update)
+            updateState({ stops: state.stops.filter((data) => data.id !== stop.id) })
+        else
+            updateState({ stops: state.stops.filter((data) => data !== stop.id) })
         setSelectedStops(selectedStops.filter((data) => data.id !== stop.id)) 
     }
   
@@ -106,7 +111,7 @@ const BusNew = ({update}) => {
                             updateState({description: e.target.value})
                         }} required/>
                            </div>
-                                     <div className='formInput' style={{height: '500px', marginBottom: '110px'}}>
+                                     <div className='formInput' style={{height: '600px', marginBottom: '110px'}}>
                         <h5>Stops:</h5>
                             <MapView allStops={allStops} addStops={addStops} />
                         <Paper

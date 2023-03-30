@@ -40,7 +40,8 @@ const BusView = () => {
                     <h4>Depature Time: </h4>
                     <h2  className='detail__container__value'> {bus.returnAfter315 ? '3:15' : bus.returnAfter1 ? '1:00' : '5:00'} pm</h2>
                 </div>
-              <div className='busView__detail__container'>
+                <div className='busView__detail__container' style={{
+                    height: '700px'}}>
                     <h4>All Stops: </h4>
                     {bus.stops && (
                         <>

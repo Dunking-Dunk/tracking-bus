@@ -11,7 +11,8 @@ const Login = () => {
   const [errors, setErrors] = useState(null)
   const navigate = useNavigate()
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     dispatch(signIn({ email, password })).then(() => {
         navigate('/')
       }).catch ((error) => {

@@ -62,34 +62,66 @@ const Contact = ({ navigation }) => {
   };
 
   return (
-    <>
+    <ScrollView>
       <Header searchRequired={false} navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Contact </Text>
-        <DataTable style={styles.contactContainer}>
-          <DataTable.Header>
-            <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title>Phone no</DataTable.Title>
-          </DataTable.Header>
-          <DataTable.Row>
-            <DataTable.Cell>TRANSPORT DEPT</DataTable.Cell>
-            <DataTable.Cell>044 6718 1069</DataTable.Cell>
-          </DataTable.Row>
-          <DataTable.Row>
-            <DataTable.Cell>P. Sathish</DataTable.Cell>
-            <DataTable.Cell>902 522 4605</DataTable.Cell>
-          </DataTable.Row>
-          <DataTable.Row>
-            <DataTable.Cell>A. Natarajan</DataTable.Cell>
-            <DataTable.Cell>902 522 4606</DataTable.Cell>
-          </DataTable.Row>
-          <DataTable.Row>
-            <DataTable.Cell>L. Ramajayam</DataTable.Cell>
-            <DataTable.Cell>944 500 7183</DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
+        <Text style={styles.title}>Feedback</Text>
+        <Text style={{ color: Color.white }}>
+          <Text style={{ fontWeight: "bold", color: Color.regular }}>
+            Note:{" "}
+          </Text>{" "}
+          only rec student can submit feedback
+        </Text>
+        <View style={styles.contactContainer}>
+          {message ? (
+            <Text>{message}</Text>
+          ) : (
+            <>
+              {hasPermission === null && (
+                <Text>Requesting for camera permission</Text>
+              )}
+              {hasPermission === false && <Text>No access to camera</Text>}
+              {!state.link ? (
+                <>
+                  <BarCodeScanner
+                    onBarCodeScanned={
+                      scanned ? undefined : handleBarCodeScanned
+                    }
+                    style={styles.absoluteFillObject}
+                    type="back"
+                  />
+                  {!state.link && (
+                    <CustomButton
+                      style={styles.button}
+                      onPress={() => setScanned(false)}
+                    >
+                      <Text style={{ color: Color.white }}>Scan</Text>
+                    </CustomButton>
+                  )}
+                </>
+              ) : (
+                <Text style={{ marginBottom: 10 }}>{state.link}</Text>
+              )}
+
+              <TextInput
+                style={styles.input}
+                placeholder="Feedback"
+                placeholderTextColor={Color.bold}
+                multiline={true}
+                numberOfLines={5}
+                value={state.feedback}
+                onChangeText={(text) => {
+                  updateState({ feedback: text });
+                }}
+              />
+              <CustomButton style={styles.button} onPress={onSubmit}>
+                <Text style={{ color: Color.white }}>Submit</Text>
+              </CustomButton>
+            </>
+          )}
+        </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
@@ -99,8 +131,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: 20,
-    marginTop: 50,
+    paddingHorizontal: 20,
+    marginTop: 60,
   },
   title: {
     color: Color.bold,
@@ -125,6 +157,7 @@ const styles = StyleSheet.create({
   button: {
     height: 50,
     marginTop: 10,
+    marginBottom: 20,
     backgroundColor: Color.bold,
     display: "flex",
     alignItems: "center",

@@ -1,47 +1,59 @@
-import "./tracker.scss"
 import Datatable from "../../components/datatable/Datatable"
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteStop } from "../../store/action";
+import { createTracker, deleteTracker } from "../../store/action";
 import { Link } from "react-router-dom"
+import { useState } from "react";
 
 const Tracker = () => {
     const dispatch = useDispatch()
-    const stops = useSelector((state) => state.stops.stops)
+  const trackers = useSelector((state) => state.buses.trackers)
+  const [state, setState] = useState({gpsId: '', onBusRoute: ''})
 
   const handleDelete = (id) => {
-      // console.log(id)
-          dispatch(deleteStop(id))
-      };
-    
-    
-   const stopColumns = [
+          dispatch(deleteTracker(id))
+  };
+  
+  const handleSubmit = () => {
+    dispatch(createTracker(state))
+  }
+
+  const updateState = (data) => {
+   setState((state) => ({...state, ...data}))
+  }
+  
+   const trackerColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
         { field: "id", headerName: "ID", width: 200 },
         ,
         {
-          field: "stop",
-          headerName: "Stop",
-          width: 200,
-        },
-        {
-          field: "stopTiming",
-          headerName: "Timing",
+          field: "gpsId",
+          headerName: "GPS-ID",
           width: 100,
         },
         {
+          field: "onBus",
+          headerName: "Bus Route",
+          width: 100,
+     },
+     {
+      field: "bus",
+      headerName: "Bus-ID",
+      width: 250,
+ },
+        {
           field: "lat",
-          headerName: "Latitude",
+          headerName: "Current Latitude",
           width: 150,
         },
         {
           field: "lng",
-          headerName: "Longitude",
+          headerName: "Current Longitude",
           width: 150,
         },
         {
-          field: "address",
-          headerName: "Address",
-          width: 500,
+          field: "speed",
+          headerName: "Speed",
+          width: 100,
      },
      {
       field: "action",
@@ -63,16 +75,17 @@ const Tracker = () => {
     },
       ];
 
-    const stopRow = () => {
-        return stops.map((stop, i) => {
+    const trackerRow = () => {
+        return trackers.map((tracker, i) => {
           return {
             sno: i + 1,
-            id: stop.id,
-            stop: stop.name,
-            stopTiming: stop.timing,
-            lat: stop.coords.latitude,
-            lng: stop.coords.longitude,
-            address: stop.address ? stop.address : '-'
+            id: tracker.id,
+            gpsId: tracker.gpsId,
+            onBus: tracker.onBusRoute,
+            bus: tracker.bus ? tracker.bus: 'not yet assigned to bus',
+            lat: tracker.coords[0]?.latitude ? tracker.coords[0].latitude: 0,
+            lng: tracker.coords[0]?.longitude? tracker.coords[0].longitude: 0,
+            speed: tracker.speed
           }
         })
       }
@@ -82,12 +95,15 @@ const Tracker = () => {
       <div style={{padding: '10px 20px 10px 20px'}} >
            
               <div className="datatableTitle">
-        Add New Stop
-        <Link to="/stop/new" className="link">
-          Add New
-        </Link>
-      </div>
-              <Datatable row={stopRow()} column={stopColumns} />
+        Trackers
+        </div>
+        <div className="create__notification__container">
+        <input placeholder="GPS-ID" className="create__notification__input" value={state.gpsId} onChange={(e) => updateState({gpsId: e.target.value})} />
+        <input placeholder="On Bus Route" className="create__notification__input" value={state.onBusRoute}  onChange={(e) => updateState({onBusRoute: e.target.value})} />
+        <button onClick={handleSubmit}>create</button>
+        </div>
+ 
+              <Datatable row={trackerRow()} column={trackerColumns} />
           </div>
   
  
