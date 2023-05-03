@@ -2,6 +2,8 @@ import { app, httpServer } from "./app"
 import mongoose from "mongoose"
 import { connection } from './socket'
 
+const PORT = process.env.PORT || 4000
+
 const start = async () => {
     if (!process.env.MONGO_URI) {
       throw new Error("MONGO_URI is required")
@@ -15,7 +17,7 @@ const start = async () => {
         console.error(err)
     }
  
-    httpServer.listen(4000, () => {
+    httpServer.listen(PORT, () => {
         console.log('listening on port 4000')
     })
 }

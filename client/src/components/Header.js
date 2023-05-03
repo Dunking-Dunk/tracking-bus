@@ -41,13 +41,15 @@ const Header = ({ navigation, searchRequired }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
+    position: "absolute",
+    zIndex: 1,
   },
   input: {
     position: "absolute",
     width: "70%",
     height: 50,
     backgroundColor: Color.light,
-    zIndex: 1,
+    zIndex: 2,
     right: 30,
     top: 60,
     padding: 10,
@@ -56,7 +58,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   headerMenuContainer: {
-    zIndex: 1,
     position: "absolute",
     top: 60,
     left: 15,

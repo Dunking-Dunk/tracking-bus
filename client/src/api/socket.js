@@ -10,7 +10,7 @@ import {
 
 class Socket {
   constructor() {
-    this.url = "https://4d46-49-204-114-214.in.ngrok.io";
+    this.url = "https://bus-tracking-server.azurewebsites.net/";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,

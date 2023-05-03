@@ -132,8 +132,6 @@ export default Home = ({ navigation }) => {
           </Container>
         );
       });
-    } else {
-      return <Text style={styles.title}>No Stops near by</Text>;
     }
   }, [nearByStops]);
 
@@ -224,10 +222,14 @@ export default Home = ({ navigation }) => {
             <Text style={styles.announcementTitle}>Announcements</Text>
           </Container>
           <Text style={styles.title}>STOPS NEARBY</Text>
-          {renderNearByStops()}
+          {nearByStops?.length > 0 ? (
+            renderNearByStops()
+          ) : (
+            <Text style={styles.title}>No Stops near by</Text>
+          )}
           <Text style={{ ...styles.title, marginTop: 20 }}>BUS NEARBY</Text>
 
-          {nearByBuses ? (
+          {nearByBuses?.length > 0 ? (
             renderNearByBuses()
           ) : (
             <Text style={styles.title}>No Bus near by</Text>

@@ -7,7 +7,7 @@ import {
   MaterialIcons,
   FontAwesome,
 } from "@expo/vector-icons";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { useColorScheme } from "react-native";
 import { DarkTheme, LightTheme } from "./src/utils/Color";
 
@@ -20,16 +20,16 @@ import Contact from "./src/screens/Contact";
 import AnnouncementScreen from "./src/screens/Announcement";
 import { configureStore } from "./src/store/reducer";
 import FlashMessage from "react-native-flash-message";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNotification } from "./src/hooks/use-notification";
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigation = ({ darkMode, setDarkMode }) => {
+const DrawerNavigation = () => {
   const { colors } = useTheme();
   return (
     <Drawer.Navigator
-      useLegacyImplementation
+      initialRouteName="Home"
       drawerContent={(props) => (
         <CustomDrawerContent
           {...props}
@@ -105,12 +105,17 @@ export default function App() {
   const scheme = useColorScheme();
   const [darkMode, setDarkMode] = useState(true);
   const notification = useNotification();
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   new useLocation(dispatch);
+  // }, [dispatch]);
 
   return (
     <Provider store={store}>
       <NavigationContainer theme={scheme ? DarkTheme : LightTheme}>
         <StatusBar hidden={false} />
-        <DrawerNavigation setDarkMode={setDarkMode} darkMode={darkMode} />
+        <DrawerNavigation />
         <FlashMessage position="bottom" />
       </NavigationContainer>
     </Provider>

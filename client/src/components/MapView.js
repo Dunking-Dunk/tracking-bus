@@ -1,4 +1,4 @@
-import { memo, useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Text,
   Dimensions,
@@ -8,11 +8,16 @@ import {
   View,
   Image,
 } from "react-native";
-import MapView, { Marker, Circle, AnimatedRegion } from "react-native-maps";
+import MapView, {
+  Marker,
+  Circle,
+  AnimatedRegion,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { GOOGLE_MAPS_API_KEY } from "@env";
 import Color from "../utils/Color";
+import { GOOGLE_API_KEY } from "@env";
 import Loader from "./LoadingAnimation";
 import StopMarker from "./StopMarker";
 import { useTheme } from "@react-navigation/native";
@@ -20,6 +25,7 @@ import { darkMap, standardMap } from "../utils/mapStyle";
 import { EventRegister } from "react-native-event-listeners";
 import { useSelector } from "react-redux";
 import RecFlagMarker from "../utils/RecFlagMarker";
+// @ts-nocheck
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
@@ -135,23 +141,23 @@ const map = ({
       setRouteInfo((state) => ({ ...state, elapsedTime: t, distance: d }));
     }
   };
-
   if (state.userCoords) {
     return (
-      <>
+      <View style={{ flex: 1 }}>
+        {/* <Canvas>
+          <ambientLight /> */}
+
         <MapView
           style={{ ...mapStyle, ...styles.map }}
           initialRegion={{
-            ...state.userCoords,
+            latitude: state.userCoords.latitude,
+            longitude: state.userCoords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
-          apikey={GOOGLE_MAPS_API_KEY}
-          provider="google"
-          userInterfaceStyle="dark"
+          provider={PROVIDER_GOOGLE}
           ref={mapRef}
           customMapStyle={dark ? darkMap : standardMap}
-          key={1}
         >
           {allStops &&
             allStops.map((stop) => {
@@ -169,21 +175,20 @@ const map = ({
                   key={bus.id}
                   tracksViewChanges={false}
                 >
-                  <View>
-                    <View style={styles.busTracker}>
-                      <Text
-                        style={{
-                          color: Color.white,
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {bus.onBusRoute}
-                      </Text>
-                    </View>
+                  <View style={styles.busTracker}>
+                    <Text
+                      style={{
+                        color: Color.white,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {bus.onBusRoute}
+                    </Text>
                   </View>
                 </Marker.Animated>
               );
             })}
+
           {busLiveLocation && (
             <Marker.Animated
               coordinate={busLiveLocation.coords[0]}
@@ -209,9 +214,9 @@ const map = ({
                 destination={direction.destination}
                 strokeWidth={3}
                 strokeColor={Color.regular}
-                apikey={GOOGLE_MAPS_API_KEY}
                 lineCap="round"
                 lineJoin="round"
+                apikey={GOOGLE_API_KEY}
                 optimizeWaypoints={true}
                 onReady={(result) => {
                   console.log(`Distance: ${result.distance} km`);
@@ -245,7 +250,7 @@ const map = ({
             <FontAwesome name="circle-o" size={18} color={Color.blue} />
           </Marker.Animated>
         </MapView>
-
+        {/* </Canvas> */}
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -257,7 +262,7 @@ const map = ({
         >
           <MaterialIcons name="gps-fixed" size={34} color={Color.light} />
         </TouchableOpacity>
-      </>
+      </View>
     );
   } else {
     return <Loader size="large" color={Color.regular} />;
@@ -268,6 +273,7 @@ export { Map };
 
 const styles = StyleSheet.create({
   map: {
+    ...StyleSheet.absoluteFillObject,
     marginBottom: Dimensions.get("screen").height / 5.5,
   },
   busTracker: {

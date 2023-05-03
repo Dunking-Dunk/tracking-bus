@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
+    zIndex: 5,
   },
   title: {
     color: Color.white,

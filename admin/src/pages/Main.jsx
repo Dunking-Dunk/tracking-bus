@@ -33,7 +33,7 @@ const Main = () => {
     dispatch(getAllGpsTracker())
   }, [])
 
-  if (user) {
+  // if (user) {
     return (
       <div className='main'>
           <Sidebar />
@@ -68,17 +68,17 @@ const Main = () => {
       </div>
 
   )
-  } else {
-    return (
-      <div className="main__container">
-        <h1 className="error">Please login to access admin dashboard</h1>
-        <button onClick={() => {
-          navigate('/login')
-        }}>SignIn</button>
-      </div>
+  // } else {
+  //   return (
+  //     <div className="main__container">
+  //       <h1 className="error">Please login to access admin dashboard</h1>
+  //       <button onClick={() => {
+  //         navigate('/login')
+  //       }}>SignIn</button>
+  //     </div>
      
-    )
-  }
+  //   )
+  // }
 
 
 }

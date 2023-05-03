@@ -35,7 +35,7 @@ export class CalcDistance {
           this.userCoords.longitude
         );
 
-        if (distance < 5) {
+        if (distance < 2) {
           return bus;
         }
       });

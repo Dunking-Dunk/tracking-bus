@@ -17,7 +17,6 @@ const List = () => {
    const stopColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
         { field: "id", headerName: "ID", width: 200 },
-        ,
         {
           field: "stop",
           headerName: "Stop",
@@ -60,7 +59,7 @@ const List = () => {
           </div>
         );
       },
-    },
+    }
       ];
 
     const stopRow = () => {

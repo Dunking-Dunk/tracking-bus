@@ -23,6 +23,13 @@ class GetUserLocation {
     this.getUserLocation();
   }
 
+  async getUserLocation() {
+    setInterval(async () => {
+      const location = await Location.getCurrentPositionAsync();
+      this.dispatch(getUserLocation(location));
+    }, 2000);
+  }
+
   // defineTask() {
   //   TaskManager.defineTask(this.TASK_NAME, async ({ data, error }) => {
   //     if (error) {
@@ -39,15 +46,6 @@ class GetUserLocation {
   //     }
   //   });
   // }
-
-  async getUserLocation() {
-    setInterval(async () => {
-      const location = await Location.getCurrentPositionAsync();
-      this.dispatch(getUserLocation(location));
-    }, 10000);
-
-    // this.getUserLocationBackground();
-  }
 
   // getUserLocationBackground() {
   //   Location.startLocationUpdatesAsync(this.TASK_NAME, {
