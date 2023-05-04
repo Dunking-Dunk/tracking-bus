@@ -40,6 +40,7 @@ const map = ({
   busesLiveLocation,
   busLiveLocation,
   detail,
+  navigation
 }) => {
   const userCoords = useSelector((state) => state.user.user);
   const { dark } = useTheme();
@@ -122,7 +123,7 @@ const map = ({
         markerRef.current.animateMarkerToCoordinate(newCoordinate, 7000);
       }
     } else {
-      state.coordinate.timing(newCoordinate).start();
+      state.coordinate?.timing(newCoordinate).start();
     }
   };
 
@@ -161,7 +162,7 @@ const map = ({
         >
           {allStops &&
             allStops.map((stop) => {
-              return <StopMarker stop={stop} key={stop.id} showBus={true} />;
+              return <StopMarker stop={stop} key={stop.id} showBus={true} navigation={navigation}/>;
             })}
 
           {busesLiveLocation &&

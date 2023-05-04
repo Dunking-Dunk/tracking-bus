@@ -104,7 +104,7 @@ export default function App() {
   const store = configureStore();
   const scheme = useColorScheme();
   const [darkMode, setDarkMode] = useState(true);
-  const notification = useNotification();
+  // const notification = useNotification();
   // const dispatch = useDispatch();
 
   // useEffect(() => {

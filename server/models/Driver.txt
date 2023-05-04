@@ -1,0 +1,4 @@
+Name
+phone number
+photoUrl
+busId

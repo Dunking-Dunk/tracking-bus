@@ -29,6 +29,7 @@ export default Home = ({ navigation }) => {
   const [nearByStops, setNearByStops] = useState([]);
   const [nearByBuses, setNearByBuses] = useState([]);
   const [busesLocation, getBusesLocations] = useState([]);
+  const [dragUp, setDragUp] = useState(true)
 
   const isFocused = useIsFocused();
   const open = useSharedValue(false);
@@ -70,6 +71,7 @@ export default Home = ({ navigation }) => {
   };
 
   const getBusHandler = (bus) => {
+
     dispatch(getBus(bus)).then(() => {
       navigation.navigate("BusDetail", { busId: bus });
     });
@@ -173,6 +175,7 @@ export default Home = ({ navigation }) => {
       onPress={() => {
         open.value = false;
         offsetTop.value = 0;
+        setDragUp(false)
       }}
     >
       <Header searchRequired={false} navigation={navigation} />
@@ -206,12 +209,13 @@ export default Home = ({ navigation }) => {
           mapStyle={styles.map}
           allStops={stops}
           busesLiveLocation={busesLocation}
+          navigation={navigation}
         />
       ) : (
         <Loader color={Color.regular} size="large" />
       )}
 
-      <DragUpView>
+      <DragUpView dragUp={dragUp} setDragUp={setDragUp}>
         <ScrollView style={styles.dragContainer}>
           <Container
             style={styles.announcementContainer}

@@ -9,57 +9,8 @@ import {
 import Header from "../components/Header";
 import Color from "../utils/Color";
 import { DataTable } from "react-native-paper";
-import CustomButton from "../components/CustomButton";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { createFeedback } from "../store/action";
 
 const Contact = ({ navigation }) => {
-  const [state, setState] = useState({
-    link: "",
-    feedback: "",
-  });
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(true);
-  const [message, setMessage] = useState("");
-  const dispatch = useDispatch();
-
-  const updateState = (data) => {
-    setState((state) => ({ ...state, ...data }));
-  };
-
-  useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    };
-
-    getBarCodeScannerPermissions();
-  }, []);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    updateState({ link: data });
-  };
-
-  const onSubmit = () => {
-    if (
-      state.link.includes("https://www.rajalakshmi.org") &&
-      state.feedback.length > 5
-    ) {
-      dispatch(createFeedback(state)).then(() => {
-        setMessage("SUCCESSFULLY SUBMITTED");
-        setTimeout(() => {
-          setMessage("");
-        }, 3000);
-      });
-      setState({
-        link: "",
-        feedback: "",
-      });
-    }
-  };
 
   return (
     <>
