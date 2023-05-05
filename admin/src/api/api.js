@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://bus-tracking-server.azurewebsites.net/api",
-  withCredentials: false,
+  baseURL: "http://localhost:4000/api",
+  withCredentials: true,
 });

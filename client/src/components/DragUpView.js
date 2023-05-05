@@ -4,7 +4,7 @@ import Animated, {
   withSpring,
   useAnimatedGestureHandler,
   withTiming,
-  Easing
+  Easing,
 } from "react-native-reanimated";
 import { useEffect } from "react";
 import { PanGestureHandler } from "react-native-gesture-handler";
@@ -12,7 +12,7 @@ import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import Color from "../utils/Color";
 import { EventRegister } from "react-native-event-listeners";
 
-const DragUpView = ({ children, setDragUp, dragUp }) => {
+const DragUpView = ({ children }) => {
   const dimension = Dimensions.get("window");
   const open = useSharedValue(false);
   const y = useSharedValue(dimension.height / 3.5);
@@ -22,21 +22,13 @@ const DragUpView = ({ children, setDragUp, dragUp }) => {
       height: withTiming(y.value, {
         duration: 800,
         easing: Easing.out(Easing.exp),
-      })
+      }),
     };
   });
 
-  // useEffect(() => {
-  //   if (!dragUp) {
-  //     y.value = dimension.height / 3.5;
-  //     setDragUp(true)
-  //   }
-
-  // },[dragUp])
-
   useEffect(() => {
     const listener = EventRegister.addEventListener("CloseDragUp", () => {
-      y.value = dimension.height / 3.5;
+      y.value = dimension.height / 3.2;
     });
     return () => {
       EventRegister.removeEventListener(listener);

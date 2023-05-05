@@ -15,8 +15,9 @@ const Login = () => {
     e.preventDefault()
     dispatch(signIn({ email, password })).then(() => {
         navigate('/')
-      }).catch ((error) => {
-        setErrors(error.response.data.errors)
+    }).catch((error) => {
+
+        setErrors(error.response?.data.errors)
       })
     setEmail('')
     setPassword('')

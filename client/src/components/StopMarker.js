@@ -9,8 +9,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { getBus } from "../store/action";
 
 const StopMarker = ({ stop, showBus, navigation }) => {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
   const getBusHandler = (bus) => {
     dispatch(getBus(bus)).then(() => {
       navigation.navigate("BusDetail", { busId: bus });
@@ -25,10 +25,12 @@ const StopMarker = ({ stop, showBus, navigation }) => {
       tracksViewChanges={false}
     >
       <MaterialCommunityIcons name="bus-stop" size={24} color={Color.bold} />
-      <Callout tooltip onPress={() => {
-        if (stop.busId[0])
-        getBusHandler(stop.busId[0]?.id)}
-    }>
+      <Callout
+        tooltip
+        onPress={() => {
+          if (stop.busId[0]) getBusHandler(stop.busId[0]?.id);
+        }}
+      >
         <View>
           <View style={styles.bubble}>
             <View style={styles.row}>
@@ -54,12 +56,11 @@ const StopMarker = ({ stop, showBus, navigation }) => {
                 <Container
                   style={styles.busImageContainer}
                   key={stop.busId[0]?.id}
-                  
                 >
                   <View style={styles.ImageSubContainer}>
                     <FontAwesome5
                       name="bus"
-                      size={24}
+                      size={20}
                       color={Color.semiBold}
                       style={{
                         backgroundColor: Color.light,
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   ImageSubContainer: {
-    width: '90%',
+    width: "90%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -140,8 +141,9 @@ const styles = StyleSheet.create({
   },
 
   routeText: {
-    textTransform: "uppercase",
+    textTransform: "capitalize",
     color: Color.white,
+    fontSize: 12,
   },
 });
 
