@@ -22,3 +22,5 @@ export const QUICK__STATS = "QUICK__STATS";
 export const GET_ALL_TRACKERS = "GET_ALL_TRACKERS";
 export const DELETE_TRACKER = "DELETE_TRACKER";
 export const CREATE_TRACKER = "CREATE_TRACKER";
+export const CREATE_DRIVER = "CREATE_DRIVER";
+export const GET_ALL_DRIVER = "GET_ALL_DRIVER";

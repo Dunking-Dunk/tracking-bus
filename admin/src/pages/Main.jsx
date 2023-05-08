@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import './Main.scss'
 import { useEffect } from "react";
-import { getAllGpsTracker, getAllStop, getAllBuses, currentUser, getQuickStats } from "../store/action";
+import { getAllGpsTracker, getAllStop, getAllBuses, currentUser, getQuickStats, getAllDriver } from "../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 
@@ -18,7 +18,7 @@ import Feedback from './feedback/Feedback'
 import BusView from "./bus/BusView";
 import Notification from "./notification/Notification"
 import Tracker from "./tracker/Tracker";
-
+import Drivers from "./drivers/Drivers";
 
 const Main = () => {
   const dispatch = useDispatch()
@@ -31,6 +31,7 @@ const Main = () => {
     dispatch(getAllGpsTracker())
     dispatch(getQuickStats())
     dispatch(getAllGpsTracker())
+    dispatch(getAllDriver())
   }, [])
 
   if (user) {
@@ -61,6 +62,9 @@ const Main = () => {
           <Route path="feedback" element={<Feedback/>} />
           <Route path="notification">
             <Route index element={<Notification/>} />
+            </Route>
+            <Route path="driver">
+            <Route index element={<Drivers/>} />
           </Route>
       </Routes>
           </div>

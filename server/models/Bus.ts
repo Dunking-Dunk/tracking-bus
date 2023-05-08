@@ -67,6 +67,10 @@ export const Schema = new mongoose.Schema({
     status: {
         type:Boolean
     },
+    driver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Driver'
+    },
     // morningDepatureTime: {
     //     type: String,
     // },

@@ -23,6 +23,8 @@ import {
   GET_ALL_TRACKERS,
   DELETE_TRACKER,
   CREATE_TRACKER,
+  CREATE_DRIVER,
+  GET_ALL_DRIVER,
 } from "./actionType";
 import moment from "moment";
 
@@ -335,6 +337,30 @@ export const createTracker = (tracker) => async (dispatch) => {
     const { data } = await api.post(`/gps-tracking/`, tracker);
     dispatch({
       type: CREATE_TRACKER,
+      payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+//////////////////////////DRIVER///////////////////////////////////
+export const createDriver = (driver) => async (dispatch) => {
+  try {
+    const { data } = await api.post(`/driver/`, driver);
+    dispatch({
+      type: CREATE_DRIVER,
+      payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getAllDriver = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/driver/`);
+    dispatch({
+      type: GET_ALL_DRIVER,
       payload: data,
     });
   } catch (err) {

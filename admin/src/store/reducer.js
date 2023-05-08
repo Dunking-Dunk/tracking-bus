@@ -7,6 +7,7 @@ import userReducer from "./userReducer";
 import notificationsReducer from "./notificationReducer";
 import feedbackReducer from "./feedbackReducer";
 import statsReducer from "./statsReducer";
+import driverReducer from "./driverReducer";
 
 const rootReducer = combineReducers({
   buses: busReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   notifications: notificationsReducer,
   feedbacks: feedbackReducer,
   stats: statsReducer,
+  drivers: driverReducer,
 });
 
 const configureStore = () => {

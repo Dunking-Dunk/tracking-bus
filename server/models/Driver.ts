@@ -5,14 +5,20 @@ interface DriverAttrs {
     name: string,
     busId?: BusDoc[],
     phoneNumber: number,
-    photoUrl: Buffer
+    photoUrl: {
+        data: Buffer,
+        contentType: string
+    }
 }
 
 export interface DriverDoc extends mongoose.Document {
     name: string,
     phoneNumber: number,
     busId?: BusDoc[],
-    photoUrl: Buffer
+    photoUrl: {
+        data: Buffer,
+        contentType: string
+    }
 }
 
 interface DriverModel extends mongoose.Model<DriverDoc> {
@@ -30,7 +36,7 @@ const driverSchema = new mongoose.Schema({
         required: true,
     },
     photoUrl: {
-        type: Buffer,
+        data: Buffer,
         contentType: String
     },
     busId: {
@@ -56,6 +62,6 @@ driverSchema.statics.build = (attrs: DriverAttrs) => {
 
 // });
 
-const Driver = mongoose.model<DriverDoc, DriverModel>('Stop', driverSchema)
+const Driver = mongoose.model<DriverDoc, DriverModel>('Driver', driverSchema)
 
 export {Driver}

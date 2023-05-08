@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from '../../store/action'
 import { useDispatch, useSelector } from 'react-redux'
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import PersonIcon from '@mui/icons-material/Person';
 
 const Sidebar = () => {
   const Dispatch = useDispatch()
@@ -56,6 +57,12 @@ const Sidebar = () => {
             <li>
               <StoreIcon className="icon" />
               <span>Stops</span>
+            </li>
+          </Link>
+          <Link to="/driver" style={{ textDecoration: "none" }}>
+            <li>
+              <PersonIcon className="icon" />
+              <span>Drivers</span>
             </li>
           </Link>
           <Link to="/tracker" style={{ textDecoration: "none" }}>

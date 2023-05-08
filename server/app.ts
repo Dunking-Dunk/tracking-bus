@@ -42,12 +42,17 @@ import { signoutRouter } from './routes/admin-auth/signout';
 import { currentUserRouter } from './routes/admin-auth/current-user';
 import { DeleteTracker } from './routes/tracking/delete';
 
+import { GetDriver } from './routes/driver/get';
+import { NewDriver } from './routes/driver/new';
+import { GetAllDriver } from './routes/driver';
+
 const app = express();
 
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 app.set('trust proxy', true)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/', express.static('drivers'))
 
 const httpServer = createServer(app)
 const io = new Server(httpServer)
@@ -91,6 +96,11 @@ app.use(signinRouter)
 app.use(signupRouter)
 app.use(signoutRouter)
 app.use(currentUserRouter)
+
+app.use(GetAllDriver)
+app.use(NewDriver)
+app.use(GetDriver)
+
 
 
 app.use('*', async(req, res) => { 
