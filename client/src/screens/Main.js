@@ -1,17 +1,105 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./Home";
-import BusDetail from "./BusDetail";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialIcons,
+  FontAwesome,
+} from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import useLocation from "../hooks/use-location";
 import { useAppState } from "../hooks/use-appState";
 import { appStatusState } from "../store/action";
+import Color from "../utils/Color";
+import CustomDrawerContent from "../components/CustomDrawerContent";
+import AllBus from "./AllBus";
+import Feedback from "./Feedback";
+import Contact from "./Contact";
+import Home from "./Home";
+import AnnouncementScreen from "./Announcement";
+import { useTheme } from "@react-navigation/native";
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigation = () => {
+  const { colors } = useTheme();
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={(props) => (
+        <CustomDrawerContent
+          {...props}
+          // colors={colors}
+          // darkMode={darkMode}
+          // setDarkMode={setDarkMode}
+        />
+      )}
+      screenOptions={{
+        drawerActiveBackgroundColor: Color.bold,
+        drawerActiveTintColor: Color.light,
+        drawerStatusBarAnimation: "fade",
+        swipeEnabled: true,
+        headerShown: false,
+        drawerInactiveTintColor: colors.secondary,
+      }}
+    >
+      <Drawer.Screen
+        component={Home}
+        name="Home"
+        options={{
+          drawerIcon: () => (
+            <FontAwesome5 name="home" size={24} color={colors.secondary} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={AllBus}
+        name="Bus Routes"
+        options={{
+          drawerIcon: () => (
+            <FontAwesome5 name="bus" size={24} color={colors.secondary} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={AnnouncementScreen}
+        name="Announcements"
+        options={{
+          drawerIcon: () => (
+            <MaterialIcons
+              name="announcement"
+              size={24}
+              color={colors.secondary}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={Feedback}
+        name="Feedback"
+        options={{
+          drawerIcon: () => (
+            <FontAwesome name="comments" size={24} color={colors.secondary} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={Contact}
+        name="Contact"
+        options={{
+          drawerIcon: () => (
+            <Ionicons name="call" size={24} color={colors.secondary} />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 export default BusRoute = () => {
   const dispatch = useDispatch();
   const appState = useAppState();
+
   useEffect(() => {
     new useLocation(dispatch);
   }, [dispatch]);
@@ -20,16 +108,5 @@ export default BusRoute = () => {
     dispatch(appStatusState(appState));
   }, [dispatch, appState]);
 
-  return (
-    <Stack.Navigator
-      initialRouteName="home"
-      screenOptions={{
-        animationEnabled: true,
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="home" component={Home} />
-      <Stack.Screen name="BusDetail" component={BusDetail} />
-    </Stack.Navigator>
-  );
+  return <DrawerNavigation />;
 };

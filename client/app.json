@@ -3,9 +3,12 @@
     "name": "REC Bus",
     "slug": "rec-bus",
     "version": "1.0.0",
+    "currentFullName": "@hursun/rec-bus",
+    "originalFullName": "@hursun/rec-bus",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "scheme": "home",
     "splash": {
       "image": "./assets/rec-icon-3.png",
       "resizeMode": "contain",

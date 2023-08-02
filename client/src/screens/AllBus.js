@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import Header from "../components/Header";
 import Color from "../utils/Color";
-import CustomButton from "../components/CustomButton";
 import { getBuses, refreshBuses } from "../store/action";
 import {
   FontAwesome5,

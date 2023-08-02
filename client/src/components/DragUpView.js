@@ -7,24 +7,17 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import { useEffect } from "react";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import {
+  PanGestureHandler,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import Color from "../utils/Color";
 import { EventRegister } from "react-native-event-listeners";
 
 const DragUpView = ({ children }) => {
   const dimension = Dimensions.get("window");
-  const open = useSharedValue(false);
   const y = useSharedValue(dimension.height / 3.5);
-
-  const animatedHeight = useAnimatedStyle(() => {
-    return {
-      height: withTiming(y.value, {
-        duration: 800,
-        easing: Easing.out(Easing.exp),
-      }),
-    };
-  });
 
   useEffect(() => {
     const listener = EventRegister.addEventListener("CloseDragUp", () => {
@@ -35,6 +28,15 @@ const DragUpView = ({ children }) => {
     };
   }, []);
 
+  const animatedHeight = useAnimatedStyle(() => {
+    return {
+      height: withTiming(y.value, {
+        duration: 800,
+        easing: Easing.out(Easing.exp),
+      }),
+    };
+  });
+
   const eventHandler = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.startY = event.y;
@@ -43,20 +45,31 @@ const DragUpView = ({ children }) => {
       if (event.translationY < ctx.startY) {
         y.value = dimension.height / 1.2;
       } else {
-        y.value = dimension.height / 3.2;
+        y.value = dimension.height / 3.5;
       }
     },
   });
 
   return (
-    <PanGestureHandler onGestureEvent={eventHandler}>
-      <Animated.View style={[styles.container, animatedHeight]}>
-        <TouchableHighlight style={styles.upGestureBtn}>
-          <></>
-        </TouchableHighlight>
-        <View style={styles.subContainer}>{children}</View>
-      </Animated.View>
-    </PanGestureHandler>
+    <Animated.View style={[styles.container, animatedHeight]}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <PanGestureHandler onGestureEvent={eventHandler}>
+          <Animated.View
+            style={{
+              flex: 1,
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <TouchableHighlight style={styles.upGestureBtn}>
+              <></>
+            </TouchableHighlight>
+            <View style={styles.subContainer}>{children}</View>
+          </Animated.View>
+        </PanGestureHandler>
+      </GestureHandlerRootView>
+    </Animated.View>
   );
 };
 
@@ -64,7 +77,6 @@ export default DragUpView;
 
 const styles = StyleSheet.create({
   container: {
-    height: "25%",
     position: "absolute",
     backgroundColor: Color.semiBold,
     width: "100%",
@@ -84,15 +96,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   upGestureBtn: {
+    zIndex: 2,
     width: 150,
     height: 5,
     borderRadius: 10,
     position: "absolute",
-    top: 15,
+    top: -15,
     left: "50%",
     transform: [
       {
-        translateX: -60,
+        translateX: -70,
       },
     ],
     backgroundColor: Color.bold,

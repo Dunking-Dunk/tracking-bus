@@ -19,6 +19,7 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
+import useLocation from "../hooks/use-location";
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,8 @@ export default Home = ({ navigation }) => {
   const offsetTop = useSharedValue(0);
 
   useEffect(() => {
+    new useLocation(dispatch);
+
     dispatch(getAllStop());
     dispatch(getQuickStats());
   }, [dispatch]);
