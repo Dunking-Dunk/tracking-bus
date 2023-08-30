@@ -23,7 +23,7 @@ const Tracker = () => {
   
    const trackerColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
-        { field: "id", headerName: "ID", width: 200 },
+        { field: "id", headerName: "ID", width: 250 },
         ,
         {
           field: "gpsId",

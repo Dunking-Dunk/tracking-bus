@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/api/gps-tracking/:id', async (req: Request, res: Response) => {
     const { id } = req.params
     const {lat, lng} = req.query
+    console.log(lat,lng)
     const trackers = await Tracker.findOneAndUpdate({ gpsId: id }, {
         $push: {
             coords: {
