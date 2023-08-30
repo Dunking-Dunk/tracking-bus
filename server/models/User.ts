@@ -5,6 +5,7 @@ interface UserAttrs {
     email: string;
     password: string;
     name: string;
+    role: string;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> { 
@@ -15,6 +16,7 @@ interface UserDoc extends mongoose.Document {
     email: string;
     password: string;
     name: string;
+    role: string;
 }
 
 const userSchema = new mongoose.Schema({
@@ -29,6 +31,11 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required:true
+    },
+    role: {
+        type: String,
+        required: true,
+        default: 'user'
     }
 }, {
     toJSON: {

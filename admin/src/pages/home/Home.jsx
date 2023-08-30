@@ -1,12 +1,9 @@
 import "./home.scss";
-import Navbar from "../../components/navbar/Navbar";
 import Widget from "../../components/widget/Widget";
 import Featured from "../../components/featured/Featured";
 import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
-import GoogleMapReact from 'google-map-react';
 import { useSelector } from 'react-redux'
-import StopMarker from '../../components/marker/Marker'
 import MapView from "../../components/map/MapView";
 
 

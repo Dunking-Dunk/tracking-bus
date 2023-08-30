@@ -3,10 +3,11 @@ dotenv.config()
 import express from "express";
 import 'express-async-errors'
 import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import {v2 as cloudinary} from 'cloudinary'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import cookieSession from 'cookie-session'
 
 import { currentUser } from './middleware/current-user';
 
@@ -36,33 +37,35 @@ import { NewFeedback } from './routes/feedback/new';
 import { GetAllFeedback } from './routes/feedback/index';
 import { DeleteFeedback } from './routes/feedback/delete';;
 
-import { signinRouter } from './routes/admin-auth/signin';
-import { signupRouter } from './routes/admin-auth/signup';
-import { signoutRouter } from './routes/admin-auth/signout';
-import { currentUserRouter } from './routes/admin-auth/current-user';
+import { signinRouter } from './routes/auth/signin';
+import { signupRouter } from './routes/auth/signup';
+import { signoutRouter } from './routes/auth/signout';
+import { currentUserRouter } from './routes/auth/current-user';
 import { DeleteTracker } from './routes/tracking/delete';
 
 import { GetDriver } from './routes/driver/get';
 import { NewDriver } from './routes/driver/new';
 import { GetAllDriver } from './routes/driver';
+import {DeleteDriver} from './routes/driver/delete'
 
 const app = express();
 
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_API_KEY,
+  });
+
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
-app.set('trust proxy', true)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/', express.static('drivers'))
+app.use(cookieParser())
+
 
 const httpServer = createServer(app)
 const io = new Server(httpServer)
-
-app.use(cookieSession({
-    signed: false,
-    secure: false,
-    httpOnly: false
-}))
-
 
 app.use(currentUser)
 
@@ -100,6 +103,7 @@ app.use(currentUserRouter)
 app.use(GetAllDriver)
 app.use(NewDriver)
 app.use(GetDriver)
+app.use(DeleteDriver)
 
 
 

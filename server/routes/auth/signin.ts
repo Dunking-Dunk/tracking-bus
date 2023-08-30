@@ -26,14 +26,20 @@ router.post('/api/users/signin', [
         }
             const userJwt = jwt.sign({
                 id: existingUser.id,
-                email: existingUser.email,
-                name: existingUser.name
-              }, process.env.JWT_KEY!)
-             
-              req.session = {
-                jwt: userJwt,
-              }
-          res.status(200).send(existingUser)
+            }, process.env.JWT_KEY!, {
+                  expiresIn: process.env.JWT_EXPIRATION
+              })
+        const options: {
+            expires: any,
+            httpOnly: boolean
+        } = {
+            expires:  new Date(
+                Date.now() +  24 * 60 * 60 * 1000 * 2
+              ),
+            httpOnly: true
+        }
+
+          res.status(200).cookie('token', userJwt, options).json(existingUser)
 })
 
 export {router as signinRouter}

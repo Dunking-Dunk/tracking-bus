@@ -40,7 +40,7 @@ const map = ({
   busesLiveLocation,
   busLiveLocation,
   detail,
-  navigation
+  navigation,
 }) => {
   const userCoords = useSelector((state) => state.user.user);
   const { dark } = useTheme();
@@ -162,7 +162,14 @@ const map = ({
         >
           {allStops &&
             allStops.map((stop) => {
-              return <StopMarker stop={stop} key={stop.id} showBus={true} navigation={navigation}/>;
+              return (
+                <StopMarker
+                  stop={stop}
+                  key={stop.id}
+                  showBus={true}
+                  navigation={navigation}
+                />
+              );
             })}
 
           {busesLiveLocation &&
@@ -217,7 +224,7 @@ const map = ({
                 strokeColor={Color.regular}
                 lineCap="round"
                 lineJoin="round"
-                apikey={GOOGLE_API_KEY}
+                apikey={process.env.REACT_APP_GOOGLE_API_KEY}
                 optimizeWaypoints={true}
                 onReady={(result) => {
                   console.log(`Distance: ${result.distance} km`);

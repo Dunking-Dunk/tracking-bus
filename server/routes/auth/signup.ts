@@ -7,6 +7,16 @@ import jwt from 'jsonwebtoken'
 
 const router = express.Router();
 
+const options: {
+  expires: any,
+  httpOnly: boolean
+} = {
+  expires:  new Date(
+      Date.now() +  24 * 60 * 60 * 1000 * 2
+    ),
+  httpOnly: true
+}
+
 router.post('/api/users/signup',
   [body('email').isEmail().withMessage('Email must be valid'),
       body('name').isLength({ min: 5 }).withMessage('name must be greater than 5 characters'),
@@ -14,7 +24,7 @@ router.post('/api/users/signup',
   ,ValidateRequest,
   async (req: Request, res: Response) => {
     
-        const { email, password, name } = req.body
+        const { email, password, name, role } = req.body
         
         const existingUser = await User.findOne({ email })
         
@@ -22,20 +32,16 @@ router.post('/api/users/signup',
            throw new BadRequestError('email in use')
         }
 
-        const user = User.build({ email, password, name })
-      await user.save()
-      //Generate JWT
-      const userJwt = jwt.sign({
-        id: user.id,
-        email: user.email,
-      }, process.env.JWT_KEY!)
-
-      req.session = {
-        jwt: userJwt,
-      }
-
-      res.status(201).send(user)
+        const user = User.build({ email, password, name, role })
+    await user.save()
     
+            const userJwt = jwt.sign({
+                id: user.id,
+            }, process.env.JWT_KEY!, {
+                  expiresIn: process.env.JWT_EXPIRATION
+              })
+
+          res.status(200).cookie('token', userJwt, options).json(user)
 })
 
 export {router as signupRouter}

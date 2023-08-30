@@ -25,9 +25,11 @@ class GetUserLocation {
 
   async getUserLocation() {
     setInterval(async () => {
-      const location = await Location.getCurrentPositionAsync();
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: 2,
+      });
       this.dispatch(getUserLocation(location));
-    }, 2000);
+    }, 5000);
   }
 
   // defineTask() {

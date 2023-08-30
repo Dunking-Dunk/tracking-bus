@@ -16,7 +16,6 @@ const Login = () => {
     dispatch(signIn({ email, password })).then(() => {
         navigate('/')
     }).catch((error) => {
-
         setErrors(error.response?.data.errors)
       })
     setEmail('')

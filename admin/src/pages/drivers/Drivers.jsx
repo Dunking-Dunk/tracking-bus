@@ -1,40 +1,55 @@
 import './drivers.scss'
 import React, {  useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { createDriver } from '../../store/action';
+import { createDriver, deleteDriver } from '../../store/action';
 import Datatable from '../../components/datatable/Datatable';
+import {InputLabel, MenuItem, FormControl,  Select} from '@mui/material'
 
 const Drivers = () => {
     const dispatch = useDispatch()
-    const drivers = useSelector((state) => state.drivers.drivers)
+  const drivers = useSelector((state) => state.drivers.drivers)
+  const buses = useSelector((state) => state.buses.buses)
 
     const [state, setState] = useState({
         name: '',
         phoneNumber: '',
-        avatar: []
+      image: '',
+        busId: ''
     })
+  
+  const handleImage = (e) => {
+    const fileReader = new FileReader()
+    fileReader.onload = () => {
+      if (fileReader.readyState === 2) {
+
+        setState((state) => ({...state, image: fileReader.result}))
+      }
+    }
+
+    fileReader.readAsDataURL(e.target.files[0])
+  }
+
+  const handleChange = (event) => {
+    setState((state) => ({ ...state, busId: event.target.value }))
+  }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        let formData = new FormData()
-
-        formData.append('avatar', state.avatar)
-        formData.append('name', state.name)
-        formData.append('phoneNumber', state.phoneNumber)
-
+   
         if (state.name.length > 3 && state.phoneNumber)
-            dispatch(createDriver(formData))
+        dispatch(createDriver(state))
+      
         setState({
                 name: '',
             phoneNumber: '',
-            avatar: []
+          image: '',
+            busId: ''
         })
     }   
 
-    const handleDelete = () => {
-        
+    const handleDelete = (id) => {
+        dispatch(deleteDriver(id))
     }
-    console.log(drivers)
 
     const driverColumns = [
         { field: "sno", headerName: "SNO", width: 70 },
@@ -44,12 +59,7 @@ const Drivers = () => {
             headerName: "Image",
             width: 100,
             renderCell: (params) => {
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(params.value.data?.data)))
-            return (
-                 
-                            <img src={`data:image/png;base64,${base64String}`} alt="" className='driver__img'/>
-                
-                );
+            return <img src={params.row.image} alt="" className='driver__img'/>
               },
         },
         {
@@ -65,13 +75,14 @@ const Drivers = () => {
         {
           field: "bus",
           headerName: "Bus",
-          width: 100,
+          width: 200,
         }, 
       {
         field: "action",
         headerName: "Action",
         width: 150,
         renderCell: (params) => {
+ 
           return (
             <div className="cellAction">
               <div
@@ -88,18 +99,18 @@ const Drivers = () => {
       
     
     const driverRow = () => {
-        return drivers.map((driver, i) => {
+      return drivers.map((driver, i) => {
+        const busDriver = buses.find((bus) => bus.id === driver.busId)
           return {
             sno: i + 1,
               id: driver.id,
-            image: driver.photoUrl,
+            image: driver.image.url,
             name: driver.name,
             phoneNumber: driver.phoneNumber,
-            bus: driver.busId ? driver.busId : 'no bus',
+            bus: busDriver ? `${busDriver.busNumber} ${busDriver.busSet}`: 'no bus'
           }
         })
       }
-
 
     return (
         <div className="driver">
@@ -120,10 +131,28 @@ const Drivers = () => {
                     </div>
                     <div className="driver__form__container">
                         <h3>photo</h3>
-                        <input type="file" name='avatar' class="driver__form__input"  onChange={(e) => {
-                        setState((data) => ({...data, avatar: e.target.files[0]}))
-                    }} />      
-                    </div>
+                        <input type="file" name='avatar' class="driver__form__input"  onChange={handleImage} />      
+            </div>
+            <div className="driver__form__container">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-controlled-open-select-label">Bus</InputLabel>
+        <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+                  label="Age"
+                  value={state.busId}
+                  onChange={handleChange}
+                >
+                       <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+                  {buses.map((bus, index) => {
+                    return <MenuItem value={bus.id} key={index}>{bus.busNumber} {bus.busSet}</MenuItem>
+              })}
+        </Select>
+      </FormControl>
+            </div>
+            
                     <button className="driver__form__btn">Create</button>
                 </form>
                  <hr/>

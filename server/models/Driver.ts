@@ -5,9 +5,9 @@ interface DriverAttrs {
     name: string,
     busId?: BusDoc[],
     phoneNumber: number,
-    photoUrl: {
-        data: Buffer,
-        contentType: string
+    image: {
+        public_id: string,
+        url: string
     }
 }
 
@@ -15,9 +15,9 @@ export interface DriverDoc extends mongoose.Document {
     name: string,
     phoneNumber: number,
     busId?: BusDoc[],
-    photoUrl: {
-        data: Buffer,
-        contentType: string
+    image: {
+        public_id: string,
+        url: string
     }
 }
 
@@ -35,9 +35,15 @@ const driverSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    photoUrl: {
-        data: Buffer,
-        contentType: String
+    image: {
+            public_id: {
+              type: String,
+              required: true,
+            },
+            url: {
+              type: String,
+              required: true,
+            },
     },
     busId: {
         type: mongoose.Schema.Types.ObjectId,

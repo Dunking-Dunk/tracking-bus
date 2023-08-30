@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://bus-tracking-server.azurewebsites.net/api",
+  baseURL: "https://7576-49-204-114-8.ngrok-free.app/api",
 });

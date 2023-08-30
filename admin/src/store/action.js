@@ -25,6 +25,7 @@ import {
   CREATE_TRACKER,
   CREATE_DRIVER,
   GET_ALL_DRIVER,
+  DELETE_DRIVER,
 } from "./actionType";
 import moment from "moment";
 
@@ -256,8 +257,8 @@ export const pushNotification = (message) => async (dispatch) => {
     const { data } = await axios.post(
       "https://app.nativenotify.com/api/notification",
       {
-        appId: 6812,
-        appToken: "hIdJXJ415JJ7O0VRhedjiQ",
+        appId: process.env.REACT_APP_APP_ID,
+        appToken: process.env.REACT_APP_APP_TOKEN,
         dateSent: moment().format("MMMM Do YYYY, h:mm:ss a"),
         ...message,
       }
@@ -276,7 +277,6 @@ export const getAllNotfications = () => async (dispatch) => {
       type: GET_ALL_NOTIFICATIONS,
       payload: data,
     });
-    console.log(data);
   } catch (err) {
     throw err;
   }
@@ -362,6 +362,18 @@ export const getAllDriver = () => async (dispatch) => {
     dispatch({
       type: GET_ALL_DRIVER,
       payload: data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteDriver = (id) => async (dispatch) => {
+  try {
+    await api.delete(`/driver/${id}`);
+    dispatch({
+      type: DELETE_DRIVER,
+      payload: id,
     });
   } catch (err) {
     throw err;

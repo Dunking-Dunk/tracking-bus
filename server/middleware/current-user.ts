@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
 interface UserPayload {
-    email: string;
     id: string;
 }
 
@@ -15,12 +14,13 @@ declare global {
 }
  
 export const currentUser = (req:Request, res:Response, next:NextFunction) => {
-    if (!req.session?.jwt) {
+    if (!req.cookies.token) {
         return next()
     }
 
     try {
-        const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!) as UserPayload
+        const payload = jwt.verify(req.cookies.token, process.env.JWT_KEY!) as UserPayload
+
         req.currentUser = payload;
     }
     catch (err) {
@@ -28,4 +28,10 @@ export const currentUser = (req:Request, res:Response, next:NextFunction) => {
             }
 
     next()
+}
+
+export const authorizeRole = (role: string) => {
+    return (req: Request, res: Response, next: NextFunction) => { 
+        // if (req.currentUser.)
+    }
 }

@@ -20,6 +20,7 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import useLocation from "../hooks/use-location";
+import doRequest from "../hooks/use-request";
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ export default Home = ({ navigation }) => {
   const userCoords = useSelector((state) => state.user.user);
   const appState = useSelector((state) => state.user.appState);
   const stats = useSelector((state) => state.buses.quickStats);
+
   const [nearByStops, setNearByStops] = useState([]);
   const [nearByBuses, setNearByBuses] = useState([]);
   const [busesLocation, getBusesLocations] = useState([]);

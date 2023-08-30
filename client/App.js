@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const store = configureStore();
   const scheme = useColorScheme();
-  const notification = useNotification();
+  useNotification();
 
   return (
     <Provider store={store}>
@@ -33,7 +33,6 @@ export default function App() {
           <Stack.Screen name="main" component={Main} />
           <Stack.Screen name="BusDetail" component={BusDetail} />
         </Stack.Navigator>
-
         <FlashMessage position="bottom" />
       </NavigationContainer>
     </Provider>

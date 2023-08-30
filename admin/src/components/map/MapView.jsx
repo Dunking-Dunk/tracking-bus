@@ -16,7 +16,7 @@ const Marker = () => {
 const MapView = ({ allStops, addStops }) => {
     return (<div style={{ height: '100%', width: '100%', marginBottom: '20px' }}>
     <GoogleMapReact
-          bootstrapURLKeys={{ key:'AIzaSyAaCWjzUJ1XziqSuWycOTNorOmfe2swDIc' }}
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}
         defaultCenter={{
         lat: 13.078339,
         lng: 80.180592
