@@ -29,7 +29,7 @@ class GetUserLocation {
         accuracy: 2,
       });
       this.dispatch(getUserLocation(location));
-    }, 5000);
+    }, 2000);
   }
 
   // defineTask() {

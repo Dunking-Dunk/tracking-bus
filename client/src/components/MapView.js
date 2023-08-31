@@ -174,11 +174,12 @@ const map = ({
 
           {busesLiveLocation &&
             busesLiveLocation.map((bus) => {
+              const { latitude, longitude } = bus.coords.slice(-1)[0];
               return (
                 <Marker.Animated
                   coordinate={{
-                    latitude: bus.coords[0].latitude,
-                    longitude: bus.coords[0].longitude,
+                    latitude,
+                    longitude,
                   }}
                   key={bus.id}
                   tracksViewChanges={false}

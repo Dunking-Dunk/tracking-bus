@@ -1,7 +1,6 @@
 import Datatable from "../../components/datatable/Datatable"
 import { useDispatch, useSelector } from 'react-redux'
 import { createTracker, deleteTracker } from "../../store/action";
-import { Link } from "react-router-dom"
 import { useState } from "react";
 
 const Tracker = () => {

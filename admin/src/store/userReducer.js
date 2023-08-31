@@ -1,7 +1,7 @@
 import { SIGN_IN, SIGN_OUT } from "./actionType";
 
 const initialState = {
-  user: {},
+  user: null,
 };
 
 const userReducer = (state = initialState, action) => {
