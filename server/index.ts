@@ -10,7 +10,7 @@ const start = async () => {
     }
 
     try {
-        await mongoose.connect(process.env.MONGO_URI)
+        const db = await mongoose.connect(process.env.MONGO_URI)
         connection()
     }
     catch (err) {

@@ -1,7 +1,7 @@
 import "./bus.scss"
 import Datatable from "../../components/datatable/Datatable"
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { deleteBus, getAllBuses, getBus, quickEditBus } from "../../store/action";
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";

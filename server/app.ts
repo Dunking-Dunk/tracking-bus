@@ -5,14 +5,14 @@ import 'express-async-errors'
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import {v2 as cloudinary} from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 
 import { currentUser } from './middleware/current-user';
 
 import { NotFoundError } from './errors/not-found-error'
-import {ErrorHandler} from './middleware/error-handler'
+import { ErrorHandler } from './middleware/error-handler'
 import { GetBusRoute } from "./routes/bus/get";
 import { GetAllBusRoute } from "./routes/bus/index";
 import { NewBusRoute } from "./routes/bus/new";
@@ -32,7 +32,7 @@ import { UpdateGpsTracker } from './routes/tracking/update';
 import { NewAnnouncement } from './routes/announcement/new';
 import { GetAllAnnouncement } from './routes/announcement/index';
 import { DeleteAnnouncement } from './routes/announcement/delete'
-    
+
 import { NewFeedback } from './routes/feedback/new';
 import { GetAllFeedback } from './routes/feedback/index';
 import { DeleteFeedback } from './routes/feedback/delete';;
@@ -46,26 +46,30 @@ import { DeleteTracker } from './routes/tracking/delete';
 import { GetDriver } from './routes/driver/get';
 import { NewDriver } from './routes/driver/new';
 import { GetAllDriver } from './routes/driver';
-import {DeleteDriver} from './routes/driver/delete'
+import { DeleteDriver } from './routes/driver/delete'
 
 const app = express();
 
 
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_API_KEY,
-  });
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_API_KEY,
+});
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }))
+app.use(cors({ origin: ["http://localhost:3001", "https://admin.socket.io"], credentials: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 
 const httpServer = createServer(app)
-const io = new Server(httpServer)
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*'
+  }
+})
 
 app.use(currentUser)
 
@@ -107,8 +111,8 @@ app.use(DeleteDriver)
 
 
 
-app.use('*', async(req, res) => { 
-    throw new NotFoundError()
+app.use('*', async (req, res) => {
+  throw new NotFoundError()
 })
 
 app.use(ErrorHandler)

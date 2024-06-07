@@ -1,11 +1,10 @@
 import "./widget.scss";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import StoreIcon from '@mui/icons-material/Store';
 import CommentIcon from '@mui/icons-material/Comment';
 import {Link} from 'react-router-dom'
 
-const Widget = ({ type, data }) => {
+const Widget = ({  data }) => {
 
   return (
     <div>

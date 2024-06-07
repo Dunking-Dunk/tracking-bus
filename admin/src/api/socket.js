@@ -1,22 +1,14 @@
 import { io } from "socket.io-client";
-import {
-  addAnnouncement,
-  addBus,
-  addStop,
-  deleteAnnouncement,
-  deleteBus,
-  deleteStop,
-} from "../store/action";
 
 class Socket {
   constructor() {
-    this.url = "https://7786-49-204-116-26.ngrok-free.app";
+    this.url = "http://localhost:4000/";
     this.config = {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       reconnectionAttempts: 3,
-      transports: ["polling", "websocket"],
+      transports: ["websocket"],
     };
     this.createConnection();
   }
@@ -55,27 +47,6 @@ class Socket {
   errorConnection() {
     this.socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err}`);
-    });
-  }
-
-  getNewBusAndStopAdded(dispatch) {
-    this.socket.on("newBusAdded", (data) => {
-      dispatch(addBus(data));
-    });
-    this.socket.on("newStopAdded", (data) => {
-      dispatch(addStop(data));
-    });
-    this.socket.on("stopDeleted", (data) => {
-      dispatch(deleteStop(data));
-    });
-    this.socket.on("busDeleted", (data) => {
-      dispatch(deleteBus(data));
-    });
-    this.socket.on("newAnnoucement", (data) => {
-      dispatch(addAnnouncement(data));
-    });
-    this.socket.on("deleteAnnouncement", (data) => {
-      dispatch(deleteAnnouncement(data));
     });
   }
 }

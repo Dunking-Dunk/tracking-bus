@@ -20,7 +20,6 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import useLocation from "../hooks/use-location";
-import doRequest from "../hooks/use-request";
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -207,6 +206,7 @@ export default Home = ({ navigation }) => {
         <Text>{stats.returnAfter5} buses in all routes</Text>
       </Animated.View>
       {stops ? (
+
         <Map
           mapStyle={styles.map}
           allStops={stops}

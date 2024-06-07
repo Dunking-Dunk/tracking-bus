@@ -11,9 +11,9 @@ export class CalcDistance {
         const stopCoord = stop.coords;
         const distance = this.haversineformula(
           stopCoord.latitude,
-          this.userCoords.latitude,
+          this.userCoords?.latitude,
           stopCoord.longitude,
-          this.userCoords.longitude
+          this.userCoords?.longitude
         );
 
         if (distance < 2) {
@@ -30,9 +30,9 @@ export class CalcDistance {
         const busCoord = bus.coords[0];
         const distance = this.haversineformula(
           busCoord.latitude,
-          this.userCoords.latitude,
+          this.userCoords?.latitude,
           busCoord.longitude,
-          this.userCoords.longitude
+          this.userCoords?.longitude
         );
 
         if (distance < 2) {

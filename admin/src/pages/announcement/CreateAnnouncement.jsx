@@ -1,5 +1,5 @@
 import './createAnnouncement.scss'
-import React, { useState, Component } from 'react'
+import React, { Component } from 'react'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';

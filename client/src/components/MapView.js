@@ -71,6 +71,7 @@ const map = ({
 
   //useEffect//////////////////////////////
   useEffect(() => {
+
     if (userCoords) {
       const { latitude, longitude } = userCoords;
       animate(latitude, longitude);
@@ -142,7 +143,7 @@ const map = ({
       setRouteInfo((state) => ({ ...state, elapsedTime: t, distance: d }));
     }
   };
-  if (state.userCoords) {
+  if (userCoords) {
     return (
       <View style={{ flex: 1 }}>
         {/* <Canvas>
@@ -151,8 +152,8 @@ const map = ({
         <MapView
           style={{ ...mapStyle, ...styles.map }}
           initialRegion={{
-            latitude: state.userCoords.latitude,
-            longitude: state.userCoords.longitude,
+            latitude: state.userCoords?.latitude,
+            longitude: state.userCoords?.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}

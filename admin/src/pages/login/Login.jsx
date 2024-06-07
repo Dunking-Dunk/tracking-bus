@@ -1,8 +1,8 @@
 import "./login.scss"
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { signIn } from "../../store/action" 
+import { signIn } from "../../store/action"
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -14,17 +14,18 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(signIn({ email, password })).then(() => {
-        navigate('/')
+      navigate('/')
     }).catch((error) => {
-        setErrors(error.response?.data.errors)
-      })
+      console.log(error)
+      setErrors(error.response?.data.errors)
+    })
     setEmail('')
     setPassword('')
   }
 
   return (
     <div className="login__container">
-      <img src='adminLogin.jpeg' className="login__image"/>
+      <img src='adminLogin.jpeg' className="login__image" />
       <form className="login__form__container" onSubmit={handleSubmit}>
         <h1>Login</h1>
         {errors && errors.map((error, index) => {
@@ -35,7 +36,7 @@ const Login = () => {
         <input type='email' placeholder="email" onChange={(e) => {
           setEmail(e.target.value)
         }} value={email} />
-        <input type='password' placeholder="password"  onChange={(e) => {
+        <input type='password' placeholder="password" onChange={(e) => {
           setPassword(e.target.value)
         }} value={password} />
         <button >Submit</button>

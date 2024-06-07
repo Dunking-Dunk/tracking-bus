@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style/dark.scss";
+import "./api/socket";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 
